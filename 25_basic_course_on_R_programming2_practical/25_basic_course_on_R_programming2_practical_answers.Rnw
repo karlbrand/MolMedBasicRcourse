@@ -1,0 +1,283 @@
+\documentclass [12pt]{article}
+
+\usepackage{graphics,latexsym,geometry,amsmath,bibunits,makeidx,fancyhdr,graphicx}
+\usepackage{hyperref}
+\usepackage[authoryear,round]{natbib}
+\usepackage{graphicx,color}
+\usepackage{enumerate}
+
+\newcommand{\noin}{\noindent}
+\newcommand{\be}{\begin{equation}}
+\newcommand{\ee}{\end{equation}}
+\newcommand{\bi}{\begin{itemize}}
+\newcommand{\ei}{\end{itemize}}
+\newcommand{\bdm}{\begin{displaymath}}
+\newcommand{\edm}{\end{displaymath}}
+\newcommand{\bea}{\begin{eqnarray}}
+\newcommand{\eea}{\end{eqnarray}}
+\newcommand{\beaa}{\begin{eqnarray*}}
+\newcommand{\eeaa}{\end{eqnarray*}}
+\newtheorem{example}{Example}[section]
+\newcommand{\bex}{\begin{example} \normalfont}
+\newcommand{\eex}{\end{example}}
+\newtheorem{exercise}[example]{Exercise}
+\newcommand{\bexc}{\begin{exercise} \normalfont}
+\newcommand{\eexc}{\end{exercise}}
+\newtheorem{problem}{}
+\newcommand{\bpr}{\begin{problem} \normalfont}
+\newcommand{\epr}{\end{problem}}
+\newcommand{\babc}{\begin{list}{\alph{abc})}{\usecounter{abc}
+  \itemindent=-10pt}}
+\newcommand{\eabc}{\end{list}}
+\newcommand{\ben}{\begin{enumerate}}
+\newcommand{\een}{\end{enumerate}}
+\newcounter{abc}
+
+
+
+
+\textwidth=6.2in
+\textheight=8.5in
+%\parskip=.3cm
+\oddsidemargin=.1in
+\evensidemargin=.1in
+\headheight=-.3in
+
+\newcommand{\scscst}{\scriptscriptstyle}
+\newcommand{\scst}{\scriptstyle}
+\author{Elizabeth Ribble\footnote{emcclel3@msudenver.edu}}
+\date{18-24 May 2017}
+
+\begin{document}
+
+\title{Basic Course on {\tt R}:\\
+  Programming Structures 2\\
+  Practical Answers}
+\maketitle
+\tableofcontents
+
+\newpage
+
+
+\section{Part A: Scope}
+
+\begin{enumerate}
+
+\item For each of the following sets of commands, give the value that will be returned by the last command. Try to answer without using R.
+
+%will result in an error message (assuming that 
+                                  %the Workspace is clear before each set is executed):
+  
+  \babc
+
+\item 
+
+
+<<>>=
+w <- 5
+f <- function(y) {
+  return(w + y)
+}
+f(y = 2)
+@
+{\color{red}
+This will return 7 because {\tt w} is 5 and we are evaluating the function at {\tt y = 2}. 
+}
+
+\item 
+
+<<>>=
+w <- 5
+f <- function(y) {
+  w <- 4
+  return(w + y)
+}
+f(y = 2)
+@
+
+{\color{red}
+This will return 6 because {\tt w} is reassigned as 4 inside the function and we are evaluating the function at {\tt y = 2}. 
+}
+
+\eabc
+
+
+
+
+\item Among the variables \texttt{w}, \texttt{d}, and \texttt{y},  which
+are global to \texttt{h()} and which are local?
+
+%will result in an error message (assuming that 
+                                  %the Workspace is clear before each set is executed):
+  
+<<>>=
+w <- 2                   
+f <- function(y) {
+  h <- function() {
+    d <- 3
+    return(w + y)
+    }
+  return(d * h())
+  }
+@
+{\color{red}
+The object {\tt w} is global to {\tt h()} while {\tt d} and {\tt y} are local to {\tt h()}. 
+}
+
+  \newpage
+\item Do the following in R. 
+\babc
+
+\item Try:
+  
+<<>>=
+myFun1 <- function() {
+  a <- 2
+  b <- 3
+  myFun2(3)
+}
+myFun2 <- function(y) {
+  return(y + a + b)
+}
+myFun1()      
+@
+
+What happens?
+
+{\color{red}
+We get an error message because a and b are local to {\tt myFun1} so the function {\tt myFun2} can't find them in the global environment.
+}
+
+\item Now try:
+  
+
+<<>>=
+a <- 1
+b <- 2
+myFun1()     
+@
+What happens?
+
+{\color{red}
+We get get the value 6 because the values {\tt a} and {\tt b} are global so {\tt myFun2} can find them and use them in its commands.
+}
+\eabc
+
+
+
+
+\item What value for \texttt{w} will be printed in the last line below?  Try to answer without using R.
+  
+  
+
+<<>>=
+w <- 1
+f <- function(y) {
+  g <- function() {
+    w <<- 3 
+    return(2)
+  }
+  return(g())
+}
+f(y = 1)
+w
+@
+
+{\color{red}
+We get the value 3 because the superassign operator overwrote the original assignment of {\tt w}.
+}
+\item What value for \texttt{w} will be printed in the last line below?  Try to answer without using R.
+  
+  
+<<>>=
+w <- 1
+f <- function(y) {
+  w <- 2
+  g <- function() {
+    w <<- 3 
+    return(2)
+    }
+  return(g())
+}
+f(y = 1)
+w
+@
+
+{\color{red}
+We get the value 1 because the superassign operator only overwrote the assignment of {\tt w} within the {\tt f()} function.
+}
+\end{enumerate}
+
+\section{Part B: \texttt{if()} Statements, \texttt{warning()}, and \texttt{stop()}}
+}
+The functions \texttt{warning()} and \texttt{stop()} are used to print a warning
+message and to stop the execution of the function call and print an error message.  For example:
+  
+<<>>=
+noNegMean <- function(x) {
+  if(all(x < 0)) {
+    stop("All values in x are negative")
+    }
+  if(any(x < 0)) {
+    x[x < 0] <- 0
+    warning("Negative values in x replaced by zero")
+    }
+  return(mean(x))
+  }
+@
+  
+  
+\begin{enumerate}
+
+
+\item The file {\bf nonegmean.txt} contains the above code; source it into R and then pass \texttt{noNegMean()} a vector containing some negative and some positive values.  What happens?
+
+{\color{red}
+<<>>=
+source("nonegmean.txt")
+noNegMean(c(-1,0,1))
+@
+We get the warning message and it returned 0.3333, which is the average of 0, 0, 1. 
+}
+
+\item What happens when you pass \texttt{noNegMean()} a vector containing all negative values?
+
+{\color{red}
+<<>>=
+source("nonegmean.txt")
+#noNegMean(c(-1,-1,-1)) # not run; error message
+@
+We get the error message and nothing is returned. 
+}
+\item Write a function \texttt{ratio()} that takes two arguments, \texttt{x} and \texttt{y},
+and attempts to compute the ratio \texttt{x/y}.  If both \texttt{x == 0 \& y == 0}, the function should
+stop and print an error message about dividing 0 by 0.  If \texttt{y == 0} (but not \texttt{x}), the 
+function should print a warning message about dividing by 0, and then return \texttt{x/y} (which will be \texttt{Inf}). In all other cases, it should return \texttt{x/y}. \\
+
+
+Test your \texttt{ratio()} function first using two nonzero values for \texttt{x} and \texttt{y}, then using a 
+nonzero \texttt{x} but \texttt{y = 0}, and finally using \texttt{x = 0} and \texttt{y = 0}.
+\end{enumerate}
+{\color{red}
+<<>>=
+ratio <- function(x,y) {
+  if(x == 0 & y == 0) {
+    stop("Cannot divide zero by zero.")
+  }
+  if(y == 0) {
+    warning("Cannot divide by zero.")
+  }
+  ratio <- x/y
+  return(ratio)
+}
+
+ratio(2,3)
+ratio(0,0) 
+ratio(1,0)
+@
+}
+
+
+\end{document}
+
+

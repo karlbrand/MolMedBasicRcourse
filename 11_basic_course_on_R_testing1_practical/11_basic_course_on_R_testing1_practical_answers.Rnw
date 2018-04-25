@@ -1,0 +1,294 @@
+\documentclass[12pt]{article}
+
+\usepackage{amsmath}
+\usepackage{hyperref}
+\usepackage[authoryear,round]{natbib}
+\usepackage{graphicx,color}
+\usepackage{enumerate}
+
+\textwidth=6.2in
+\textheight=8.5in
+%\parskip=.3cm
+\oddsidemargin=.1in
+\evensidemargin=.1in
+\headheight=-.3in
+
+\newcommand{\scscst}{\scriptscriptstyle}
+\newcommand{\scst}{\scriptstyle}
+\author{Elizabeth Ribble\footnote{emcclel3@msudenver.edu}}
+\date{18-24 May 2017}
+\begin{document}
+
+\title{Basic Course on {\tt R}:\\
+       Hypothesis Testing and Confidence Intervals 1\\
+       Practical Answers}
+\maketitle
+\tableofcontents
+\newpage\section{Baby Data}
+\begin{enumerate}[{1.}]
+\item Read in the data ``R\_data\_January2015.csv'' with a header and row names from the first column. Assign it to the object {\tt babydata} and allow strings be converted to factors. Attach the data to the environment.
+{\color{red}
+<<>>=
+babydata <- read.csv("R_data_January2015.csv", header = T,row.names = 1)
+attach(babydata)
+@
+}
+\item What are the dimensions of {\tt babydata}? What is the class? Answer these questions separately with two functions and then together with one function.
+{\color{red}
+<<>>=
+dim(babydata)
+class(babydata)
+str(babydata)
+@
+}
+\item Answer the following questions pertaining to the variable {\tt SAH}:
+  \begin{enumerate}
+\item What are the 20\% quantiles of {\tt SAH}?
+{\color{red}
+<<>>=
+quantile(SAH,seq(0,1,.2))
+@
+}
+\item What are the mean, median, variance and standard deviation of {\tt SAH}?
+{\color{red}
+<<>>=
+summary(SAH)
+## or
+mean(SAH)
+median(SAH)
+vs <- var(SAH)
+vs
+sqrt(vs)
+@
+}
+\item Create a stem and leaf plot of {\tt SAH}. 
+{\color{red}
+<<>>=
+stem(SAH)
+@
+}
+\item Create a histogram and a horizontal boxplot of {\tt SAH} in one graphics window where the plot of the histogram is above the boxplot. 
+\begin{center}  
+{\color{red}
+<<out.width="3.2in">>=
+par(mfrow=c(2,1))
+hist(SAH)
+boxplot(SAH,horizontal=TRUE)
+@
+}
+\end{center}
+
+\item Utilize all 3 graphs to describe the shape of the distribution of {\tt SAH}.\\
+
+{\color{red} The distribution is unimodal and slightly skewed to the right}.
+
+\item Log-transform SAH (assign it to {\tt logSAH}).
+{\color{red}
+<<>>=
+logSAH <- log(SAH)
+@
+}
+\item What are the 20\% quantiles of {\tt logSAH}?
+{\color{red}
+<<>>=
+quantile(logSAH,seq(0,1,.2))
+@
+}
+\item What are the mean, median, variance and standard deviation of {\tt logSAH}?
+{\color{red}
+<<>>=
+summary(logSAH)
+## or
+mean(logSAH)
+median(logSAH)
+vls <- var(logSAH)
+vls
+sqrt(vls)
+@
+}
+\item Create a stem and leaf plot of {\tt logSAH}. 
+{\color{red}
+<<>>=
+stem(logSAH)
+@
+}
+\item Create a histogram and a horizontal boxplot of {\tt logSAH} in one graphics window where the plot of the histogram above the boxplot. 
+\begin{center}  
+{\color{red}
+<<out.width="3.2in">>=
+par(mfrow=c(2,1))
+hist(logSAH)
+boxplot(logSAH,horizontal=TRUE)
+@
+}
+\end{center}  
+
+\item Utilize all 3 graphs to describe the shape of the distribution of {\tt logSAH}.\\ 
+{\color{red} The distribution is unimodal, symmetric and appears normal.}
+
+\item What did the log transformation do to the values of {\tt SAH}?\\ 
+{\color{red} Dampened the effect of skewness to make the distribution more normal and symmetric.}
+
+\item Take a random sample of size 50 from {\tt logSAH} and make a histogram. Does this distribution have a similar shape compared to that of all {\tt logSAH} values?
+\begin{center}  
+{\color{red}
+<<out.width="3.2in">>=
+set.seed(1234)
+hist(sample(logSAH, 50))
+@
+}
+\end{center}   
+
+{\color{red}
+The distribution looks somewhat similar to that of the complete data.
+}
+
+\item Take a random sample of size 50 with replacement from {\tt logSAH} and make a histogram. Does this distribution have a similar shape compared to that of all {\tt logSAH} values?
+\begin{center}  
+{\color{red}
+<<out.width="3.2in">>=
+set.seed(1234)
+hist(sample(logSAH, 50, replace=T))
+@
+}
+\end{center}  
+
+{\color{red} The distribution looks quite different from the original distribution.}
+\end{enumerate}
+
+\item Answer the following questions pertaining to the variable {\tt medication}: 
+  \begin{enumerate}
+\item Use a function to create frequency table of the number of mothers taking medication and not taking medication.
+{\color{red}
+<<>>=
+table(medication)
+@
+}
+\item Calculate the percent of the mothers are taking medication; what is the percentage?
+{\color{red}
+<<>>=
+table(medication)/length(medication)
+@   
+}
+\end{enumerate}
+
+So 16.3\% of mothers are taking medication.
+
+\item Answer the following questions pertaining to the variable {\tt educational\_level}: 
+  \begin{enumerate}
+\item Create a frequency table of the number of mothers in each education level.
+{\color{red}
+<<>>=
+table(educational_level)
+@
+}
+\item Create a horizontal boxplot of the {\tt SAH} values for the different levels of education and color each box a different color. Add a rug plot of the values where the ticks for each group have the same color as their corresponding box. 
+\begin{center}
+{\color{red}
+<<out.width="3.2in">>=
+boxplot(SAH ~ educational_level, horizontal=TRUE, 
+        col=c("purple","orange","green"))
+rug(SAH[educational_level=="low"], col="green")
+rug(SAH[educational_level=="intermediate"], col="orange")
+rug(SAH[educational_level=="high"], col="purple")
+@
+}
+\end{center}
+
+\item Are {\tt triglycerides} normally distributed (make a plot to answer this question)? If not, log-transform them. Are the log-transformed values normal? 
+\begin{center}
+{\color{red}
+<<out.width="3.2in">>=
+par(mfrow=c(1,2))
+hist(triglycerides)
+hist(log(triglycerides))
+@
+}
+\end{center}
+
+{\color{red} The values are skewed to the right and are still skewed after a log transformation.       
+}
+
+\item Is the average triglyceride level for highly educated mothers different from that of mothers with a low education level? Formulate a hypothesis, test it, and make a decision about whether or not you can reject the null hypothesis. Can you use a $t$-test (either on the raw or log-transformed data)? Why or why not (hint: how are the data distributed)?\\
+
+{\color{red} We cannot use the $t$-test because the data are not normally distributed, even after a log transformation! However, since the shapes of the distributions are similar, as evidence by the below plot, we can perform a Wilcoxon Rank Sum test. 
+\begin{center}
+<<out.width="3.2in">>=
+trigly_high <- triglycerides[educational_level=="high"]
+trigly_low <- triglycerides[educational_level=="low"]
+par(mfrow=c(1,2))
+hist(trigly_high, main = "high")
+hist(trigly_low, main = "low")
+@
+\end{center}
+ Our null hypothesis is that the difference in location between the low and high education levels is 0. The alternative hypothesis is that there is a difference. 
+<<>>=
+wilcox.test(trigly_high, trigly_low)
+@
+ The $p$-value is not less than 0.05 so we fail to reject the null and conclude that we do not have enough evidence to show a statistically significant difference between the centers of the high and low mothers' triglycerides.
+}
+\item Now re-do the test and make your decision to reject/not reject the null based on the confidence interval. Challenge: extract the confidence interval from the test output and use logical operators to answer the question of whether the interval contains the null value. 
+{\color{red}
+<<>>=
+wtest <- wilcox.test(trigly_high, trigly_low, conf.int=TRUE)
+ciw <- wtest$conf.int
+0 > ciw[1] & 0 < ciw[2]
+@
+
+Since the confidence interval contains 0, we fail to reject the null.   
+}
+\end{enumerate}
+
+
+\item Answer the following questions pertaining to the variable {\tt Status}:
+\begin{enumerate}
+\item Are the average {\tt SAH} values for the two levels of {\tt Status} (normal brain development or intellectual disability) different? Formulate a hypothesis, test it, and make a decision about whether or not you can reject the null hyopthesis. Can you use a $t$-test (either on the raw or log-transformed data)? Why or why not (hint: check distributions with plots)?\\
+{\color{red}
+ We can use the $t$-test on the log-transformed data, since they are normally distributed, as shown in the plots below.
+\begin{center}
+<<out.width="3.2in">>=
+sah_m <- SAH[Status=="intellectual disability"]
+sah_n <- SAH[Status=="normal brain development"]
+par(mfrow=c(2,2))
+hist(sah_m, main = "intellectual disability")
+hist(sah_n, main = "normal brain development")
+hist(log(sah_m), main = "intellectual disability")
+hist(log(sah_n), main = "normal brain development")
+@
+\end{center}
+ Our null hypothesis is that the difference in mean {\tt SAH} between the two groups is 0. The alternative hypothesis is that there is a difference in means. 
+<<>>=
+sstest <- t.test(log(SAH)~Status)
+sstest
+sstest$p.value
+sstest$conf.int
+@
+ The $p$-value is less than 0.05 (and 0 is not in the CI) so we can reject the null hypothesis that the difference in means between the two groups is 0. We conclude that there is a statistically significant difference between the average log-{\tt SAH} of mothers with intellectually disabled children and the average log-{\tt SAH} of those women whose children have normal brain development. 
+}      
+      \item What is the fold change of log-{\tt SAH} between the 2 groups? Calculate it two ways: use the output from the previous test and also use the data itself (function {\tt mean} plus logical operators). 
+{\color{red}
+<<>>=
+sstest$estimate[2]/sstest$estimate[1]
+mean(log(SAH)[Status=="normal brain development"])/
+  mean(log(SAH)[Status=="intellectual disability"])
+@
+}      
+      \item Make a boxplot of the {\tt SAH} values of the 2 groups and calculate the fold change of {\tt SAH} between the 2 groups. Does the difference seem clinically relevant? Why or why not? 
+{\color{red}
+\begin{center}
+<<out.width="3.2in">>=
+boxplot(SAH ~ Status)
+mean(SAH[Status=="normal brain development"])/
+  mean(SAH[Status=="intellectual disability"])
+@
+\end{center}
+
+The fold change is really close to one and there is actually quite a bit of overlap in the boxplots. The statistically significant difference of the log-transformed data is quite subtle and may not be relevant, though further investigation of confounding factors may elucidate the true relationship between {\tt SAH} and brain development. 
+}
+\end{enumerate}
+
+\end{enumerate}
+
+
+
+\end{document}

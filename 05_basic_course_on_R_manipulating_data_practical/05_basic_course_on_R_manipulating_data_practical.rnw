@@ -1,0 +1,149 @@
+\documentclass[12pt]{article}
+
+\usepackage{amsmath}
+\usepackage{hyperref}
+\usepackage[authoryear,round]{natbib}
+\usepackage{graphicx}
+\usepackage{enumerate}
+
+\textwidth=6.2in
+\textheight=8.5in
+%\parskip=.3cm
+\oddsidemargin=.1in
+\evensidemargin=.1in
+\headheight=-.3in
+
+\newcommand{\scscst}{\scriptscriptstyle}
+\newcommand{\scst}{\scriptstyle}
+\author{Karl Brand\footnote{brandk@gmail.com}\hspace{2mm}  and Elizabeth Ribble\footnote{emcclel3@msudenver.edu}}
+\date{18-24 May 2017}
+
+\begin{document}
+
+\title{Basic Course on {\tt R}:\\
+Manipulating Data Practical}
+\maketitle
+\tableofcontents
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% end preamble %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newpage\section{Manipulating / Selecting Data}
+\subsection{Answer the following without typing the commands into R. Use {\tt ?} if you're not sure what the object is or what the function does.}  
+
+
+\begin{enumerate}[{1.1}.1]
+\item What is 
+<<quiet=T,eval=F>>=
+length(letters)
+@
+\vspace{10 mm}
+\item What is
+<<quiet=T,eval=F>>=
+length(letters==LETTERS)
+@
+\vspace{10 mm}
+\item What is
+<<quiet=T,eval=F>>=
+which(letters %in% c("a", "d"))
+@
+\vspace{10 mm}
+\item What is
+<<quiet=T,eval=F>>=
+which(c("a", 7, "d") %in% letters)
+@
+\vspace{10 mm}
+\item What is
+<<quiet=T,eval=F>>=
+letters[LETTERS > "W"]
+@
+\vspace{10 mm}
+\newpage
+\item What is
+<<quiet=T,eval=F>>=
+letters[!LETTERS > "C"]
+@
+\vspace{10 mm}
+\item What is
+<<quiet=T,eval=F>>=
+seq(from = 1, to = 20, by = 3)
+@
+\vspace{10 mm}
+\item Why is {\tt x} filled in the way it is? Hint: read about the arguments for {\tt matrix}!
+<<quiet=T>>=
+x <- matrix(8:11, nrow = 6, ncol = 4)
+x
+@
+\vspace{10 mm}
+\item What are 
+<<quiet=T,eval=F>>=
+x + 4
+x + x
+2 * x
+x/c(2, 3, 4, 5)
+x[, 3] + 2*x[, 2]
+nrow(x)
+x[x[, 3]>10, ]
+@
+\vspace{20 mm}
+\end{enumerate}
+
+
+\newpage\subsection{Use R to answer the following.}
+
+
+\begin{enumerate}[{1.2}.1]
+ \item Create a vector (using {\tt c()}) called {\tt a} (i.e. assign it to an object called {\tt a}) with four elements which are the integers 5 to 8 (inclusive).
+ \vspace{5 mm}
+ \item Display element 2 of {\tt a}.
+ \vspace{5 mm}
+ \item Display element 4 of {\tt a}.
+ \vspace{5 mm}
+ \item Calculate the product of elements 2 and 4 of {\tt a}.
+ \vspace{5 mm}
+ \item Assign the integers 3 and 4 to object {\tt b} and use {\tt b} to select elements 3 and 4 of object {\tt a}.
+ \vspace{5 mm}
+ \item Display every element of {\tt a} except element 2. 
+ \vspace{5 mm}
+ \item Display every element of {\tt a} except elements 3 and 4. 
+ \vspace{5 mm}
+ \item Display only those elements of {\tt a} that are greater than or equal to 6.
+ \vspace{5 mm}
+ \item Display only those elements of {\tt a} that are not equal to 7.
+ \vspace{5 mm}
+ \item Use the {\tt list} function to create an object {\tt ab} which is a list of the two objects {\tt a} and {\tt b}.
+ \vspace{5 mm}
+ \item Display {\tt ab}.
+ \vspace{5 mm}
+ \item Change the names of the elements in {\tt ab} to ``a'' and ``b''.
+ \vspace{5 mm}
+ \item Display {\tt ab} again. What has changed?
+ \vspace{15 mm}
+ \newpage\item Create this matrix {\tt m}:
+<<>>=
+m <- matrix(1:9, nrow=3, byrow=T)
+m
+@
+ Why are the numbers 1, 2, and 3 in the first row and not the first column? 
+ \vspace{10 mm}
+ \item Display the element on the second row and second column of {\tt m}.
+ \vspace{5 mm}
+ \item Display only the 2nd row of {\tt m}.
+ \vspace{5 mm}
+ \item Display only the 3rd column of {\tt m}.
+ \vspace{5 mm}
+ \item Display only the 2nd and 3rd columns of {\tt m}. Do so in two different ways.
+\vspace{10 mm}
+ \end{enumerate}
+
+\begin{center} 
+\textbf{If you want to save your work: save your R session and/or source code!}
+\end{center}
+
+
+
+
+
+\end{document}
+
+
+

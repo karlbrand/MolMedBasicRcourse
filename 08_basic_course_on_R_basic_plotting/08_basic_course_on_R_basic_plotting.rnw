@@ -1,0 +1,346 @@
+\documentclass[12pt]{article}
+
+\usepackage{amsmath}
+\usepackage{hyperref}
+\usepackage[authoryear,round]{natbib}
+\usepackage{graphicx}
+\usepackage{enumerate}
+
+\textwidth=6.2in
+\textheight=8.5in
+%\parskip=.3cm
+\oddsidemargin=.1in
+\evensidemargin=.1in
+\headheight=-.3in
+
+\newcommand{\scscst}{\scriptscriptstyle}
+\newcommand{\scst}{\scriptstyle}
+
+\author{Karl Brand\footnote{brandk@gmail.com}\hspace{2mm}  and Elizabeth Ribble\footnote{emcclel3@msudenver.edu}}
+\date{18-24 May 2017}
+
+\begin{document}
+
+\title{Basic Course on {\tt R}:\\
+Basic Plotting}
+\maketitle
+\tableofcontents
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% end preamble %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newpage\section{Basic Plotting}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+{\tt R} is a very powerful tool for producing custom graphics ranging from
+basic scatterplots to 3D plots. In this introduction to plotting we
+will learn how to create basic graphs like scatterplots, line graphs
+and bar charts, as well as histograms and boxplots, all of which are
+available in the base package. Different methods for saving plots will
+be introduced.  We will use the data {\tt ToothGrowth} throughout the
+following examples:
+<<>>=
+data(ToothGrowth)
+str(ToothGrowth)
+@
+
+
+\subsection{Scatterplots and Line Graphs}
+
+\subsubsection{Scatterplots}
+
+The {\tt plot} function is the most basic function for plotting
+continuous data. If we use {\tt plot} on one variable, the values of
+the variable will be plotted against their index, i.e., the order
+of the data within the object they're stored:
+\begin{center}
+<<out.width="3.2in">>=
+plot(ToothGrowth$len)
+@
+\end{center}
+\noindent With two variables {\tt plot} puts the first variable on the x-axis and the second variable on the y-axis (y versus x):
+\begin{center}
+<<out.width="3.2in">>=
+plot(ToothGrowth$dose, ToothGrowth$len)
+@
+\end{center}
+
+\noindent Many parameters are available for customizing your plot. See {\tt ?par} for an extensive list. We will just look at a couple here, like changing the axis labels: 
+\begin{center}
+<<out.width="3.2in">>=
+plot(ToothGrowth$dose, ToothGrowth$len, xlab = "Dose", 
+     ylab = "Tooth Length")
+@
+\end{center}
+
+\noindent We can also add a title: 
+\begin{center}
+<<out.width="3.2in">>=
+plot(ToothGrowth$dose, ToothGrowth$len, xlab = "Dose", 
+     ylab = "Tooth Length", main = "Guinea Pig Tooth Growth by Dosage")
+@
+\end{center}
+\noindent and even change the colors and characters of specific points: 
+\begin{center}
+<<out.width="3.2in">>=
+plot(ToothGrowth$dose, ToothGrowth$len, xlab = "Dose", 
+     ylab = "Tooth Length", main = "Guinea Pig Tooth Growth by Dosage",
+     col = ToothGrowth$supp, pch = as.numeric(ToothGrowth$supp))
+@
+\end{center}
+
+\noindent The {\tt legend} function adds a legend so we can easily identify which points represent which groups: 
+\begin{center}
+<<out.width="3.2in">>=
+plot(ToothGrowth$dose, ToothGrowth$len, xlab = "Dose", 
+     ylab = "Tooth Length", main = "Guinea Pig Tooth Growth by Dosage",
+     col = ToothGrowth$supp, pch = 2)
+legend(1.5, 15, c("OJ", "VC"), col = 1:2, 
+       pch = as.numeric(ToothGrowth$supp))
+@
+\end{center}
+
+\noindent The location of the legend can also be specified by stating a region of the plot e.g. {\tt "bottomright"} to place it in the very bottom righthand corner of the plot. \\
+
+\noindent The argument {\tt cex} stands for ``character expansion'' and will enlarge the size of points: 
+\begin{center}
+<<out.width="3.2in">>=
+plot(ToothGrowth$dose, ToothGrowth$len, xlab = "Dose", 
+     ylab = "Tooth Length", main = "Guinea Pig Tooth Growth by Dosage",
+     col = ToothGrowth$supp, pch = as.numeric(ToothGrowth$supp), 
+     cex = 2)
+legend(1.5, 15, c("OJ", "VC"), col = 1:2, 
+       pch = as.numeric(ToothGrowth$supp), cex=2)
+@
+\end{center}
+
+
+
+%' In the above plot it appears that the OJ recipients have a larger tooth growth than the VC recipients, on average. We can test this using a $t$-test, which tests whether the difference of means between the two groups is equal to 0. 
+%' <<>>=
+%' ttooth <- t.test(ToothGrowth$len~ToothGrowth$supp)
+%' ttooth$estimate
+%' ttooth$p.value
+%' @
+
+\subsubsection{Line Graphs}
+To create a plot using lines instead of points, we can actually still use {\tt plot}, but we need to specify the type of plot we want, e.g.:
+\begin{center}
+<<out.width="3.2in">>=
+plot(ToothGrowth$len, type = "l") # note type is the letter l for "line"
+@
+\end{center}
+\begin{center}
+<<out.width="3.2in">>=
+plot(ToothGrowth$len, type = "b") # note type is the letter b for "both"
+@
+\end{center}
+
+\noindent We can add additional lines by calling {\tt lines}:
+\begin{center}
+<<out.width="3.2in">>=
+plot(ToothGrowth$len, type = "l")
+lines(ToothGrowth$len + 2)
+@
+\end{center}
+\newpage
+\noindent The line type, width, and color can be adjusted as follows:
+\begin{center}
+<<out.width="3.2in">>=
+plot(ToothGrowth$len, type = "l")
+lines(ToothGrowth$len + 2, lty = 3, lwd = 3, col = "darkgreen")
+@
+\end{center}
+
+
+
+\subsection{Bar Charts and Histograms}
+\subsubsection{Bar Charts}
+Viewing categorical data in a scatterplot often doesn't make
+sense. For example, if we want to see the number of guinea pigs who
+received each dosage, the following doesn't provide this information
+in the most intuitive format:
+\begin{center}
+<<out.width="3.2in">>=
+plot(ToothGrowth$dose)
+@
+\end{center}
+Instead we can use bar charts to visualize the frequencies or proportions within each category. Note that we have to use a frequency table of the counts (using {\tt table}):
+\begin{center}
+<<>>=
+table(ToothGrowth$dose)
+@
+\newpage
+<<out.width="3.2in">>=
+barplot(table(ToothGrowth$dose))
+@
+\end{center}
+\noindent We can plot proportions instead of frequencies, as is often helpful (though not in this case): 
+\begin{center}
+<<>>=
+props <- table(ToothGrowth$dose)/nrow(ToothGrowth)
+props
+@
+\newpage
+<<out.width="3.2in">>=
+barplot(props)
+@
+\end{center}
+Note that the y-axis doesn't quite extend to the height of the bars. The range of the y-axis is easily change in plots by adjusting the parameter {\tt ylim} (similarly {\tt xlim} for the x-axis):
+\begin{center}
+<<out.width="3.2in">>=
+barplot(props, ylim = c(0, .4))
+@
+\end{center}
+\noindent Yet again, there are many parameters available for customizing the plot. Let's try changing the width and colors of the bars: 
+\begin{center}
+<<out.width="3.2in">>=
+barplot(props, ylim = c(0, .4),
+        width = .2, col = c("blue", "white", "red"))
+@
+\end{center}
+And we can plot the bars horizontally, if preferable: 
+\begin{center}
+<<out.width="3.2in">>=
+barplot(props, xlim = c(0, .4),
+        width = .2, col = c("blue", "white", "red"),
+        horiz = TRUE)
+@
+\end{center}
+Note that we adjusted the range of the x-axis now instead of the y-axis.
+
+\subsubsection{Histograms}
+A bar chart is slightly different from a histogram. We use bar charts
+to plot frequencies (or proportions) of values present in
+categories. Continuous data don't have categories, so to make a
+similar plot we have to create ``categories''. They are often called
+bins or cells and are created by defining ranges in which the
+frequencies are calculated. Thankfully, {\tt R} will do this, and plot the histogram, when we call the function {\tt hist}:
+\newpage
+\begin{center}
+<<out.width="3.2in">>=
+hist(ToothGrowth$len)
+@
+\end{center}
+\noindent Note that in a histogram the sides of the cells touch, whereas they do not in a bar chart. We can also plot the proportions, now called ``density'', by changing a single parameter:
+\begin{center}
+<<out.width="3.2in">>=
+hist(ToothGrowth$len, freq = FALSE)
+@
+\end{center}
+\newpage
+\noindent In the next graph we plot the histogram with a different bin width by specifying where to make the breakpoints between the bars:
+\begin{center}
+<<out.width="3.2in">>=
+hist(ToothGrowth$len, freq = FALSE, breaks = seq(0, 35, 2))
+@
+\end{center}
+
+Note how the granularity of the plot changes with the width of the bin. We can also change the breaks by defining the number of cells to use: 
+\newpage
+\begin{center}
+<<out.width="3.2in">>=
+hist(ToothGrowth$len, freq = FALSE, breaks = 25)
+@
+\end{center}
+\noindent The same parameters that change the axes and labels are applicable here: 
+\begin{center}
+<<out.width="3.2in">>=
+hist(ToothGrowth$len, freq = FALSE, breaks = seq(0, 35, 2), 
+     main = "Histogram of Tooth Growth", xlab = "Tooth Length", 
+     ylim = c(0, .07), col = "orange")
+@
+\end{center}
+
+
+\subsection{Boxplots}
+A boxplot is another graph we use to view the distribution of a continuous variable. It displays the specified quantiles of the data in the following way: 
+\begin{center}
+<<out.width="3.2in">>=
+boxplot(ToothGrowth$len)
+@
+\end{center}
+A single boxplot is nice for visualizing the distribution of one variable, but plotting several side by side allows for a simultaneous comparison of distributions. Here we will use the formula notation. The format {\tt y $\sim$ x}, where {\tt y} is a numeric vector and {\tt x} is a factor, tells the boxplot function that we want to separate the continuous {\tt y} values into as many boxplots as there are levels of the factor {\tt x}. 
+\newpage
+\begin{center}
+<<out.width="3.2in">>=
+boxplot(ToothGrowth$len~ToothGrowth$supp)
+@
+\end{center}
+Just like in the bar chart, we can plot the boxes horizontally and
+change the colors, labels and axes:
+\begin{center}
+<<out.width="3.2in">>=
+boxplot(ToothGrowth$len~ToothGrowth$supp, 
+        col = c("darkgreen", "purple"),
+        xlab = "Supplement Type", ylab = "Tooth Length",
+        ylim = c(0, 40), horizontal = TRUE)
+@
+\end{center}
+The settings of the parameters of a plot, including the margins, can
+be specified by calling {\tt par()} before creating a plot. One nice
+setting we'll introduce here is how to put multiple plots into one
+graphics device:
+\begin{center}
+<<out.width="3.2in">>=
+par(mfrow = c(1, 2))
+boxplot(ToothGrowth$len~ToothGrowth$supp, main = "Boxplot",
+        xlab = "Supplement Type")
+hist(ToothGrowth$len, main = "Histogram", xlab = "Tooth Length")
+@
+\end{center}
+The settings will stay fixed until we close the device (e.g. by
+calling {\tt dev.off()}) or reset {\tt par} (e.g. {\tt par(mfrow = c(1, 1))}). It is highly recommended
+to get familiar with the help page for {\tt par} to control graphing
+parameters to create custom graphs.\\
+
+\noindent Another helpful function is {\tt axis}, which allows the specification
+of custom axis labels (e.g. where to put them and at what angle). See
+{\tt ?axis} for more information.
+
+
+\subsection{Saving Plots} Up until now we have been creating
+graphs in a single graphics window that gets overwritten every time we
+create new plots. If we want to save the images created, we can use
+``Export'' in RStudio to specify what type of file we want to write,
+its size, location, and name.
+
+Alternatively we can use functions such as {\tt png}, {\tt pdf}, and
+{\tt jpeg}. Since we can save our code and not our mouse clicks, the
+use of these functions avoids any confusion about how an image was
+written, allows for quick simple changes, and provides a convenient
+way to reproduce multiple, similar plots. For example:
+<<eval=TRUE, echo=TRUE>>=
+# note: run getwd() to see the working directory - 
+# that is the directory to which files will be written
+pdf("plot1.pdf", width = 6, height = 9)
+boxplot(ToothGrowth$len~ToothGrowth$supp, 
+        col = c("darkgreen", "purple"),
+        xlab = "Supplement Type", ylab = "Tooth Length",
+        ylim = c(0, 40), horizontal = TRUE)
+dev.off()
+pdf("plot2.pdf", width = 4, height = 8)
+boxplot(ToothGrowth$len~ToothGrowth$supp, 
+        col = c("darkgreen", "purple"),
+        xlab = "Supplement Type", ylab = "Tooth Length",
+        ylim = c(0, 40), horizontal = TRUE)
+dev.off()
+@
+Note that you have to call {\tt dev.off()} to finish writing the image to the file. If more than one device is open, the return of that function will display a number larger than 1. \\
+
+The units for the width and height arguments of {\tt pdf} are in inches (7 by 7), but the default for e.g. {\tt png} is pixels (there is an argument {\tt units} to change it to {\tt in}, {\tt cm}, or {\tt mm}):
+<<eval=TRUE, echo=TRUE>>=
+png("plot1.png", units = "in", res = 300,
+    width = 6, height = 9)
+boxplot(ToothGrowth$len~ToothGrowth$supp, 
+        col = c("darkgreen", "purple"),
+        xlab = "Supplement Type", ylab = "Tooth Length",
+        ylim = c(0, 40), horizontal = TRUE)
+dev.off()
+@
+
+
+
+
+
+
+
+\end{document}

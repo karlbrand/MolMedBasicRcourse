@@ -1,0 +1,202 @@
+\documentclass[12pt]{article}
+
+\usepackage{amsmath}
+\usepackage{hyperref}
+\usepackage[authoryear,round]{natbib}
+\usepackage{graphicx}
+\usepackage{enumerate}
+
+\textwidth=6.2in
+\textheight=8.5in
+%\parskip=.3cm
+\oddsidemargin=.1in
+\evensidemargin=.1in
+\headheight=-.3in
+
+\newcommand{\scscst}{\scriptscriptstyle}
+\newcommand{\scst}{\scriptstyle}
+\author{Elizabeth Ribble\footnote{emcclel3@msudenver.edu}}
+\date{18-24 May 2017}
+
+\begin{document}
+
+\title{Basic Course on {\tt R}:\\
+Hypothesis Testing and Confidence Intervals 2}
+\maketitle
+\tableofcontents
+
+\newpage\noindent Most of the following examples use the data ``R\_data\_January2015.csv'' which contains variables on mothers whose babies are either intellectually disabled  or developmentally normal.
+<<>>=
+babies <- read.csv("R_data_January2015.csv",header=T,row.names=1)
+names(babies)
+attach(babies)
+@
+
+\section{Correlations}
+If we want to know the degree of a linear association between 2 variables, we can calculate correlation. Correlation does not make any \emph{a priori} assumptions about whether one variable is dependent on the other and is not concerned with the relationship between the variables. We have 4 general types of association to consider: 
+\begin{center}
+\includegraphics[width=.45\textwidth]{corrs.png}
+\end{center}
+\noindent Pearson's correlation coefficient $r$ is defined as: 
+\begin{align*}
+r &= \frac{\sum_{i=1}^n(x_i-\bar{x})(y_i-\bar{y})}{\sqrt{\sum_{i=1}^n(x_i-\bar{x})^2}\sqrt{\sum_{i=1}^n(y_i-\bar{y})^2}}
+\end{align*}
+and indicates to what extent two continuous variables have a linear relationship.
+\newpage\noindent Pearson's $r$ can only lie in the interval [-1,1] (inclusive), where
+\begin{itemize}
+\item $r = 0$, no linear correlation
+\item $r > 0$, positive linear correlation
+\item $r < 0$, negative linear correlation
+\item $r = 1$, perfect positive linear correlation
+\item $r = -1$, perfect negative linear correlation
+\end{itemize}
+\noindent Note that correlation does \emph{not} imply causation. If two variables are highly correlated you cannot infer that one is causing the other; they could both be varying along with a third, possibly unknown confounding factor (either causal or not).
+\\
+
+\noindent We assume that the two variables $x$ and $y$
+\begin{itemize}
+\item show a linear relationship
+\item are continuous random variables
+\item are normally distributed
+\item are independent of each other
+\end{itemize}
+and when regressing one variable on another (e.g. linear regression, more on this later), $r^2$ is called the goodness of fit, which is the proportion of variance in $y$ that can be explained by the regression on $x$.\\
+
+\noindent If data are not normally distributed, the degree of association can be determined by the ranked correlation coefficient, Spearman's $\rho$, which replaces the $x$'s and $y$'s in the Pearson formula with their ranks.\\
+
+\noindent R provides $p$-values and confidence intervals for both Pearson and Spearman correlations. 
+
+\newpage\noindent Let's look at an example of how BMI and cholesterol are associated:
+\begin{center}
+<<out.width="3.2in">>=
+plot(BMI,cholesterol)
+@
+\end{center}
+<<>>=
+cor(BMI, cholesterol)
+cor(BMI, cholesterol, method="spearman")
+cor.test(BMI,cholesterol)
+@
+\newpage
+<<>>=
+cor.test(BMI,cholesterol, method="spearman")
+@
+\noindent Note the {\em warning} message (which is not an error!) that indicates if your data have tied values (e.g. 1, 1, 3, 5) then the $p$-value is approximated and is not exact. It's nothing to worry about (especially if you're not a statistician...).
+
+\section{ANOVA}
+A two-sample $t$-test is used to test hypotheses about the means of two normal populations using two datasets which were sampled independently of one another from the two respective populations. An analysis of variance (ANOVA) allows for comparing the means of one variable among more than two populations (each of which is normally distributed), again under the assumption that the samples are independent.   
+
+\begin{itemize}
+\item If the variance between groups is higher than the variance within groups, then there is evidence for a difference in means between groups. 
+\item The null hypothesis is that the means of all groups are equal; the alternative is that at least one group has a different mean from the others. 
+\item ANOVA does not provide which group is different nor in what direction; visualization and/or post-hoc pairwise $t$-tests can provide this information.
+\end{itemize}
+
+\newpage
+\noindent Here is a small illustration of the analysis of variance:
+\begin{center}
+\includegraphics[width=.65\textwidth]{FullSizeRender.jpg}
+\end{center}
+\noindent In the left image there is more variablility within each of the three groups (boxplots) than between the three group means ($\bar{x}_1$, $\bar{x}_2$, $\bar{x}_3$). In the right image there is more variability between the three group means than within each of the three groups.
+
+\subsection{One-way ANOVA}
+Suppose we have $k$ groups and $n$ total samples. We first calculate between- and within-group variations (sums of squares or $SS$), and for this we need the mean of all data points, which is $\bar{X}=\sum x/n$. The $SS$ (between and within) for each group $i$ are:
+\begin{align*}
+SSB &= \sum n_i(\bar{x}_i-\bar{X})^2\\
+SSW &= \sum (n-k)s_i^2
+\end{align*}
+where $s_i^2$ is the variance within group $i$. It can be shown that $SSB + SSW = SST$, the total sum of squares $\sum(x-\bar{X})^2$ (the total variance times $n-1$). Next we calculate the mean squared (MS) errors, which are:
+\begin{itemize}
+\item $MSB$ for between: $SSB/(k-1)$
+\item $MSW$ for within: $SSW/(n-k)$.
+\end{itemize}
+The test-statistic for an ANOVA is $MSB/MSW$, which, to get a $p$-value, is compared to an $F$ distribution on $k-1$ and $n-k$ degrees of freedom. \\
+
+\noindent The above statistics are generally presented in an ANOVA table: 
+\begin{center}
+\begin{tabular}{c|c|c|c|c}
+ & df & $SS$ & $MS$ & $F$\\
+\hline
+between &  k-1 &  $SSB$ & $SSB/(k-1)$ & $MSB/MSW$ \\
+\hline
+within & n-k & $SSW$ &  $SSW/(n-k)$ &\\
+\hline
+total & n-1 &$SSW + SSB$ &  &\\
+\end{tabular}
+\end{center}
+
+As with the previous testing procedures we've seen, we compare the $p$-value to the pre-selected significance level. If $p\leq\alpha$ we reject the null and conclude we have evidence that at least one population (or group) mean is different from the others, while if $p>\alpha$, we fail to reject the null and conclude we do not have evidence that any of the means are different.
+
+
+R will calculate all of the statistics for us! For example, let's test at the 5\% significance level the alternative hypothesis that at least one of the mean BMIs for three different educational levels are different from the other two (versus the null of three equal means).
+<<>>=
+baby_aov1 <- aov(BMI ~ educational_level)
+summary(baby_aov1)
+@ 
+
+Here the $F$-statistic is large enough to get a $p$-value smaller than 0.05 so we conclude at least one population mean BMI is different from the other two. But which group is it? Let's look at a boxplot:
+
+\begin{center}
+<<out.width="3.2in">>=
+boxplot(BMI~educational_level)
+@
+\end{center}
+
+This visual information is informative but we can actually make pairwise comparisons of all the means using Tukey's HSD. We initially used a signifance level of 0.05, but will now conduct several tests and use a multiple test procedure that adjusts the family-wise error rate to 5\%:
+<<>>=
+TukeyHSD(baby_aov1)
+@
+
+Note that we use the multiple testing procedure to account for the fact that we are simultaneously performing more than one test or CI which compounds the error rates of each test. Since all of the CIs contain 0 and none of the $p$-values are significant at the 5\% level, the initial test result is overturned! We do not actually have evidence that education level affects average BMI.
+
+Also note you would not bother with these $post hoc$ tests/CIs if your initial ANOVA results were not statistically significant. 
+
+\subsection{Two-way ANOVA}
+When we have two categorical explanatory variables and a continuous outcome, we can use a two-way ANOVA to determine whether the combinations of levels of the two variables have varying means in the outcome. Note that this is still a parametric test which requires normality. The ANOVA table is similar to the one-way, but an additional row is added for the second factor and an interaction between the two groups. 
+<<>>=
+baby_aov2 <- aov(BMI ~ educational_level * iodine_deficiency)
+summary(baby_aov2)
+@
+<<>>=
+library(lattice)
+@
+\begin{center}
+<<out.width="3.2in">>=
+bwplot(BMI ~ educational_level|iodine_deficiency)
+@
+\end{center}
+
+Here the interatcion is not significant so we take it out and re-run the ANOVA:
+<<>>=
+baby_aov2 <- aov(BMI ~ educational_level + iodine_deficiency)
+summary(baby_aov2)
+@
+
+It appears that educational level and iodine deficienty may have an effect on BMI.
+
+
+\newpage
+\section{$\chi^2$ Test}
+A $\chi^2$ (read: chi-squared) test of independence tests the null hypothesis that rows and columns are indpedenent in a $c\times r$ contingency table ($r$ is number of rows, $c$ columns); the alternative is that they are not independent. The counts must be independent and sampled randomly. We can calculate a chi-squared statistic as follows: 
+\begin{align*}
+\chi^2&=\sum\frac{(O_i-E_i)^2}{E_i}
+\end{align*}
+where $O_i$ is the observed count for cell $i$ in the table, and $E_i$ is the expected count, calculated by multiplying the row and column totals for $i$ divided by the overall total. The $p$-value for the calculated $\chi^2$ statistic depends on the $\chi^2$ distribution with $(r-1)(c-1)$ degrees of freedom. R will provide us with the statistic and $p$-value.\\
+
+\noindent Suppose we have the following table:\\
+\begin{center}
+\begin{tabular}{rccl}
+& event & no event & total\\
+treatment & 20 & 80 & 100 \\
+placebo & 50 & 50 & 100\\
+total & 70 & 130 & 200
+\end{tabular}
+\end{center}
+\noindent and we want to know whether our treatment prevents events, that is, does the occurence of an event depend on the type of treatment? 
+<<>>=
+mytable <- matrix(c(20, 50, 80, 50), nrow=2)
+cstest <- chisq.test(mytable)
+cstest
+cstest$p.value
+@
+\end{document}

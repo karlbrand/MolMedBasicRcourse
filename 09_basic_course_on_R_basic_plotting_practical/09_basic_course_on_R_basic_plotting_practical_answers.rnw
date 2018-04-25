@@ -1,0 +1,245 @@
+\documentclass[12pt]{article}
+
+\usepackage{amsmath}
+\usepackage{hyperref}
+\usepackage[authoryear,round]{natbib}
+\usepackage{graphicx}
+\usepackage{enumerate}
+\usepackage[usenames,dvipsnames,svgnames,table]{xcolor}
+
+\textwidth=6.2in
+\textheight=8.5in
+%\parskip=.3cm
+\oddsidemargin=.1in
+\evensidemargin=.1in
+\headheight=-.3in
+
+\newcommand{\scscst}{\scriptscriptstyle}
+\newcommand{\scst}{\scriptstyle}
+\author{Karl Brand\footnote{brandk@gmail.com}\hspace{2mm}  and Elizabeth Ribble\footnote{emcclel3@msudenver.edu}}
+\date{18-24 May 2017}
+
+\begin{document}
+
+\title{Basic Course on {\tt R}:\\
+      Basic Plotting Practical Answers}
+\maketitle
+\tableofcontents
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% end preamble %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newpage\section{Basic Plotting}
+
+\subsection{Use {\tt R} to do the following exercises on the {\tt BOD} data.}  
+
+\begin{enumerate}[{1.1}.1]
+ \item Display the built-in dataset called {\tt BOD} by running {\tt BOD}.
+{\color{red}
+<<>>=
+BOD
+@
+}
+ \item What is the data structure of {\tt BOD}? What are the dimensions?
+{\color{red}
+<<>>=
+str(BOD)
+@
+Using {\tt str} we see that {\tt BOD} is a data frame with dimensions 6 x 2, each variable ({\tt Time} and {\tt demand}) a numeric vector. 
+}
+\item What are the names of {\tt BOD}? Use a function other than {\tt str}.
+{\color{red}
+<<>>=
+names(BOD)
+@
+}
+ \itemMake a line graph of demand versus time, where the line is a pink dot-dashed line [Hint: run {\tt ?par} and look for the parameter {\tt lty} to see the line types]. Add a blue dashed line of 1.1 times the demand and give it a thickness of 2 using the line width parameter {\tt lwd}. Make sure both lines are entirely visible by adjusting the range of y using the parameter {\tt ylim} in the original plot.
+{\color{red}
+\begin{center}
+<<out.width="3.2in">>=
+plot(BOD$Time, BOD$demand, type = "l", lty = 4, 
+     col = "pink", ylim = c(0, 25))
+lines(BOD$Time, 1.1 * BOD$demand, lwd = 2, col = "blue")
+@
+\end{center}
+}
+
+\end{enumerate}
+
+
+\subsection{Use {\tt R} to do the following exercises on the {\tt chickwts} data.}  
+
+
+\begin{enumerate}[{1.2}.1]
+ \item Display the built-in {\tt chickwts} data.
+{\color{red}
+<<eval=FALSE>>=
+chickwts
+@
+}
+ \item What is the data structure of {\tt chickwts}? What are the dimensions?
+{\color{red}
+<<>>=
+str(chickwts)
+@
+Using {\tt str} we see that {\tt chickwts} is a data frame with dimensions 71 x 2, with variable {\tt weight} a numeric vector and {\tt feed} a factor with 6 levels. 
+}
+ \item What are the names of {\tt chickwts}? Use a function other than {\tt str}.
+{\color{red}
+<<>>=
+names(chickwts)
+@
+}
+ \item What are the levels of {\tt feed}?
+{\color{red}
+<<>>=
+levels(chickwts$feed)
+@
+}
+ \item Make the following plots in one 2 x 2 image:
+   \begin{itemize}
+     \item A bar chart of the feed types, each bar a different color.  
+     \item A bar chart of the proportions of feed types, each bar a different color.  
+     \item A boxplot of the weights by feed type, each box a different color.  
+     \item A horizontal boxplot of the weights by feed type, each box a different color.  
+   \end{itemize}
+{\color{red}
+\begin{center}
+<<out.width="3.2in">>=
+par(mfrow = c(2, 2))
+barplot(table(chickwts$feed), 
+        col = c("red", "orange", "yellow", 
+                "green", "blue", "purple"))
+barplot(table(chickwts$feed)/length(chickwts$feed), 
+        col = c("red", "orange", "yellow", 
+                "green", "blue", "purple"))
+boxplot(chickwts$weight~chickwts$feed, 
+        col = c("red", "orange", "yellow", 
+                "green", "blue", "purple"))
+boxplot(chickwts$weight~chickwts$feed, 
+        col = c("red", "orange", "yellow", 
+                "green", "blue", "purple"),
+        horizontal = TRUE)
+@
+\end{center}
+}
+\end{enumerate}
+
+
+\subsection{Use {\tt R} to do the following exercises on the {\tt Puromycin} data.}  
+
+
+\begin{enumerate}[{1.3}.1]
+ \item Display the built-in {\tt Puromycin} data.
+{\color{red}
+<<eval=FALSE>>=
+Puromycin
+@
+}
+ \item Make a scatterplot of the rate versus the concentration. Describe the relationship.
+{\color{red} \begin{center}
+<<out.width="3.2in">>=
+plot(Puromycin$conc, Puromycin$rate)
+@
+\end{center}
+The rate increases faster at lower concentrations than at higher concentrations.
+}
+\item Make a scatterplot of the rate versus the log of the concentration. Describe the relationship.
+{\color{red}
+\begin{center}
+<<out.width="3.2in">>=
+plot(log(Puromycin$conc), Puromycin$rate)
+@
+\end{center}
+The two variables have a linear relationship.
+}
+\item Make a scatterplot of the rate versus the log of the concentration and color the points by treatment group ({\tt state}). Describe what you see.
+{\color{red}
+\begin{center}
+<<out.width="3.2in">>=
+plot(log(Puromycin$conc), Puromycin$rate, col = Puromycin$state)
+@
+\end{center}
+It appears that the the treated group has higher rates than the untreated group, on average. (Note that default colors are black for the first level and red for the second level).
+}
+ \item Make a scatterplot of the rate versus the log of the concentration, color the points by treatment group ({\tt state}), label the x-axis ``Concentration'' and the y-axis ``Rate'', and label the plot ``Puromycin''.
+{\color{red}
+\begin{center}
+<<out.width="3.2in">>=
+plot(log(Puromycin$conc), Puromycin$rate, col = Puromycin$state, 
+     xlab = "Concentration", ylab = "Rate", main = "Puromycin")
+@
+\end{center}
+}
+\item Add a legend to the above plot indicating what the points represent. 
+{\color{red}
+\begin{center}
+<<out.width="3.2in">>=
+plot(log(Puromycin$conc), Puromycin$rate, col = Puromycin$state, 
+     xlab = "Concentration", ylab = "Rate", main = "Puromycin")
+legend("topleft",c("Treated", "Untreated"), col = 1:2, pch = 1)
+@
+\end{center}
+}
+\item Make a boxplot of the treated versus untreated rates. Using the function {\tt pdf}, save the image to a file with a width and height of 7 inches.
+{\color{red}
+<<>>=
+pdf("puromycin.pdf",width = 7, height = 7)
+boxplot(Puromycin$rate~Puromycin$state)
+dev.off()
+@
+}
+%  \item Based on the scatterplot and boxplot, do you think the rates are significantly different between treatment groups? Perform a $t$-test between the treated and untreated rates to confirm (or not confirm) your hypothesis. What is the difference in means? Don't do it in your head or use a calculator, but instead use your knowledge of assigning objects, {\tt \$} and {\tt [} to help you answer this question.
+% 
+% {\color{red}
+% \noindent The scatterplot shows the treated group has higher rates on average, but there might not be a significant difference since large portions of the boxplots overlap.
+% <<>>=
+% purott <- t.test(Puromycin$rate~Puromycin$state)
+% purott$p.value
+% puromeans <- purott$estimate
+% puromeans[1] - puromeans[2]
+% @
+% The difference in means is about 30.86. This is not statistically significant at the 0.10 level. We do not have enough evidence to reject the hypothesis that the means in the treated and untreated groups are equal.
+% }
+\item Make a histogram of the frequency of concentrations. What is the width of the bins?
+{\color{red}
+\begin{center}
+<<out.width="3.2in">>=
+hist(Puromycin$conc)
+@
+\end{center}
+The bin width is 0.20. 
+} 
+\item Make a histogram of the frequency of concentrations
+with a bin width of 0.10. How is this different from the histogram
+above?  
+{\color{red}
+\begin{center}
+<<out.width="3.2in">>=
+hist(Puromycin$conc, breaks = seq(0, 1.2, .10))
+@
+\end{center}
+The bins are narrower, so we see in finer detail the distribution of the concentrations.
+} 
+\item Plot the two histograms (bin widths 0.20 and 0.10) side by side in the same graphic window and make sure they have the same range on the y-axis. Does this make it easier to answer the question of how the two histograms differ?
+{\color{red}
+\begin{center}
+<<out.width="3.2in">>=
+par(mfrow = c(1, 2))
+hist(Puromycin$conc, ylim = c(0, 12))
+hist(Puromycin$conc, breaks = seq(0, 1.2, .10), ylim = c(0, 12))
+@
+\end{center}
+In some situations it may be of use to view plots simultaneously. In this case, on the right we see clearly that more values are between 0 and 0.10 than 0.10 and 0.20 whereas the plot on the left does not display this information. In the histogram on the right we see that no concentrations fall between 0.30 and 0.50, whereas this is not apparent in the histogram on the left. 
+}
+ \end{enumerate}
+
+\begin{center} 
+\textbf{If you want to save your work: save your {\tt R} session and/or source code!}
+\end{center}
+
+
+
+
+
+\end{document}
+

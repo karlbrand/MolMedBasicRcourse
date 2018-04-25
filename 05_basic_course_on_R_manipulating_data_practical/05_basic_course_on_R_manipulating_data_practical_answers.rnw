@@ -1,0 +1,245 @@
+\documentclass[12pt]{article}
+
+\usepackage{amsmath}
+\usepackage{hyperref}
+\usepackage[authoryear,round]{natbib}
+\usepackage{graphicx}
+\usepackage{enumerate}
+\usepackage[usenames,dvipsnames,svgnames,table]{xcolor}
+
+\textwidth=6.2in
+\textheight=8.5in
+%\parskip=.3cm
+\oddsidemargin=.1in
+\evensidemargin=.1in
+\headheight=-.3in
+
+\newcommand{\scscst}{\scriptscriptstyle}
+\newcommand{\scst}{\scriptstyle}
+\author{Karl Brand\footnote{brandk@gmail.com}\hspace{2mm}  and Elizabeth Ribble\footnote{emcclel3@msudenver.edu}}
+\date{18-24 May 2017}
+
+\begin{document}
+
+\title{Basic Course on {\tt R}:\\
+Manipulating Data Practical Answers}
+\maketitle
+\tableofcontents
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% end preamble %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newpage\section{Manipulating / Selecting Data}
+
+\subsection{Answer the following without typing the commands into R. Use {\tt ?} if you're not sure what the object is or what the function does.}  
+
+\begin{enumerate}[{1.1}.1]
+\item What is 
+<<quiet=T,eval=F>>=
+length(letters)
+@
+{\color{red} 26}
+%\vspace{9 mm}
+\item What is
+<<quiet=T,eval=F>>=
+length(letters==LETTERS)
+@
+{\color{red} 26}
+%\vspace{9 mm}
+\item What is
+<<quiet=T,eval=F>>=
+which(letters %in% c("a", "d"))
+@
+{\color{red} 1, 4}
+%\vspace{9 mm}
+\item What is
+<<quiet=T,eval=F>>=
+which(c("a", 7, "d") %in% letters)
+@
+{\color{red} 1, 3}
+%\vspace{9 mm}
+\item What is
+<<quiet=T,eval=F>>=
+letters[LETTERS > "W"]
+@
+{\color{red} x, y, z}
+%\vspace{9 mm}
+\item What is
+<<quiet=T,eval=F>>=
+letters[!LETTERS > "C"]
+@
+{\color{red} a, b, c}
+%\vspace{9 mm}
+\item What is
+<<quiet=T,eval=F>>=
+seq(1, 20, 3)
+@
+{\color{red} 1, 4, 7, 10, 13, 16, 19}
+%\vspace{9 mm}
+\item Why is {\tt x} filled in the way it is? Hint: read about the arguments for {\tt matrix}!
+<<quiet=T>>=
+x <- matrix(8:11, nrow = 6, ncol = 4)
+x
+@
+\noindent {\color{red} {\tt x} looks this way because we defined the number of rows to be 6 and the number of columns to be 4, the default {\tt byrow} is FALSE so the array is filled columnwise, and the numbers {\tt 8:11} are repeated until the array is filled.}
+
+\item What are 
+<<quite=T,eval=F>>=
+x + 4
+x + x
+2 * x
+x/c(2, 3, 4, 5)
+x[, 3] + 2*x[, 2]
+nrow(x)
+x[x[, 3]>10, ]
+@
+\renewcommand{\labelitemi}{$\cdot$}
+{\color{red} 
+\begin{itemize}
+  \item 4 added to each value of {\tt x}
+  \item 2 multiplied by each value of {\tt x}
+  \item 2 multiplied by each value of {\tt x}
+  \item columns of x are divided by the vector c(2, 3, 4, 5); the vector is recycled so that the first and third columns are still the same and the second and fourth columns are still the same
+  \item a single vector with values from the third column of x added to two times the second column of x
+  \item 6
+  \item the 4th row of x, since it's the only row where the third column is greater than 10
+\end{itemize}}
+
+\end{enumerate}
+
+
+\subsection{Use R to answer the following.}
+
+
+\begin{enumerate}[{1.2}.1]
+ \item Create a vector (using {\tt c()}) called {\tt a} (i.e. assign it to an object called {\tt a}) with four elements which are the integers 5 to 8 (inclusive).
+{\color{red} 
+<<>>=
+a <- 5:8
+@
+}
+ \item Display element 2 of {\tt a}.
+{\color{red} 
+<<>>=
+a[2]
+@
+}
+ \item Display element 4 of {\tt a}.
+{\color{red} 
+<<>>=
+a[4]
+@
+}
+ \item Calculate the product of elements 2 and 4 of {\tt a}.
+{\color{red} 
+<<>>=
+a[2] * a[4]
+@
+}
+ \item Assign the integers 3 and 4 to object {\tt b} and use {\tt b} to select elements 3 and 4 of object {\tt a}.
+{\color{red}
+<<>>=
+b <- c(3,4)
+# or
+b <- 3:4
+a[b]
+@
+}
+ \item Display every element of {\tt a} except element 2. 
+{\color{red} 
+<<>>=
+a[-2]
+@
+}
+\item Display every element of {\tt a} except elements 3 and 4. 
+{\color{red} 
+<<>>=
+a[-c(3:4)]
+@
+}
+\item Display only those elements of {\tt a} that are greater than or equal to 6.
+{\color{red} 
+<<>>=
+a[a>=6]
+@
+}
+\item Display only those elements of {\tt a} that are not equal to 7.
+{\color{red} 
+<<>>=
+a[a!=7]
+@
+}
+\item Use the {\tt list} function to create an object {\tt ab} which is a list of the two objects {\tt a} and {\tt b}.
+{\color{red} 
+<<>>=
+ab <- list(a, b)
+@
+}
+\item Display {\tt ab}.
+{\color{red} 
+<<>>=
+ab
+@
+}
+\item Change the names of the elements in {\tt ab} to ``a'' and ``b''.
+{\color{red} 
+<<>>=
+names(ab) <- c("a", "b")
+@
+}
+\item Display {\tt ab} again. What has changed?
+{\color{red} 
+<<>>=
+ab
+@
+\noindent Displaying {\tt ab} now shows {\tt \$a} and {\tt \$b} in place of the original {\tt [[1]]} and {\tt [[2]]}. This indicates how to select and subset the list when we have names versus having no names.}
+\item Create this matrix {\tt m}:
+<<>>=
+m <- matrix(1:9, nrow=3, byrow=T)
+m
+@
+ Why are the numbers 1, 2, and 3 in the first row and not the first column? 
+
+{\color{red} \noindent Because we set the argument {\tt byrow} equal to TRUE.  
+}
+ \item Display the element on the second row and second column of {\tt m}.
+{\color{red} 
+<<>>=
+m[2, 2]
+@
+}
+ \item Display only the 2nd row of {\tt m}.
+{\color{red} 
+<<>>=
+m[2, ]
+@
+}
+ \item Display only the 3rd column of {\tt m}.
+{\color{red} 
+<<>>=
+m[, 3]
+@
+}
+ \item Display only the 2nd and 3rd columns of {\tt m}. Do so in two different ways.
+{\color{red} 
+<<>>=
+m[, 2:3]
+m[, -1]
+@
+}
+
+\end{enumerate}
+
+\begin{center} 
+\textbf{If you want to save your work: save your R session and/or source code!}
+\end{center}
+
+
+
+
+
+
+\end{document}
+
+
+
+

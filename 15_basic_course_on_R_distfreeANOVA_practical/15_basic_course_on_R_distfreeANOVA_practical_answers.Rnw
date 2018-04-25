@@ -1,0 +1,107 @@
+\documentclass[12pt]{article}
+
+\usepackage{amsmath}
+\usepackage{hyperref}
+\usepackage[authoryear,round]{natbib}
+\usepackage{graphicx,color}
+\usepackage{enumerate}
+
+\textwidth=6.2in
+\textheight=8.5in
+%\parskip=.3cm
+\oddsidemargin=.1in
+\evensidemargin=.1in
+\headheight=-.3in
+
+\newcommand{\scscst}{\scriptscriptstyle}
+\newcommand{\scst}{\scriptstyle}
+\author{Elizabeth Ribble\footnote{emcclel3@msudenver.edu}}
+\date{18-24 May 2017}
+
+\begin{document}
+
+\title{Basic Course on {\tt R}:\\
+       Distribution-Free ANOVA\\
+       Practical Answers}
+\maketitle
+\tableofcontents
+
+\newpage\section{Dogs}
+\begin{enumerate}[{1.}] 
+  \item  In an experiment to study the way in which different anesthetics affect plasma epinephrine concentration, ten dogs were selected and concentration was measured while they were under the influence of the anesthetics isoflurane, halothane, and cyclopropane. Test at level 0.05 to see whether there is an anesthetic effect on concentration.\\
+
+\begin{tabular}{l|cccccccccc}
+Dog&  1	&2	&3	&4	&5	&6	&7	&8	&9	&10\\
+\hline
+Isoflurane	&0.30&	0.53&	1.02&	0.41&	0.31&	0.38&	0.34&	0.71&	0.19&	0.35\\
+Halothane	&0.32&	0.41&	0.65&	0.40&	0.23&	0.90&	0.41&	0.53&	0.34&	0.44\\
+Cyclopropane&1.09&	1.37&	0.71&	0.30&	1.26&   1.55&	0.51&	0.58&	1.04&	0.32\\
+\end{tabular}
+
+Read in the data ``dogs.csv'' with a header. Assign it to the object {\tt doggies} and allow strings be converted to factors. Attach the data to the environment.
+{\color{red}
+<<>>=
+doggies <- read.csv("dogs.csv", header=T)
+attach(doggies)
+@
+}
+  \item Answer the following questions using the dog data:
+    \begin{enumerate}
+      \item We're going to use Friedman's test. Which factor represents the blocks and why?\\
+      
+{\color{red}
+The dogs are the blocks because they should be more homogeneous within (with respect to concentration) than between dogs. This is a repeated-measures design, where the dogs are received multiple treatments and we are measuring the concentration repeatedly.}
+      \item Make a boxplot of the concentration grouped by anesthetic. Which anesthetic do you think might be different from the others?  
+{\color{red}
+<<out.width="3.2in">>==
+boxplot(conc~anesthetic)
+@
+
+Looks like the mean concentration for cyclopropane is higher than the other 2.
+}
+      \item Perform the appropriate Friedman's test in R. \\
+{\color{red}
+<<>>==
+friedman.test(conc, anesthetic, dog)
+@
+}
+\item What do you conclude about the effect of anesthetics on plasma epinephrine concentration (use a significance level of 0.05)?\\
+{\color{red}
+Since the $p$-value (0.2725) is greater than 0.05, the data do not provide sufficient evidence to conclude the 3 anesthetics have differing effects on the plasma epinephrine concentration.
+}
+  \end{enumerate}
+  
+\section{Moms}
+\item  The data in ``moms.csv'' on cortisol level was reported in a research paper. Experimental subjects were pregnant women whose babies were delivered between 38 and 42 weeks gestation. Group 1 individuals elected to deliver by Caesarean section before labor onset, group 2 delivered by emergency Caesarean during induced labor, and group 3 individuals experienced spontaneous labor.\\
+
+\noindent Read in the data ``moms.csv'' with a header. Assign it to the object {\tt mommies} and allow strings to be converted to factors. Attach the data to the environment. 
+{\color{red}
+<<>>=
+mommies <- read.csv("moms.csv", header=T)
+attach(mommies)
+@
+}
+\item Answer the following questions using the mom data:
+    \begin{enumerate}
+      \item Test at significance level 0.05 for equality of the three population means (use the Kruskal-Wallis test).
+{\color{red}
+<<>>=
+kruskal.test(cortisol~group)
+@
+
+With a $p$-value 0.009894, which is less than 0.05, we are able to reject the null that all the group means are equal and therefore conclude at least two of the mean cortisol levels of the three groups are different. 
+}      
+      \item Make a boxplot of the cortisol level grouped by C-section groups. Use it to explain why we didn't use an $F$ test (regular one-way ANOVA).
+{\color{red}
+<<out.width="3.2in">>==
+boxplot(cortisol~group)
+@
+
+While group 1 data appear to have been sampled from a normal distribution, we cannot say the same for groups 2 and 3. So we should not use an $F$ test which assumes the data are normal. 
+}
+
+
+  \end{enumerate}
+\end{enumerate}
+
+\end{document}

@@ -1,0 +1,215 @@
+\documentclass[12pt]{article}
+
+\usepackage{amsmath}
+\usepackage{hyperref}
+\usepackage[authoryear,round]{natbib}
+\usepackage{graphicx,color}
+\usepackage{enumerate}
+
+\textwidth=6.2in
+\textheight=8.5in
+%\parskip=.3cm
+\oddsidemargin=.1in
+\evensidemargin=.1in
+\headheight=-.3in
+
+\newcommand{\scscst}{\scriptscriptstyle}
+\newcommand{\scst}{\scriptstyle}
+\author{Elizabeth Ribble\footnote{emcclel3@msudenver.edu}}
+\date{18-24 May 2017}
+
+\begin{document}
+
+\title{Basic Course on {\tt R}:\\
+       Logistic Regression}
+\maketitle
+\tableofcontents
+
+\newpage\noindent Most of the following examples use the data ``R\_data\_January2015.csv'' which contains variables on mothers whose babies are either intellectually disabled or developmentally normal.
+<<>>=
+babies <- read.csv("R_data_January2015.csv", header = T, row.names = 1)
+names(babies)
+attach(babies)
+@
+
+\section{When to Use Logistic Regression}
+There are many research topics for with the dependent variable $y$ is binary (0/1), e.g.
+\begin{itemize}
+\item mortality (dead/alive)
+\item treatment response (responder/non-responder)
+\item development of disease (yes/no)
+\end{itemize}
+and we want to predict the membership of an individual to one of the two categories based on a set of predictors.\\
+
+\noindent In this situation we have to work with \textbf{probabilities}, which are numbers between 0 and 1. A value $P(y)$ that is close to \textbf{0} means that $y$ is very \textbf{unlikely} to occur, while a value close to \textbf{1} means that $y$ is very \textbf{likely} to occur.\\
+
+\noindent In simple/multiple linear regression a continuous variable $y$ is predicted by continuous/categorical $x$(s), but if $y$ can only have 2 values (e.g. $y=0$ or $y=1$), how do we predict the probability that $y=1$ given one or more predictors? Could we apply a linear regression model...?
+
+\newpage\begin{center}
+<<out.width="3.2in">>=
+plot(BMI, as.numeric(Status)-1, ylab = "event Y")
+@
+\end{center}
+If we try to fit a \textbf{linear} regression model... 
+\begin{center}
+<<out.width="3.2in">>=
+plot(BMI, as.numeric(Status)-1, ylab = "event Y", ylim = c(-.2,1.2))
+abline(3, -.1, col = "darkgreen")
+@
+\end{center}
+we would try to fit $P(y=1)=b_0+b_1x$, which doesn't work. In linear regression we assume the relationship between $x$ and $y$ is linear, but in the case of binary outcomes this assumption is no longer valid. Results obtained from a linear regression model wouldn't makes sense! {\color{red} Probabilities beyond the interval (0,1) are not interpretable}.\\
+
+\noindent Instead we're going to use a logistic curve! First, note that our factor {\tt Status} has levels that are ordered alphabetically: 
+<<>>=
+levels(Status)
+Status[1:3]
+as.numeric(Status)[1:3]
+@
+But we would prefer the non-event to be the baseline so we will change {\tt Status} so the event $y=1$ is intellectual disability and the non-event $y=0$ is normal brain development. Note that this re-coding does not change the variable in {\tt babies}). 
+<<>>=
+newstatus <- 2-as.numeric(Status)
+newstatus[1:3]
+@
+
+\newpage
+So now our visualization should make more sense:
+\begin{center}
+<<out.width="3.2in">>=
+plot(BMI-25, newstatus, ylab = "event Y",xlab = "BMI, shifted")
+x <- seq(-6, 6, 0.01)
+lines(x, exp(x)/(1+exp(x)), type = "l", col = "darkgreen", cex = 2)
+@
+\end{center}
+The forumula we used for the line is {\tt exp(x)/(1+exp(x))}, which is called the logistic function and it is the probability of an event, $P(y=1)$. Let's see how to derive it...
+
+\section{Odds}
+\noindent We're going to start by introducing odds. The odds is the ratio of the probability that the event of interest occurs to the probability that it does not:
+\begin{align*}
+\mbox{odds} = \frac{P(\mbox{event})}{P(\mbox{no event})}
+&\Leftrightarrow
+P(\mbox{event}) = \frac{\mbox{odds}}{1+\mbox{odds}}
+\end{align*}
+and note that $P$(no event)=1-$P$(event). Describing the probability of event $y$ in terms of odds has a very convenient property: 
+\begin{itemize}
+\item as odds increases, $p(y=1)$ approaches 1
+\item as odds decreases, $p(y=1)$ approaches 0
+\end{itemize}
+
+\noindent The odds ratio (OR) is a way of comparing whether the probability of a certain event is the same for two groups. 
+
+\newpage
+\noindent Let's go back to our example from earlier:
+\begin{center}
+\begin{tabular}{r|cc|l}
+& event & no event & total\\
+treatment & 20 & 80 & 100 \\
+placebo & 50 & 50 & 100\\
+\hline
+total & 70 & 130 & 200
+\end{tabular}
+\end{center}
+then 
+\begin{center}
+\begin{tabular}{r|lll}
+\textbf{Total Group} & & & \\
+\hline
+
+$P(y=1)$ & $=x/n$ & $=70/200$ & $=0.35$\\
+odds$(y=1)$ & $=p/(1-p)$ & $=0.35/0.65$ & $=0.54$\\
+\hline
+\hline
+\textbf{Treated Group} & & & \\
+\hline
+
+$P_1(y=1)$ & $=x_1/n_1$ & $=20/100$ & $=0.20$\\
+%$\mbox{odds}_1$(y=1)$ & $=p_1/(1-p_1)$ & $=0.20/0.80$ & $=0.25$\\
+$\mbox{odds}_1(y=1)$ & $=p_1/(1-p_1)$ & $=0.20/0.80$ & $=0.25$\\
+\hline
+\hline
+\textbf{Placebo Group} & & & \\
+\hline
+
+$P_0(y=1)$ & $=x_0/n_0$ & $=50/100$ & $=0.50$\\
+%$\mbox{odds}_0$(y=1)$ & $=p_0/(1-p_0)$ & $=0.50/0.50$ & $=1.00$\\
+$\mbox{odds}_0(y=1)$ & $=p_0/(1-p_0)$ & $=0.50/0.50$ & $=1.00$\\
+
+\end{tabular}
+\end{center}
+
+So OR(event) = $\mbox{odds}_1/\mbox{odds}_0 = 0.25/1.00 = 0.25$. Thus
+the odds of an event in the treatment group is 0.25 times lower than
+the odds of an event in the placebo group. Conversely, 1/0.25 = 4, so
+we can also say the odds of an event in the placebo group is 4 times
+higher than the odds of an event in the treatment group. In R:
+
+<<>>=
+treatment <- c(20, 80)
+placebo <- c(50, 50)
+mytable <- rbind(treatment, placebo)
+mytable[1,1]*mytable[2, 2]/(mytable[1, 2]*mytable[2, 1])
+@
+
+\section{Simple Logistic Regression Model}
+We are going to use odds in the following way, where $p=P(y=1)$ is the probability of an event:
+\begin{align*}
+\ln\left(\frac{p}{1-p}\right) = b_0 + b_1x
+\end{align*}
+The function $\ln(p/(1-p))$ is called a logit of $p$ and it is this function of $y$ that is linear in $x$ instead of $y$ itself.\\
+
+\noindent This model formulation assures that the predicted probability of an event falls between 0 and 1, unlike a linear regression model. Note:
+\begin{align*}
+\ln\left(\frac{p}{1-p}\right) = b_0 + b_1x &\Leftrightarrow 
+p=\frac{e^{(b_0+b_1x)}}{1 + e^{(b_0+b_1x)}}
+\end{align*}
+so we've completed our derivation of the logistic function formula from the beginning.\\
+
+\noindent Also note that we've made no assumptions about linearity, normality or homoscedasticity!\\
+
+\noindent The values of the intercept and slope are estimated using the maximum likelihood method, which finds the values of the coefficients that make the observed data most likely to occur.\\
+
+\noindent Statistical significance of estimate coefficients is testing with the Wald test, which is based on the $\chi^2$ distribution (though R calls it ``{\tt z}''). The goodness of fit is assessed by deviance, which is based on the differences observed-expected principle. Also, the Akaike information criterion (AIC) gives a measure of the quality of the model.\\ 
+
+\noindent The coefficients are most usefully interpreted with the following: 
+\begin{align*}
+e^{b_1} = \frac{\mbox{odds after a unit change in the predictor}}{\mbox{original odds}}
+\end{align*}
+and when $x$ is binary, $e^{b_1}$ is the odds ratio from the 2 by 2 contingency table!\\ 
+
+\noindent In R: 
+<<>>=
+lr1 <- glm(newstatus ~ BMI, family = binomial(logit)) 
+summary(lr1)
+@
+so $\mbox{logit}(p)= -2.40591 + 0.08782 *\mbox{BMI}$. Thus the probability of having a baby with an intellectual disability when BMI is large, say 32, is: 
+<<>>=
+logit_p1 <- -2.40591+0.08782*32
+logit_p1
+## or 
+predict(lr1, newdata = data.frame(BMI = 32), se.fit = TRUE)
+p1 <- exp(logit_p1)/(1 + exp(logit_p1))
+p1
+@
+\newpage
+The coefficient ${b_1}=0.08782$ can be exponentiated to obtain the odds ratio:
+<<>>=
+summary(lr1)$coef
+b1 <- summary(lr1)$coef[2, 1]
+b1
+exp(b1) 
+@
+Like multiple linear regression, we can add variables into the model here as well: 
+<<>>=
+lr2 <- glm(newstatus ~ BMI + smoking, family = binomial(logit)) 
+summary(lr2)$coef
+@
+Thus the probability of having a baby with an intellectual disability when BMI is large, say 32, and the mother is a smoker is: 
+<<>>=
+mynewdata <- data.frame(BMI = 32, smoking = factor("yes"))
+logit_p2 <- predict(lr2, newdata = mynewdata)
+p2 <- exp(logit_p2)/(1+exp(logit_p2))
+p2
+@
+
+
+
+\end{document}

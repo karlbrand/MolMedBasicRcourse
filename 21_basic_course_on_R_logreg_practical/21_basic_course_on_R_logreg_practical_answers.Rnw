@@ -1,0 +1,194 @@
+\documentclass[12pt]{article}
+
+\usepackage{amsmath}
+\usepackage{hyperref}
+\usepackage[authoryear,round]{natbib}
+\usepackage{graphicx,color}
+\usepackage{enumerate}
+
+\textwidth=6.2in
+\textheight=8.5in
+%\parskip=.3cm
+\oddsidemargin=.1in
+\evensidemargin=.1in
+\headheight=-.3in
+
+\newcommand{\scscst}{\scriptscriptstyle}
+\newcommand{\scst}{\scriptstyle}
+\author{Elizabeth Ribble\footnote{emcclel3@msudenver.edu}}
+\date{18-24 May 2017}
+
+\begin{document}
+
+\title{Basic Course on {\tt R}:\\
+       Logistic Regression\\
+       Practical Answers}
+\maketitle
+\tableofcontents
+
+\newpage\section{Baby Data}
+\begin{enumerate}[{1.}]
+  \item Read in the data ``R\_data\_January2015.csv'' with a header and row names from the first column. Assign it to the object {\tt babydata} and allow strings be converted to factors. Attach the data to the environment.
+{\color{red}
+<<>>=
+babydata <- read.csv("R_data_January2015.csv",header=T,row.names=1)
+attach(babydata)
+@
+}
+  \item We would like to know if {\tt smoking} predicts {\tt Status}. Since {\tt Status} is a binary variable (intellectual disability or normal brain development) we need to use logistic regression. Answer the following questions:
+  \begin{enumerate}
+    \item Write down the model with logit($p$), $\ln(p/(1-p))$, on the lefthand side, but instead of writing $p$ write $P(\mbox{intellectual disability})$. Then write down the formula for this probability (the probability of having a baby with an intellectual disability).\\ 
+{\color{red}
+The model is 
+
+\begin{center}
+  
+%% $\ln\left(\frac{P(\mbox{intellectual disability})}
+%%   {1-P(\mbox{intellectual disability})}\right) = b_0 + b_1 *
+%%   \mbox{smoking}$
+
+$\ln\left(\frac{P(\mbox{intellectual disability})}
+  {1-P(\mbox{intellectual disability})}\right) = b_0 + b_1 *
+  \mbox{smoking}$
+
+\end{center}
+
+and the probability of an event is
+
+\begin{center}
+$P(\mbox{intellectual disability}) = \frac{e^{b_0 + b_1 *
+      \mbox{smoking}}} {1+e^{b_0 + b_1 * \mbox{smoking}}}$.
+\end{center}
+}
+    \item  If we run the model on the data as it is now, R will consider ``normal brain development'' as the event because it is second in the levels of {\tt Status}:
+<<>>=
+levels(Status)
+@
+So we need to first change these factor levels so we treat ``intellectual disability'' as the event. Run the following trick: 
+<<>>=
+table(Status)
+newstatus <- factor(3-as.numeric(Status), 
+                    labels = c("normal brain development",
+                               "intellectual disability"))
+@ 
+And to show that it worked:
+<<>>=
+levels(newstatus)
+table(newstatus)
+@
+    \item Now run the regression model you set up above in R using {\tt newstatus}. Then write down the model and probability of event with the estimates.
+{\color{red}
+<<>>=
+lrs1 <- glm(newstatus ~ smoking, family = binomial(logit))
+lrs1$coef
+@
+The model with estimates is 
+\begin{center}
+  $\ln\left(\frac{P(\mbox{intellectual disability})} {1-P(\mbox{intellectual disability})}\right) = - 0.557 + 1.368 * \mbox{smoking}$
+\end{center}
+and the probability of an event is
+\begin{center}
+$P(\mbox{intellectual disability}) = \frac{e^{-0.557 + 1.368 * \mbox{smoking}}}{1+e^{-0.557 + 1.368 * \mbox{smoking}}}$.
+\end{center}
+}
+    \item Can {\tt smoking} significantly predict {\tt newstatus}? [Hint: use {\tt summary}.]
+{\color{red}
+<<>>=
+summary(lrs1)$coef
+@    
+The $p$-value is less than 0.05 so {\tt smoking} can be used as a predictor for {\tt newstatus}.
+}
+    \item What is the probability of having a baby with an intellectual disability given the mother smokes?
+{\color{red}
+<<>>=
+mynew1 <- data.frame(smoking = factor("yes"))
+logit_p1 <- predict(lrs1, newdata = mynew1)
+p1 <- exp(logit_p1)/(1 + exp(logit_p1))
+p1
+@
+}
+    \item Our estimate of $b_1$ is the element in the 2nd row and 1st column of the coefficients from the {\tt summary} call. What is the value of $e^{b_1}$? [Hint: use {\tt exp}.]\\ 
+{\color{red}
+We can exponentiate $b_1$ to get this value:
+<<>>=
+exp(summary(lrs1)$coef[2, 1])
+## or
+exp(1.3679)
+@
+}
+    \item Is the $e^{b_1}$ that you just calculated an odds ratio? How do you interpret it?\\
+{\color{red}
+Since {\tt smoking} is binary, $e^{b_1}=e^{1.37}=4$ is the odds ratio. Thus we can say that smoking mothers have four times higher odds of having a child with an intellectual disability compared to non-smokers.   
+}
+    \item What do you think $e^{b_1}$ would have been if we didn't change the levels of {\tt Status}? Re-run the model using {\tt Status} to check your answer. How does it relate to your answer from (f)? 
+{\color{red}
+<<>>=
+lrs2 <- glm(Status ~ smoking, family = binomial(logit))
+exp(summary(lrs1)$coef[2,1])
+@
+Switching the event to the non-event inverses the odds ratio: 
+<<>>=
+1/exp(summary(lrs1)$coef[2,1])
+1/exp(summary(lrs2)$coef[2,1])
+@
+So we could have just not changed the levels of {\tt Status} and concluded that non-smoking women have  0.25 times smaller odds of having a baby with an intellectual disability compared to smoking women. But wasn't this more fun? 
+}
+
+\newpage    \item There is another way to calculate an odds ratio without using logistic regression. Suppose we have the following $2\times 2$ contingency table:
+\begin{center}
+\begin{tabular}{r|cc}
+& event & no event \\
+\hline
+predictor yes & $a$ & $b$  \\
+predictor no & $c$ & $d$ \\
+    \end{tabular}
+\end{center}
+then the odds ratio is $(a*d)/(b*c)$. Create a contingency table of {\tt smoking} and {\tt newstatus} [Hint: use {\tt table}] and then calculate the odds ratio from that. Do you get the same answer as in (f)? 
+{\color{red}
+<<>>=
+tss <- table(smoking, newstatus)
+tss[1,1]*tss[2,2]/(tss[1,2]*tss[2,1])
+@
+Same answer!
+}
+  \end{enumerate}
+  \item We would like to know if {\tt smoking} and {\tt vitaminB12} can be used to predict {\tt newstatus}. Answer the following questions:
+  \begin{enumerate}
+    \item Set up (i.e. write down) the logit model and run it in R. Write the model with the estimates.\\
+{\color{red}
+The model is 
+\begin{center}
+$\ln\left(\frac{P(\mbox{intellectual disability})} {1-P(\mbox{intellectual disability})}\right) = b_0 + b_1 * \mbox{smoking} + b_2*\mbox{vitaminB12}$
+\end{center}
+<<>>=
+lrs3 <- glm(newstatus ~ smoking + vitaminB12, 
+            family = binomial(logit))
+lrs3$coef
+@
+The model with estimates is 
+\begin{center}
+$\ln\left(\frac{P(\mbox{intellectual disability})}{1-P(\mbox{intellectual disability})}\right) = -1.4 + 1.44 * \mbox{smoking} + 0.002*\mbox{vitaminB12}$
+\end{center}
+}
+    \item Can either variable significantly predict {\tt newtatus}?
+{\color{red}
+<<>>=
+summary(lrs3)$coef
+@
+Yes, {\tt smoking} is still significant ($p$-value $< 0.05$), but {\tt vitaminB12} is not.
+}
+\item What is the probability of having a baby with an intellectual disability given the mother smokes and has a vitaminB12 level of 400? What is the probability of having a baby with an intellectual disability given the mother smokes and has a vitaminB12 level of 650?
+{\color{red}
+<<>>=
+mynew <- data.frame(smoking = factor(c("yes", "yes")),
+                    vitaminB12 = c(400, 650))
+logit_p <- predict(lrs3, newdata = mynew)
+p <- exp(logit_p)/(1+exp(logit_p))
+p
+@
+}
+\end{enumerate}
+
+\end{enumerate}
+
+\end{document}

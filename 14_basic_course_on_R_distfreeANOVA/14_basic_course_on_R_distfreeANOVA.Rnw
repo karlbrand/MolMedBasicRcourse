@@ -1,0 +1,117 @@
+\documentclass[12pt]{article}
+
+\usepackage{amsmath}
+\usepackage{hyperref}
+\usepackage[authoryear,round]{natbib}
+\usepackage{graphicx}
+\usepackage{enumerate}
+
+\textwidth=6.2in
+\textheight=8.5in
+%\parskip=.3cm
+\oddsidemargin=.1in
+\evensidemargin=.1in
+\headheight=-.3in
+
+\newcommand{\scscst}{\scriptscriptstyle}
+\newcommand{\scst}{\scriptstyle}
+\author{Elizabeth Ribble\footnote{emcclel3@msudenver.edu}}
+\date{18-24 May 2017}
+
+\begin{document}
+
+\title{Basic Course on R:\\
+Distribution-Free ANOVA}
+\maketitle
+\tableofcontents
+
+\newpage
+
+\section{Kruskal-Wallis Test}
+
+The single-factor ANOVA model for comparing population or treatment means assumed that for all groups, random samples were drawn from normal populations each having the same variance. This normality assumption is required for a valid $F$ test, but the next procedure for testing the equality of the means only requires that the populations have the same continuous distribution.\\
+
+\noindent The null hypothesis is that all of the group means are the same and the alternative is that at least one of the group means is different. The Kruskal-Wallis test examines the validity of these hypotheses by working on ranks of the data without assuming the data come from a specific distribution. \\
+
+\noindent The procedure starts by ranking all the data together on the assumption of the null, that if the means of the groups are equal, the ranks from all the groups will be intermingled. If the null is false, then some samples will consist mostly of observations having small ranks in the combined sample, whereas others will consist mostly of observations having large ranks. \\
+
+\noindent The Kruskal-Wallis test statistic is a measure of the extent to which the sums of the ranks within each group deviate from their common expected value, and the null is rejected if the computed value of the statistic indicates too great a discrepancy between observed and expected rank averages.\\
+
+Example. The accompanying observations on axial stiffness index resulted from a study of metal-plate connected trusses in which five different plate lengths (4 in., 6 in., 8 in., 10 in., and 12 in.) were used.
+\begin{center}
+\includegraphics[width=\textwidth]{stiffness.png}
+\end{center}
+
+\noindent Here we read in the data and note how a boxplot of normally distributed data looks: 
+<<out.width="3in">>=
+axial <- read.csv("stiffness.csv", header=T)
+attach(axial)
+set.seed(123)
+boxplot(rnorm(100))
+@
+
+
+\noindent If we look at the boxplot of the stiffness values for each length, we see that the means are probably different and that the boxplots don't look very normal:
+<<out.width="3in">>==
+boxplot(stiffness~lengths)
+@
+
+\newpage
+
+\noindent The output of the Kruskal-Wallis test confirms that the means are indeed different. The $p$-value is quite small, indicating at least two of the group means are different:
+<<>>==
+kruskal.test(stiffness, lengths)
+@
+
+\section{Friedman's Test}
+
+In many cases we have two factors of interest instead of just one, as in the two-way ANOVA we've already looked at, but for one of the factors we know that the observations within groups will be more homogeneous (less variable) than between the groups with respect to the response values. \\
+
+\noindent In this case, the levels of the factors are called {\bf blocks} and we treat it differently from the other factor, since the presence or absence of a statistically significant result may be due to this extraneous variation rather than to the presence or absence of factor effects. Here we will not consider any interactions between the two factors, and we will not test the blocks because we already know they should have differing means. \\
+
+\noindent The purpose of utilizing blocks is to filter out the variation due to the blocks. For example, a single subject can receive all treatments and the blocking is done to control for variability between subjects (and each subject acts as its own control). These are called ``repeated-measures'' designs: the units within a block are different instances of a treatment application. Blocks can also be taken as different time periods, locations, or observers. \\
+
+\newpage
+\noindent Let's take a look at an example using data on tennis rackets and the speed of the ball coming of the racket. In one experiment four different string tensions were used, and balls projected from a machine were hit by 18 different players. The rebound speed (km/h) was determined for each tension-player combination. Consider the following data from a similar experiment with 6 players.\\ 
+<<>>=
+tennis <- read.csv("tennis.csv", header=T)
+head(tennis)
+attach(tennis)
+@
+
+<<out.width="3.2in">>==
+boxplot(speed~tension)
+@
+
+\noindent So we see there are possibly varying mean speeds between the different tensions (and the speeds are not necessarily normal) and we would like to filter out the person-to-person variability.\\
+
+\newpage
+\noindent Friedman's test ranks each observation within the blocks (here, people) and then the average rank is computed for the factor of interest (in this case, racket tension). When the null hypothesis that all of the tension mean speeds are the same, the average ranks should be close to one another, but when the null is false, they will be far from one another. Friedman's test statistic measure the discrepancy between the expected value of each rank average under the null and the observed rank averages. \\
+
+\noindent In R, the function is {\tt friedman.test()} with arguments {\tt y} (response), {\tt groups} (factor of interest), and {\tt blocks} (blocking factor):
+<<>>=
+friedman.test(speed, tension, player)
+@
+
+\noindent At a 10\% significance level, we are able to say the data provide sufficient evidence that there is a difference in mean speed between the rackets because our $p$-value is less than 0.10. Note what happens if we ignore the blocks and use Kruskal-Wallis: 
+<<>>=
+kruskal.test(speed, tension)
+@
+The $p$-value is much larger without using blocks. 
+
+\section{Summary of Procedures}
+Here is a table that summarizes when to use each of the procedures we've covered:
+\begin{tabular}{l|c|c|c|c}
+\hline
+& Test one  & Compare  & Compare at least  & Compare at least \\
+& mean     &    2 means  & 2 means (one-way) & 2 means (two-way)\\
+\hline
+\hline
+Population(s) assumed & one-sample &two-sample &ANOVA & ANOVA \\
+normally distributed &$t$-test&$t$-test&($F$-test)&($F$-test)\\
+\hline
+Distribution-free&Signed rank  &Wilcoxon &Kruskal-Wallis & Friedman \\
+                &       test   & rank sum test & rank sum test & rank sum test\\
+\hline
+\end{tabular}
+\end{document}

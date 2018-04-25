@@ -1,0 +1,158 @@
+\documentclass[12pt]{article}
+
+\usepackage{amsmath}
+\usepackage{hyperref}
+\usepackage[authoryear,round]{natbib}
+\usepackage{graphicx,color}
+\usepackage{enumerate}
+
+\textwidth=6.2in
+\textheight=8.5in
+%\parskip=.3cm
+\oddsidemargin=.1in
+\evensidemargin=.1in
+\headheight=-.3in
+
+\newcommand{\scscst}{\scriptscriptstyle}
+\newcommand{\scst}{\scriptstyle}
+\author{Elizabeth Ribble\footnote{emcclel3@msudenver.edu}}
+\date{18-24 May 2017}
+
+\begin{document}
+
+\title{Basic Course on {\tt R}:\\
+       Linear Regression\\
+       Practical Answers}
+\maketitle
+\tableofcontents
+
+\newpage\section{Baby Data}
+\begin{enumerate}[{1.}]
+  \item Read in the data ``R\_data\_January2015.csv'' with a header and row names from the first column. Assign it to the object {\tt babydata} and allow strings be converted to factors. Attach the data to the environment.
+{\color{red}
+<<>>=
+babydata <- read.csv("R_data_January2015.csv",header=T,row.names=1)
+attach(babydata)
+@
+}
+  \item We previously saw that there was an association between {\tt vitaminB12} and {\tt homocysteine}. We will now quantify the magnitude of this relationship and see if we can explain the variabiliy of {\tt homocysteine} with values of {\tt vitaminB12}. Answer the following questions:
+  \begin{enumerate}
+    \item First plot the data: a scatterplot to visualize the association (should be linear) and a histogram of the dependent variable to check for normality (normal errors are required - checking the distribution of the dependent variable is good enough for now). Do these particular assumptions appear to hold? 
+{\color{red}
+\begin{center}
+<<out.width="3.2in">>=
+par(mfrow=c(1,2))
+plot(vitaminB12, homocysteine)
+hist(homocysteine)
+@
+\end{center}
+There is a slight linear association but looks like the variable isn't normal...
+}  
+    \item You should have noticed that the dependent variable {\tt homocysteine} is right-skewed. We need to see if a log-transformation of the data is more normally distributed. Assign the log of {\tt homocysteine} to {\tt loghc} and make a histogram of {\tt loghc}. Check that it is normal by plotting it against a normal distribution (use {\tt qqnorm()}). How does it look? More normal?
+{\color{red}
+\begin{center}
+<<out.width="3.2in">>=
+loghc <- log(homocysteine)
+par(mfrow=c(1,2))
+hist(loghc)
+set.seed(1234)
+qqnorm(loghc)
+@
+\end{center}
+Doesn't look too bad!
+}  
+    \item We'll just assume everything looks good. Set up (i.e. write down) the linear regression model for modeling {\tt loghc} against {\tt vitaminB12} and then run it in R. Check the assumptions by plotting the residuals (should be no patterns) versus the fitted values and looking at a QQ plot of the residuals (should be straight line). Do the assumptions hold?\\ 
+{\color{red}
+The model is
+\begin{center}
+$\mbox{{\tt loghc}} \sim b_0 + b_1*\mbox{{\tt vitaminB12}} + \epsilon$.
+\end{center}
+\begin{center}
+<<out.width="3.2in">>=
+lmbh <- lm(loghc ~ vitaminB12)
+par(mfrow=c(2,2))
+plot(lmbh)
+@
+\end{center}
+There is a slight fan pattern in the residuals, but it's not too strong. The tails of the distribution deviate from the normal quantile line, but again it's not that bad.
+}
+\item Assuming the assumptions hold (even if they don't), we'll make inference on the slope. Is {\tt vitaminB12} statistically significant in the model? What percent variability does it explain in {\tt loghc}? Write down the model with the estimates.\\ 
+{\color{red}
+<<>>=
+summary(lmbh)
+lmbh
+@
+{\tt vitaminB12} is statistically significant ($p$-value less than 0.05). It explains about 8.8 percent of the variability in {\tt loghc}. The model with the estimates is
+\begin{center}
+$\mbox{{\tt loghc}} \sim 3.04 - 0.0005*\mbox{{\tt vitaminB12}}$.
+\end{center}
+}
+    \item What is the predicted {\tt loghc} level for a person with {\tt vitaminB12} equal to 650? What is this value when unlogged (exponentiated)? Does it fall within the original range of values of {\tt homocysteine} (can you guess what the name of the function is to find the range of a vector?)?\\
+{\color{red}
+<<>>=
+predict(lmbh, newdata=data.frame(vitaminB12=650))
+## or 
+p650 <- 3.04 - 0.0005*650 
+p650
+exp(p650)
+range(homocysteine)
+@
+Yes, 15.1 is in the range of the unlogged {\tt homocysteine} values: (10.9, 30.6).
+}
+  \end{enumerate}
+ 
+ \newpage \item Now let's consider a framework where we want to use more than one predictor. We want to build a regression model for {\tt SAM} using {\tt vitaminB12}, {\tt cholesterol}, {\tt homocysteine} and {\tt folicacid\_erys} (folic acid red blood cells). Answer the following questions: 
+  \begin{enumerate}
+    \item Set up (i.e. write down) the linear regression model and then run it in R. Check the assumptions by plotting the residuals versus the fitted values and looking at a QQ plot of the residuals. Do the assumptions hold?\\
+{\color{red}
+The model is 
+\begin{center}
+$\mbox{{\tt SAM}} \sim b_0 + b_1*\mbox{{\tt vitaminB12}} + b_2*\mbox{{\tt cholesterol}} + b_3*\mbox{{\tt homocysteine}} + b_4*\mbox{{\tt folicacid\_erys}} + \epsilon$.
+\end{center}
+\begin{center}
+<<out.width="3.2in">>=
+mlr <- lm(SAM ~ vitaminB12 + cholesterol + homocysteine +
+                folicacid_erys)
+par(mfrow=c(2,2))
+plot(mlr)
+@
+\end{center}
+The residuals have constant variance and are normal, so the assumptions do hold.
+}
+\item Assuming the assumptions hold (even if they don't), we'll make inference on the slopes. Are any of the variables statistically significant in the model? What percent variability do the variables explain in {\tt SAM}? Write down the model with the estimates.\\ 
+\newpage
+{\color{red}
+<<>>=
+summary(mlr)
+mlr
+@
+Only {\tt cholesterol} is statistically significant ($p$-value less than 0.05). The 4 variables explain 7.27 percent of the variability in {\tt SAM}. The model with the estimates is 
+\begin{center}
+$\mbox{{\tt SAM}} \sim 1.8 - 0.003*\mbox{{\tt vitaminB12}} + 4.58*\mbox{{\tt cholesterol}} - 0.65*\mbox{{\tt homocysteine}} + 0.005*\mbox{{\tt folicacid\_erys}}$.
+\end{center}
+}
+    \item What is the predicted {\tt SAM} level for a person with the following:
+      \begin{align*}
+        \mbox{{\tt vitaminB12}} &= 650\\
+        \mbox{{\tt cholesterol}} &= 17\\
+        \mbox{{\tt homocysteine}} &= 16\\
+        \mbox{{\tt folicacid\_erys}} &= 1340\\
+      \end{align*}
+{\color{red}
+<<>>=
+predict(mlr, newdata=data.frame(vitaminB12=650, 
+                                cholesterol=17,
+                                homocysteine=16, 
+                                folicacid_erys=1340))
+@
+}
+  \end{enumerate}
+
+
+
+
+
+
+\end{enumerate}
+
+\end{document}

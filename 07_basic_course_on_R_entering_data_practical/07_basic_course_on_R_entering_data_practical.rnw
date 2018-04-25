@@ -1,0 +1,141 @@
+\documentclass[12pt]{article}
+
+\usepackage{amsmath}
+\usepackage{hyperref}
+\usepackage[authoryear,round]{natbib}
+\usepackage{graphicx}
+\usepackage{enumerate}
+
+\textwidth=6.2in
+\textheight=8.5in
+%\parskip=.3cm
+\oddsidemargin=.1in
+\evensidemargin=.1in
+\headheight=-.3in
+
+\newcommand{\scscst}{\scriptscriptstyle}
+\newcommand{\scst}{\scriptstyle}
+\author{Karl Brand\footnote{brandk@gmail.com}\hspace{2mm}  and Elizabeth Ribble\footnote{emcclel3@msudenver.edu}}
+\date{18-24 May 2017}
+
+\begin{document}
+\title{Basic Course on {\tt R}: \\
+Entering and Importing Data Practical}
+\maketitle
+\tableofcontents
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% end preamble %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newpage\section{Entering and Importing Data}
+ 
+\subsection{Use R to do the following exercises on ``mouse'' data.} 
+
+\begin{enumerate}[{1.1}.1]
+  \item Enter the following into a data structure with the name {\tt color}: 
+    \begin{itemize}
+      \item purple
+      \item yellow
+      \item red
+      \item brown
+      \item green
+      \item purple
+      \item red
+      \item purple
+    \end{itemize}
+  \vspace{5 mm}
+  \item Display the 2nd element of {\tt color}. 
+  \vspace{5 mm}
+  \item Enter the following into a data structure with the name {\tt weight}:
+    \begin{itemize}
+      \item 23
+      \item 21
+      \item 18
+      \item 26
+      \item 25
+      \item 22
+      \item 26
+      \item 19
+    \end{itemize}
+  \vspace{5 mm}
+  \item What are the lengths of {\tt color} and {\tt weight}? Use a function to answer this. 
+  \vspace{5 mm}
+  \item Join {\tt color} and {\tt weight} together in a data structure with 2 columns and 8 rows, and assign it to the object {\tt mice}. 
+  \vspace{5 mm}
+  \item What is the data structure of {\tt mice}? What are the dimensions? 
+  \vspace{5 mm}
+  \item Display only the 3rd row of {\tt mice}.
+  \vspace{5 mm}
+  \item Display only the 2nd column (``weight'') of {\tt mice}. Do so in two different ways.
+  \vspace{5 mm}
+  \item If the structure of {\tt mice} is not a data frame, turn it into one and call it {\tt micedf}. If {\tt mice} is already a data frame, go ahead and rename it {\tt micedf} anyway. Make sure that the weights are not factors!
+  \vspace{5 mm}
+  \item Display the dimensions of {\tt micedf}. 
+  \vspace{5 mm}
+  \item Assign the following strings to the row names of {\tt micedf}: 
+    \begin{itemize}
+      \item mouse1
+      \item mouse2
+      \item mouse3
+      \item mouse4
+      \item mouse5
+      \item mouse6
+      \item mouse7
+      \item mouse8
+    \end{itemize}
+    Hint: try using {\tt paste}.
+  \vspace{5 mm}
+  \item Create a list containing three elements and assign it to {\tt mylist}: 
+    \begin{itemize}
+      \item {\tt micedf}
+      \item A data frame of {\tt micedf} with a new column called {\tt double} that is 2 times the second column of {\tt micedf} ({\tt weight}).
+      (Did you get an error? Make sure that the second column is numeric and if it isn't, change it!)
+      \item The names of {\tt micedf}.
+    \end{itemize}
+  \vspace{10 mm}
+  \item Assign these names to {\tt mylist}: {\tt first}, {\tt second}, {\tt third}.
+  \vspace{5 mm}
+  \item Display {\tt mylist}. What does it look like? 
+  \vspace{12 mm}
+  \item View {\tt mylist}. What does it look like? What does it look like (expand the window if necessary)?
+  \vspace{12 mm}
+  \item Display only the second element of {\tt mylist}. Do so in two different ways. 
+  \vspace{5 mm}
+  \item Write {\tt micedf} to a file called ``micedf1.csv''. 
+  \vspace{5 mm}
+  \item Open ``micedf1.csv'' in Excel and describe what you see. Repeat the step above but do not include row names and call the file ``micedf2.csv''. How is the output different from ``micedf1.csv''?
+  \vspace{25 mm}
+  \item Now read in ``micedf1.csv'' and ``micedf2.csv'' into R in two new objects ({\tt newmice1} and {\tt newmice2}, respectively). Describe any differences between the two objects. What are the dimensions of each object?
+  \vspace{25 mm}
+  \item Read in ``micedf1.csv'' into R (assign to object {\tt newmice3}). Use the argument {\tt row.names} to indicate that the first column should be row names and do not allow strings to be turned into factors. Display the object and the structure of the object and describe how it is different from {\tt newmice1} and {\tt micedf}. What are the dimensions of {\tt newmice3}?
+  \vspace{25 mm}
+\end{enumerate}
+
+
+\newpage\subsection{Use R to do the following exercises on the {\tt Puromycin} data.}  
+
+
+\begin{enumerate}[{1.2}.1]
+  \item Load the {\tt Puromycin} data using the {\tt data()} function.
+  \vspace{5 mm}
+  \item What is the data structure of {\tt Puromycin}? What are the dimensions (use a function other than {\tt str})?
+  \vspace{10 mm}
+  \item What are the names of {\tt Puromycin}? Use a function other than {\tt str}.
+  \vspace{10 mm}
+  \item What are the levels of the {\tt state} variable? Use a function other than {\tt str}.
+  \vspace{10 mm}
+  \item Display the rate for all concentrations less than 0.10 in the treated group.
+  \vspace{5 mm}
+  \item What are the row indices for the concentrations of 0.22? 
+  \vspace{10 mm}
+\end{enumerate}
+
+\begin{center} 
+\textbf{If you want to save your work: save your R session and/or source code!}
+\end{center}
+
+
+
+\end{document}
+
+
+

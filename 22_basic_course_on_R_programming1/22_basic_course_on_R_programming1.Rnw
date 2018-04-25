@@ -1,0 +1,928 @@
+\documentclass [12pt]{article}
+
+\usepackage{graphics,latexsym,geometry,amsmath,bibunits,makeidx,fancyhdr,graphicx}
+\usepackage{hyperref}
+\usepackage[authoryear,round]{natbib}
+\usepackage{graphicx,color}
+\usepackage{enumerate}
+
+\newcommand{\noin}{\noindent}
+\newcommand{\be}{\begin{equation}}
+\newcommand{\ee}{\end{equation}}
+\newcommand{\bi}{\begin{itemize}}
+\newcommand{\ei}{\end{itemize}}
+\newcommand{\bdm}{\begin{displaymath}}
+\newcommand{\edm}{\end{displaymath}}
+\newcommand{\bea}{\begin{eqnarray}}
+\newcommand{\eea}{\end{eqnarray}}
+\newcommand{\beaa}{\begin{eqnarray*}}
+\newcommand{\eeaa}{\end{eqnarray*}}
+\newtheorem{example}{Example}[section]
+\newcommand{\bex}{\begin{example} \normalfont}
+\newcommand{\eex}{\end{example}}
+\newtheorem{exercise}[example]{Exercise}
+\newcommand{\bexc}{\begin{exercise} \normalfont}
+\newcommand{\eexc}{\end{exercise}}
+\newtheorem{problem}{}
+\newcommand{\bpr}{\begin{problem} \normalfont}
+\newcommand{\epr}{\end{problem}}
+\newcommand{\babc}{\begin{list}{\alph{abc})}{\usecounter{abc}
+\itemindent=-10pt}}
+\newcommand{\eabc}{\end{list}}
+\newcommand{\ben}{\begin{enumerate}}
+\newcommand{\een}{\end{enumerate}}
+\newcounter{abc}
+
+
+
+
+\textwidth=6.2in
+\textheight=8.5in
+%\parskip=.3cm
+\oddsidemargin=.1in
+\evensidemargin=.1in
+\headheight=-.3in
+
+\newcommand{\scscst}{\scriptscriptstyle}
+\newcommand{\scst}{\scriptstyle}
+\author{Elizabeth Ribble\footnote{emcclel3@msudenver.edu}}
+\date{18-24 May 2017}
+
+\begin{document}
+
+\title{Basic Course on {\tt R}:\\
+       Programming Structures 1}
+\maketitle
+\tableofcontents
+
+\newpage
+
+
+\section{\texttt{if()}, \texttt{else}, and \texttt{ifelse()} Statements}
+
+
+\subsection{Conditional Execution Using \texttt{if()} and (Optionally) \texttt{else}}
+
+\bi
+
+\item Sometimes we'll want R to execute a statement only if a certain condition
+is met.  This can be accomplished via the \texttt{if()} and 
+(optionally) \texttt{else} statements:
+
+<<background="lightgrey", eval=FALSE>>=
+if()    # Used to execute a statement only if the given condition
+        # is met
+else    # Used to specify an alternative statement to be executed 
+        # if the condition given in if() isn't met
+@
+
+\item Such {\bf \em conditional execution} commands have the forms:
+
+<<eval=FALSE>>=
+if (condition) {
+  statement1
+}
+@
+
+\noin and
+
+<<eval=FALSE>>=
+if (condition) {
+  statement1
+  } else {
+    statement2
+  }
+@
+
+%\noin where \texttt{condition} is a {\em logical} expression (i.e. it evaluates to
+%\texttt{TRUE}
+%or \texttt{FALSE}).  
+
+\item In both cases above, if \texttt{condition} is \texttt{TRUE}, 
+\texttt{statement1} is executed.  If \texttt{condition} is \texttt{FALSE}, then in the first case nothing happens.  In the second case,
+\texttt{statement2} is executed. 
+
+\item Here's a simple example:
+
+<<>>=
+x <- 5
+if (x < 10) {
+  y <- 0
+}
+y
+@
+
+\newpage
+\item Here's another:
+
+<<>>=
+if (x >= 10) {
+  y <- 1
+  } else {
+    y <- 0
+}
+y
+@
+
+\item There's actually an easier way to accomplish the above task:
+
+<<>>=
+y <- if(x >= 10) 1 else 0
+y
+@
+
+
+
+
+% We can also use an expression in place of a statement with \texttt{if()}.  The general
+%form is:
+
+%\begin{Sinput}
+%if(condition) expression1 else expression2
+%\end{Sinput}
+
+%\noin For example, in the following, \texttt{y} is assigned the value \texttt{1} if the 
+%\texttt{condition} is \texttt{TRUE} and 2 otherwise: 
+
+%\begin{Sinput}
+%y <- if(condition) 1 else 2
+%\end{Sinput}
+
+\item When using such {\em conditional assignment} statements, in the absence of \texttt{else}, \texttt{if()} returns \texttt{NULL} if \texttt{condition} isn't met.  So
+
+<<eval=FALSE>>=
+y <- if(condition) 1 
+@
+
+\noin is equivalent to
+
+<<eval=FALSE>>=
+y <- if(condition) 1 else NULL
+@
+
+
+\item In the next example, \texttt{return()} is used to 
+terminate a function call and return a value that depends on whether or not 
+a condition is met:
+
+<<>>=
+mySign <- function(x) {
+    if(x < 0) {
+      return("Negative")
+    } else {
+        return("Non-negative")
+    }
+}
+@ 
+
+\newpage
+We get:
+
+<<>>=
+mySign(13)
+@
+
+
+
+
+
+\ei
+
+
+  
+\subsection{Using \texttt{if()} and \texttt{else} with a Sequence of Statements}
+
+\bi
+
+\item \texttt{if()} and \texttt{else} can be used to conditionally execute whole {\em sequences} of statements, which we enclose in curly brackets \texttt{\{ \}}.  The general form of an \texttt{if()} command is:
+
+%\begin{Sinput}
+%> if (condition) {
+%+     one or more statements
+%+ }
+%\end{Sinput}
+
+%\noin and
+
+%\begin{Sinput}
+%> if (condition) {
+%+     one or more statements
+%+ } else {
+%+    one or more statements
+%+ }
+%\end{Sinput}
+
+
+<<eval=FALSE>>=
+if (condition) {
+  statement11
+  statement12
+      .
+      .
+      .
+  statement1q
+}
+@
+
+%and
+
+%\begin{Sinput}
+%> if(condition) {
+%+     statement11
+%+     statement12
+%      .
+%      .
+%      .
+%+     statement1q
+%+ } else {
+%+     statement21
+%+     statement22
+%      .
+%      .
+%      .
+%+     statement2r
+%+ }
+%\end{Sinput}
+
+which could be followed by \texttt{else} and another sequence of statements (in curly brackets) to be executed if \texttt{condition} isn't met.
+
+\ei
+
+
+%\subsubsection{Nested \texttt{if()} Statements}
+
+%\noin In addition, \texttt{if()} statements can be nested.  The form for nested %\texttt{if()}
+%statements is  
+
+%\begin{Sinput}
+%if(condition1) if(condition2) statement1 else statement2
+%\end{Sinput}
+
+%\noin The \texttt{else} always refers to the most recent \texttt{else}-less \texttt{if()}.
+%So for example, the following evaluates to 1 if \texttt{condition1} and %\texttt{condition2}
+%are both \texttt{TRUE}, evaluates to 2 if \texttt{condition1} is \texttt{TRUE} but %\texttt{condition2} is
+%\texttt{FALSE}, and evaluates to \texttt{NULL} if \texttt{condition1} is \texttt{FALSE}:
+
+%\begin{Sinput}
+%if(condition1) if(condition2) 1 else 2
+%\end{Sinput}
+
+
+\subsection{Vectorized if-else: The \texttt{ifelse()} Function}
+
+\bi
+
+\item Sometimes we'll need to create a vector whose values depend on whether or not the values in another vector satisfies some condition.  We use:
+
+<<eval=FALSE, background="lightgrey">>=
+ifelse()    # Returns a vector whose values depend on whether or 
+            # not a given condition is met by the elements of 
+            # another vector
+@
+
+\item \texttt{ifelse()} takes argument \texttt{test}, the condition to be met, \texttt{yes} the
+return value (or vector of values) when \texttt{test} is \texttt{TRUE}, and \texttt{no}, 
+the return values (or vector of values) when \texttt{test} is \texttt{FALSE}.
+ 
+\item Here we convert the values in \texttt{ht} to ``short'' or ``tall'':
+
+<<>>=
+ht <- c(69, 71, 67, 66, 72, 71, 61, 65, 73, 70, 68, 74)
+htCategory <- ifelse(ht > 69, yes = "tall", no = "short")
+htCategory
+@
+
+\ei
+
+
+
+
+
+\section{Looping}
+
+
+\bi
+
+
+\item {\bf \em Loops} are used to {\bf \em iterate} (repeat) an R statement (or set of statements). They're implemented in three ways,  
+\texttt{for()}, \texttt{while()}, and \texttt{repeat}:  
+
+
+<<background="lightgrey", eval=FALSE>>=
+for()      # Repeat a set of statements a specified number of 
+           # times
+while()    # Repeat a set of statements as long as a specified 
+           # condition is met  
+repeat     # Repeat a set of statements until a break command is 
+           # encountered 
+@
+\item Two other commands, \texttt{break} and \texttt{next}, are used, respectively, to terminate a loop's iterations and to skip ahead to the next iteration:
+
+<<background="lightgrey", eval=FALSE>>=
+break      # Terminate a loop's iterations
+next       # Skip ahead to the next iteration
+@
+
+\item Here's an example in which each of the three loop types, \texttt{for()}, \texttt{while()}, 
+and \texttt{repeat}, are used to perform a 
+simple task, namely printing the numbers $1^2, 2^2, ..., 5^2$ to the screen:
+
+<<>>=
+for(i in 1:5) {
+  print(i^2)
+}
+
+i <- 1
+while(i <= 5) {
+  print(i^2)
+  i <- i + 1
+}
+
+i <- 1
+repeat {
+  print(i^2)
+  i <- i + 1
+  if(i > 5) break
+}
+@
+
+\ei
+
+
+\subsection{\texttt{for()} Loops} \label{subsec:for_loops}
+
+\bi
+
+
+\item \texttt{for()} loops are used when we know in advance how many
+iterations the loop should perform.  
+
+\item The general form of a \texttt{for()} loop is:
+
+<<eval=FALSE>>=
+for(i in sequence) {
+  statement1
+  statement2
+      .
+      .
+      .
+  statementq
+}
+@
+
+\noin where \texttt{sequence} is a vector, \texttt{i} (whose 
+name you're free to change) assumes the values in \texttt{sequence} one after 
+another, 
+each time triggering another iteration of the loop during which 
+\texttt{statements} \texttt{1} through \texttt{q} are executed.  
+The \texttt{statements} usually involve the variable \texttt{i}. 
+
+%Thus the number of iterations is equal to \texttt{length(sequence)}. 
+\newpage
+\item Here's an example.  Suppose we have the data frame describing
+someone's coin collection:
+
+<<>>=
+coins <- data.frame(Coin = c("penny", "quarter", "nickel", 
+                             "quarter", "dime", "penny"),
+                    Year = c(1943, 1905, 1889, 1960, 1937, 1900), 
+                    Mint = c("Den", "SF", "Phil", "Den", "SF", 
+                             "Den"),
+                    Condition = c("good", "fair", "excellent", 
+                                  "good", "poor", "good"),
+                    Value = c(12.00, 55.00, 300.00, 40.00, 18.00, 
+                              28.00),
+                    Price = c(15.00, 45.00, 375.00, 25.00, 20.00, 
+                              20.00))
+coins
+@
+
+\item If we type:
+
+<<>>=
+colMeans(coins)
+@
+
+we get an error message because some of the columns are non-numeric.
+
+\item We can compute the means of the numeric columns by looping over
+the columns, each time checking whether it's numeric before
+computing it's mean:
+
+<<>>=
+means <- NULL
+for(i in 1:ncol(coins)) {
+  if (is.numeric(coins[ , i])) {
+    means <- c(means, mean(coins[ , i]))
+    }
+}
+@
+
+The result is:
+
+<<>>=
+means
+@
+    
+
+
+%\noin In the example below, the values \texttt{i} in the sequence \texttt{1:100}
+%are squared, one per iteration of the loop, and appended each time to a {\em vector}
+%\texttt{x}.  The statement 
+%\texttt{x <- NULL} initializes \texttt{x} for the first iteration of the 
+%loop:
+
+%<<>>=
+
+%x <- NULL
+%@
+
+%<<>>=
+
+%for(i in 1:100) {
+%  x <- c(x, i^2)
+%}
+%@
+
+%<<>>=
+
+%x 
+%@
+
+
+
+
+\ei
+
+
+
+\subsection{\texttt{while()} Loops}
+
+\bi
+
+\item \texttt{while()} loops are used when we want the loop to iterate until some  
+condition is no longer met.  
+
+\item The general form of a \texttt{while()} loop is:
+
+<<eval=FALSE>>=
+while(condition) {
+  statement1
+  statement2
+      .
+      .
+      .
+  statementq
+}
+@
+
+where \texttt{condition} is a logical (\texttt{TRUE} 
+or \texttt{FALSE}) expression involving a variable whose value changes over the course of the loop iterations.  
+
+\item Prior to each iteration, R checks whether \texttt{condition} is \texttt{TRUE} or \texttt{FALSE}. If it's \texttt{TRUE}, the iteration proceeds, otherwise the iterations are terminated.
+
+%the \texttt{statements} \texttt{1} through 
+%\texttt{q} will repeatedly be 
+%executed until \texttt{condition} evaluates to \texttt{FALSE}. 
+
+
+%\noin A \texttt{for} loop is a special case of a \texttt{while} loop.  
+
+%\item For example:
+
+%we can rewrite the \texttt{for()} loop given in Subsection \ref{subsec:for_loops}
+%as a \texttt{while()} loop:
+
+%<<>>=
+%x <- NULL
+%@
+
+%<<>>=
+%i <- 1
+%@
+
+%<<>>=
+%while(i <= 10) {
+%  x[i] <- i^2
+%  i <- i + 1
+%}
+%@
+
+%<<>>=
+%x
+%@
+
+\ei
+
+
+\subsection{\texttt{repeat} Loops}
+
+\bi
+
+\item A \texttt{repeat} loop iterates a set of statements until a \texttt{break} statement is encountered.  The general form is of a \texttt{repeat} loop is:
+
+<<eval=FALSE>>=
+repeat {
+  statement1
+  statement2
+      .
+      .
+      .
+  statementq
+}
+@
+where at least one of the \texttt{statements} should be of the form
+
+<<eval=FALSE>>=
+if(condition) break
+@
+
+where \texttt{condition} is a logical (\texttt{TRUE} or \texttt{FALSE}) expression
+which may be updated during the loop's iterations. 
+
+\ei
+
+\subsubsection{Terminating an ``Endless'' Loop}
+
+\bi
+
+\item Once in a while we (mistakenly) write a loop that has no way of stopping, for example:
+
+<<eval=FALSE>>=
+i <- 1
+while(i <= 5) {
+  print("I Cannot Stop by Myself")
+}
+@
+
+\item To terminate the iterations hit the {\bf Escape} key  or 
+select {\bf Terminate R...} in RStudio's {\bf Session} pulldown menu. 
+
+\ei
+
+
+
+
+%\subsection{Looping Over Non-Vector Elements}
+
+
+
+
+\subsection{Nested Loops}
+
+\bi
+
+\item Loops can be {\em nested}, with one inside the other.  
+
+\item One use of this is to loop over 
+rows and columns of a matrix (or over the dimensions of a higher-dimensional array).  
+
+\item Suppose, for example, we want to create the matrix \texttt{X} with 0's 
+below the main diagonal and the row number completing each row:
+
+<<echo = F>>=
+X <- matrix(0, nrow = 6, ncol = 6)
+for(i in 1:6) {
+    for(j in i:6) {
+        X[i, j] <- i
+    }
+}
+X
+@
+
+\newpage
+\item We can construct this matrix using nested \texttt{for()} loops:
+
+<<>>=
+# First create a 6 by 6 matrix of all 0's
+X <- matrix(0, nrow = 6, ncol = 6)   
+# Next fill in the upper right part using nested loops.
+for(i in 1:6) {      # i is the row number, ranging from 1 to 6
+    for(j in i:6) {  # j is the column number, ranging from i to 6
+        X[i, j] <- i
+    }
+}
+@
+
+Above, 
+
+\bi
+
+\item During the first iteration of the outer loop, \texttt{i} is fixed at 1
+and the inner loop is iterated with \texttt{j} ranging over the values $1, 2, \ldots, 6$,
+during which time \texttt{X[1,1]},  \texttt{X[1,2]}, ... \texttt{X[1,6]} 
+are replaced by 1's.  
+
+\item Then in the second iteration of the outer loop, \texttt{i} is 
+fixed at 2 and and the inner loop is iterated with \texttt{j} ranging over the values 
+$2, 3, \ldots, 6$, during which time \texttt{X[2,2]},  \texttt{X[2,3]}, ... \texttt{X[2,6]}
+are replaced by 2's.  
+
+\item This continues until \texttt{i} reaches 6 and \texttt{j} "ranges" from 6 to 6, 
+during which time \texttt{X[6, 6]} is replaced by the value 6.
+
+\ei
+
+%\item For example, if we want to create an "addition table" of the numbers
+%numbers 1 through 12, i.e. a table in which the first row consists of the
+%values $1 + 1, 1 + 2, \ldots, 1 + 12$, the second row consists of 
+%$2 + 1, 2 + 2, \ldots, 2 + 12$, we could use:
+
+
+\ei
+
+
+
+
+\subsection{Looping Over List Elements}
+
+\bi
+
+\item In the next example, we loop over the elements of a list, printing 
+a list element and recording it's length during each iteration:
+
+<<>>=
+myList <- list(
+      w = c(4, 4, 5, 5, 6, 6),
+      x = c("a", "b", "c"), 
+      y = c(5, 10, 15), 
+      z = c("r", "s", "t", "u", "v")
+)
+lengths <- NULL
+for(i in myList) {
+  print(i)
+  lengths <- c(lengths, length(i))
+}
+lengths
+@
+  
+
+
+
+\ei
+
+
+\section{The Logical Operations ``And'', ``Or'', and ``Not''}
+
+\subsection{Logical Operations and Compound Logical Expressions}
+
+
+\bi
+
+\item R has {\bf \em logical operators} (or {\bf \em Boolean operators}) corresponding to ``and'' and ``or''.  They're used to combine two logical expressions together to form a single {\bf \em compound} logical expression.  Another logical operator corresponding to ``not'' is used to negate a logical expression.  These are written in R as:
+
+<<eval=FALSE, background="lightgrey">>=
+&&             # "And" for logical scalars
+||             # "Or" for logical scalars
+!              # "Not" (for logical scalars or vectors)
+&              # "And" for logical vectors
+|              # "Or" for logical vectors
+@
+
+\item These operate on logical (\texttt{TRUE} or \texttt{FALSE}) expressions and return \texttt{TRUE} or \texttt{FALSE}. 
+
+\item The distinction between \texttt{\&\&} and \texttt{\&}, and between \texttt{||}
+and \texttt{|} is this:
+
+\bi
+
+\item  \texttt{\&\&} and \texttt{||} operate on logical {\em scalars} (single \texttt{TRUE} or \texttt{FALSE} values).
+
+\item \texttt{\&\&} and \texttt{||} are the preferred operators to use in \texttt{if()} statements.
+
+\item \texttt{\&} and \texttt{|} operate elementwise on logical {\em vectors}.
+
+\item \texttt{\&} and \texttt{|} are the preferred operators to use in \texttt{ifelse()} statements and
+in square brackets \texttt{[ ]} when extracting subsets from vectors or data frames.
+
+\ei
+
+%Parentheses can be used in compound {\em logical} expressions to control the order of operations.
+
+\ei
+
+\subsection{Logical Operations on Scalar Logical Expressions}
+
+\bi
+
+\item \texttt{\&\&} returns \texttt{TRUE} if both of the expressions are \texttt{TRUE} and
+it returns \texttt{FALSE} otherwise:
+
+<<>>= 
+TRUE && TRUE
+TRUE && FALSE
+@
+
+\item \texttt{||} returns \texttt{TRUE} if one or both of the expressions are \texttt{TRUE} 
+and it returns \texttt{FALSE} otherwise:
+
+<<>>= 
+FALSE || TRUE
+FALSE || FALSE
+@
+
+
+
+\item As a practical example, if we want to test whether a variable \texttt{x} lies 
+{\em between} two numbers, say 60 and 70, we type:
+
+<<eval=FALSE>>=
+x > 60 && x < 70
+@
+and to test whether it lies {\em outside} the range 60 to 70, we type:
+
+<<eval=FALSE>>=
+x < 60 || x > 70
+@
+
+\item Here's an example of using \texttt{\&\&} in an \texttt{if()} statement:
+
+<<>>=
+x <- 3
+y <- 5
+if(x < 10 && y < 10) {
+  print("Both less than 10")
+} else {
+  print("Not both less than 10")
+}
+@
+
+\newpage
+\item As a practical example, if we want to test whether a variable \texttt{x} lies {\em between} two numbers, say 60 and 70, we type:
+
+<<eval=FALSE>>=
+x > 60 && x < 70
+@
+and to test whether it lies {\em outside} the range 60 to 70, we type:
+
+<<eval=FALSE>>=
+x < 60 || x > 70
+@
+
+\item Here's an example of using \texttt{\&\&} in an \texttt{if()} statement:
+
+<<>>=
+x <- 3
+y <- 5
+if(x < 10 && y < 10) {
+  print("Both less than 10")
+} else {
+  print("Not both less than 10")
+}
+@
+
+\item The negation operator, \texttt{!}, returns ``the opposite'' of a logical expression:
+
+<<>>=
+!TRUE
+!FALSE
+!(5 < 6)
+@
+
+\newpage
+\item Pay attention to the operator precedence for \texttt{\&\&}, \texttt{||}, and 
+\texttt{!}.  It can be found by typing:
+
+<<eval=FALSE>>=
+?Syntax
+@
+\noin but parentheses can be used to control the order of operations.  
+
+
+
+\item If we try to apply \texttt{\&\&} or \texttt{||} to {\em vectors}, R only applies it to their 
+first elements:
+
+<<>>=
+c(TRUE, FALSE, TRUE) && c(TRUE, TRUE, FALSE)
+@
+
+
+
+
+\ei
+
+
+
+\subsection{Logical Operations on Logical Vectors}
+
+\bi
+
+\item To apply the operations ``and'' and ``or'' elementwise on two 
+logical vectors, use \texttt{\&} and \texttt{|}.  For example:
+
+<<>>=
+c(TRUE, FALSE, TRUE) & c(TRUE, TRUE, FALSE)
+@
+
+%http://www.heart.org/HEARTORG/Conditions/HighBloodPressure/AboutHighBloodPressure/Understanding-Blood-Pressure-Readings_UCM_301764_Article.jsp
+
+\item \texttt{\&} and \texttt{|} are useful in \texttt{ifelse()} statements.  (Recall that 
+\texttt{ifelse()} operates elementwise on vectors.).  For example, consider the systolic and diastolic blood pressure readings:
+
+<<>>=
+systolic <- c(110, 119, 111, 113, 128)
+diastolic <- c(70, 74, 88, 74, 83)
+@
+
+A blood pressure is classified as normal if the systolic level is less than 120 {\em and} the 
+diastolic level is less than 80:
+
+<<>>=
+classification <- ifelse(systolic < 120 & diastolic < 80, 
+                         yes = "Normal",
+                         no = "Abnormal")
+classification
+@
+
+
+\item In the next example, we use \texttt{\&} in square brackets \texttt{[ ]} to extract rows from a data frame:
+
+<<>>=
+bpData <- data.frame(
+  name = c("Joe", "Katy", "Bill", "Kim", "Mark"),
+  systolic = c(110, 119, 111, 113, 128),
+  diastolic = c(70, 74, 88, 74, 83))
+bpData
+@
+
+<<echo = F>>=
+rm(systolic, diastolic)
+@
+
+<<>>=
+attach(bpData)
+bpData[systolic < 120 & diastolic < 80, ]
+detach(bpData)
+@
+
+
+\ei
+
+
+
+
+\section{Variable Number of Arguments Using ``\texttt{...}''}
+
+%This is taken from pg 154 of The New S Language by Becker, Chambers, and Wilks.
+
+\bi
+
+\item Functions can be written to take a variable number of arguments.  The argument
+name ``\texttt{...}'' in the function definition will match any number of arguments.
+
+\item For example, here's a function that returns the mean of all the values in an arbitrary number of vectors:
+
+<<>>=
+meanOfAll <- function(...) {
+  return(mean(c(...)))
+}
+@
+\newpage
+The command
+
+<<eval=FALSE>>=
+meanOfAll(usSales, europeSales, otherSales)
+@
+
+would combine the three vectors and take the mean of all the data.  The effect of \texttt{c(...)} is as if \texttt{c()} were called with the same three arguments passed to \texttt{meanOfAll()}.
+
+\item Many of R's built-in functions take a variable number of arguments.  For example look at the help files for \texttt{list()} and \texttt{c()}.
+\ei
+
+
+\section{The \texttt{source()} Function}
+\bi
+
+
+\item {\tt source()} is a nice function for reading in big chunks of R code, e.g. a set of functions that you want to use every time you start a new R session. 
+
+<<eval=FALSE, background="lightgrey">>=
+source()       # Read R commands from a text file.
+@
+
+\item For example, suppose we have the following commands saved in a text file
+`{\bf C:$\backslash$myRcode.txt}': \\
+
+myFun $<-$ function(message) \{ \\
+ {\color{white} .} $\,\,\,\,\,\,$   print(message) \\
+\}  \\ 
+
+myFun(``Hello World'') \\
+ 
+We can execute those commands using \texttt{source()} by typing:
+
+<<eval=FALSE>>=
+source("C:/myRcode.txt")
+@
+
+<<echo = F>>=
+source('C:/Users/emcclel3/Dropbox/MSU/MTH2520/NelsMTH2520_stuff/class_notes_mth2520/myRcode.txt')
+@
+
+\ei
+
+
+\end{document}
+
+

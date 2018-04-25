@@ -1,0 +1,307 @@
+\documentclass[12pt]{article}
+
+\usepackage{amsmath}
+\usepackage{hyperref}
+\usepackage[authoryear,round]{natbib}
+\usepackage{graphicx}
+\usepackage{enumerate}
+
+\textwidth=6.2in
+\textheight=8.5in
+%\parskip=.3cm
+\oddsidemargin=.1in
+\evensidemargin=.1in
+\headheight=-.3in
+
+\newcommand{\scscst}{\scriptscriptstyle}
+\newcommand{\scst}{\scriptstyle}
+\author{Elizabeth Ribble\footnote{emcclel3@msudenver.edu}}
+\date{18-24 May 2017}
+
+\begin{document}
+
+\title{Basic Course on {\tt R}:\\
+Hypothesis Testing and Confidence Intervals 1}
+\maketitle
+\tableofcontents
+
+
+\newpage\section{Summary Statistics}
+<<>>=
+Puromycin
+attach(Puromycin)
+@
+\subsection{Continuous data}
+Measures of center:
+<<>>=
+mean(rate)
+@
+\newpage
+<<>>=
+mean(rate, trim = 1/10)
+median(rate)
+@
+\noindent where the median is the middle of $n$ numbers and the mean is defined as
+\begin{align*}
+\bar{x}&=\sum_{i=1}^n\frac{x_i}{n}
+\end{align*}
+Measures of spread:
+<<>>=
+var(rate)
+sqrt(var(rate))
+sd(rate)
+@
+Note that the formula for standard deviation is
+\begin{align*}
+\mbox{s}_x&=\sqrt{\frac{1}{n-1}\sum_{i=1}^n(x_i-\bar{x})^2}
+\end{align*}
+\noindent (variance is $\mbox{s}_x^2$) so we could also make our own function:
+<<>>=
+stdev <- function(x){ sqrt(sum((x-mean(x))^2)/(length(x)-1)) }
+stdev(rate)
+IQR(rate)
+iqr <- function(x){ 
+  q <- quantile(x)
+  q[4]-q[2]
+}
+iqr(rate)
+abs(-1)
+mad(rate)
+MAD <- function(x){ median(abs(x-median(x)))*1.4826 }
+MAD(rate)
+@
+\noindent The value 1.4826 is a normalizing constant; it makes the MAD comparable to the standard deviation of a normal distribution.
+\\
+\\
+\noindent Other summary statistics and useful functions:
+<<>>=
+summary(rate)
+quantile(rate)
+quantile(rate, seq(0, 1, .1))
+@
+\newpage
+<<>>=
+min(rate)
+max(rate)
+sum(rate)
+log(rate[1])
+log(rate[1], 10)
+log10(rate[1])
+sort(round(rate, -1))
+stem(rate)
+@
+\begin{center}
+<<out.width="3.2in">>=
+boxplot(rate)
+hist(rate, freq = F)
+lines(density(rate))
+@
+\end{center}
+\newpage
+Generating random variables and selecting random samples:
+<<>>=
+set.seed(123)
+x <- rnorm(100)
+stem(x)
+y <- runif(100, 0, 1)
+stem(y)
+sample(rate)
+@
+\newpage
+<<>>=
+sample(rate, size = 5)
+sample(rate, size = 5, replace = TRUE)
+sample(rate, size = 5, replace = TRUE,
+      prob = runif(length(rate),0,1))
+@
+\subsection{Categorical data}
+<<>>=
+table(state)
+table(state)/length(state)
+@
+\noindent You can also make continuous data categorical:
+<<>>=
+cats <- cut(rate, breaks = c(0,53,105,153,210))
+table(cats)
+cats
+cats <- cut(rate, breaks = quantile(rate))
+table(cats)
+@
+\subsection{Bivariate data}
+\begin{center}
+<<out.width="3.2in">>=
+table(conc, state)
+barplot(table(conc, state))
+@
+\end{center}
+\begin{center}
+<<out.width="3.2in">>=
+boxplot(rate~state, horizontal = TRUE, col = c("red", "blue"))
+rug(rate[state=="treated"], col = "red")
+rug(rate[state=="untreated"], col = "blue")
+stripchart(rate~state, col = c("red", "blue"))
+@
+\end{center}
+\section{Hypothesis Testing and Confidence Intervals}
+Comparison is the most common basic principle in medical research. A statement about the truth is compared against a reference statement (the null).
+\begin{itemize}
+\item $H_0$: Null hypothesis, e.g. cholesterol is comparable between men and women
+\item $H_1$: Alternative hypothesis, e.g. men and women differ on average in cholesterol
+\end{itemize}
+The $p$-value is the probability of obtaining the observed data in the sample (or something more extreme than the observed data), given that the null hypothesis is true. The $p$-value is calculated based on a point estimate (e.g. mean) of the sample. The decision to reject a null hypothesis based on the $p$-value depends on a chosen $\alpha$ level.\\
+\begin{center}
+\begin{tabular}{c|c|c}
+& reality &\\
+decision & $H_0$ is true & $H_0$ is false\\
+\hline
+do not reject $H_0$ & yay! & type II error ($\beta$)\\
+\hline
+reject $H_0$ & type I error ($\alpha$) & yay!\\
+\end{tabular}
+\end{center}
+
+\noindent For a given dataset and corresponding test statistic, we say the results of the test are ``statistically significant'' if the $p$-value is less than the pre-selected and fixed significance level, $\alpha$. \\
+
+\noindent Note that there is a distinction between significance and clinical relevance:
+
+\begin{itemize}
+\item If the sample size is large enough, even a small difference of 0.1 mmHg blood pressure can be \emph{statistically significant} between groups, though it is not \emph{relevant} from a clinical point of view.
+\item If the sample size is too small, even a sample mean of 150 mmHg can be \emph{not statistically significantly different} from 130 mmHg, though 20 mmHg is \emph{clinically relevant}.
+\end{itemize}
+
+A confidence interval (CI) is another way to show the reliability of a point estimate. The decision to reject or not reject the null hypothesis aligns with whether or not the CI contains the null value (e.g. $H_0$: mean = 0; if CI does not contain 0 then reject, otherwise do not reject $H_0$). In other words, the decision made by comparing the test statistic's $p$-value to $\alpha$ will be the same as a decision made using a $(1-\alpha)*100$\% CI.
+
+An interpretation of e.g. a 95\% CI is ``if the testing procedure were repeated on many ($k$) samples, the confidence intervals would encompass the true population parameter in 95\% of the $k$ samples'' or, more abstractly, ``we are 95\% confident that the true [e.g. mean] lies in the confidence interval''.
+
+\subsection{$t$-Test}
+The $t$-test is a statistical procedure used to test for the difference in means between two independent populations. The samples should come from normal distributions (can check using e.g. {\tt qqnorm()}) and the variances from each population are assumed to be equal. 
+\begin{center}
+<<out.width="3.2in",echo=FALSE>>=
+set.seed(52)
+g1 <- rnorm(50, 5)
+g2 <- rnorm(50, 7.5)
+
+plot(x=c(2,12), y=c(0,11), type='n', xlab='log expression value', ylab='')
+abline(h=0)
+rug(g1, col='blue', lwd=2)
+rug(g2, col='red', lwd=2)
+
+br <- seq(2, 12, 0.4)
+h1 <- hist(g1, breaks=br, add=T, col='blue')
+h2 <- hist(g2, breaks=br, add=T, col='red')
+
+xfit <- seq(min(g1),max(g1),length=50)
+yfit <- dnorm(xfit, mean=mean(g1), sd=sd(g1))
+yfit <- yfit*diff(h1$mids[1:2])*length(g1)
+lines(xfit, yfit, col="black", lwd=3) 
+
+xfit2 <- seq(min(g2),max(g2),length=50)
+yfit2 <- dnorm(xfit2, mean=mean(g2), sd=sd(g2))
+yfit2 <- yfit2*diff(h2$mids[1:2])*length(g2)
+lines(xfit2, yfit2, col="black", lwd=3) 
+
+## draw means
+abline(v=mean(g1), lwd=2, lty=2)
+abline(v=mean(g2), lwd=2, lty=2)
+
+## draw delta
+x0 <- mean(g1)
+x1 <- mean(g2)
+y0 <- 10
+y1 <- 10
+arrows(x0, y0, x1, y1, code=3)
+@
+\end{center}
+
+The $t$-test in R makes a correction that does not require equal variances of the two populations. The null hypothesis is that the difference between means is 0; the alternative is that this difference is not 0. \\
+
+The $t$ test statistic is defined as
+
+\begin{center}
+\begin{align*}
+t = \frac{\bar{x}_1 - \bar{x}_2}{\sqrt{\frac{s_1^2}{n_1}+\frac{s_2^2}{n_2}}}
+\end{align*}
+\end{center}
+
+and for large values of this test statistic we reject the null hypothesis that the difference in means is 0. A large value of this $t$ will produce a small $p$-value which, again, is evidence against the null hypothesis.  \\
+
+\noindent The Welch-Satterthwaite correction for unequal variances is 
+\begin{align*}
+\mbox{df}&=\frac{\left(\frac{s_1^2}{n_1}+\frac{s_2^2}{n_2}\right)^2}{\frac{s_1^4}{n_1^2(n_1-1)}+\frac{s_2^4}{n_2^2(n_2-1)}}
+\end{align*}
+The two-sample $\alpha$-level confidence interval is: 
+\begin{align*}
+\bar{x_1}-\bar{x_2}\pm t_{\alpha/2,df}\sqrt{\frac{s_1^2}{n_1}+\frac{s_2^2}{n_2}}
+\end{align*}
+where $t_{\alpha/2,df}$ is determined by the Student's-$t$ distribution.\\
+
+\noindent Here is an example of how to do this test in R. In the plotting lecture, it appeared that the OJ recipients in the sample had a larger tooth growth than the VC recipients, on average. We can test if this is true in the larger popluation using a $t$-test. Let's set $H_0$ to be that the two mean tooth lengths are the same and $H_a$ will be that the two mean tooth lengths are not equal. Let's use a 0.10 significance level, which means the probability we falsely reject the null is 0.10. Note that the function {\tt t.test} also provides a confidence interval - the confidence level specified should be $1-\alpha$ for the interpretations to align. 
+<<>>=
+ttooth <- t.test(ToothGrowth$len~ToothGrowth$supp, conf.level = 0.90)
+ttooth
+@
+Here the $p$-value is less than our chosen significance level so we reject the null. Therefore, at the 10\% significance level, the data provide sufficient evidence that our alternative hypothesis, that there is a difference between using OJ and VC to grow teeth, is true. 
+
+Now consider the following example. Suppose we believe the mean reaction velocity in an enzymatic reaction will be higher in cells treated with Puromycin compared to cells not treated with Puromycin. Let's use the 0.05 significance level, allowing for a slightly smaller Type I error probability than in the previous example.
+\newpage
+<<>>=
+t.test(rate~state, alternative = "greater")
+@
+Here our $p$-value is greater than $\alpha$ so we do not reject the null hypothesis. We therefore conclude that, at the 5\% significance level, the data do not provide sufficient evidence that Puromycin increases the mean reaction velocity. \\
+
+We can extract statistics and calculate e.g. fold changes from the output:
+<<>>=
+mytest <- t.test(rate~state, alternative="greater")
+mytest$p.value
+mytest$conf.int
+mytest$estimate[2]/mytest$estimate[1]
+@
+If samples are matched or paired (e.g. before/after), use argument {\tt paired=TRUE}. 
+
+\subsection{Mann-Whitney $U$ Test}
+The Mann-Whitney $U$ test (also known as the Wilcoxon Rank Sum test) is a non-parametric test for a location shift between two independent populations without assuming normality. However, the values should be sampled from two populations with very similar distributions. The null hypothesis is that there is no shift in the centers of the distributions of the two populations; the alternative is that there is a shift. 
+\begin{center}
+<<out.width="3.2in",echo=FALSE>>=
+set.seed(52)
+g1 <- runif(50,0.75,1.75)
+g2 <- runif(50,0,1)
+
+plot(x=c(0,2), y=c(0,16), type='n', xlab='log expression value', ylab='')
+abline(h=0)
+rug(g1, col='blue', lwd=2)
+rug(g2, col='red', lwd=2)
+
+br <- seq(0, 2, 0.2)
+h1 <- hist(g1, breaks=br, add=T, col='blue')
+h2 <- hist(g2, breaks=br, add=T, col='red')
+
+## draw means
+abline(v=median(g1), lwd=2, lty=2)
+abline(v=median(g2), lwd=2, lty=2)
+
+## draw delta
+x0 <- median(g1)
+x1 <- median(g2)
+y0 <- 15
+y1 <- 15
+arrows(x0, y0, x1, y1, code=3)
+@
+
+<<>>=
+wtest <- wilcox.test(rate~state,conf.int=TRUE)
+wtest
+wtest$p.value
+@
+\end{center}
+\noindent The test statistic {\tt W} in R is defined to be the sum of the ranks of one of the groups minus $n_1(n_1+1)/2$. The procedure to obtain a confidence interval is quite involved, but thankfully R will provide it to us upon request.\\
+
+This bit of code shows how to calculate the W test statistic:
+<<>>=
+n1 <- length(state[state=="treated"])
+n1
+rank(rate)
+rank(rate)[state=="treated"]
+sum(rank(rate)[state=="treated"])-n1*(n1+1)/2
+@
+
+\end{document}

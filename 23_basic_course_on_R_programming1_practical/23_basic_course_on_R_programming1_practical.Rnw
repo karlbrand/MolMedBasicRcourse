@@ -1,0 +1,271 @@
+\documentclass [12pt]{article}
+
+\usepackage{graphics,latexsym,geometry,amsmath,bibunits,makeidx,fancyhdr,graphicx}
+\usepackage{hyperref}
+\usepackage[authoryear,round]{natbib}
+\usepackage{graphicx,color}
+\usepackage{enumerate}
+
+\newcommand{\noin}{\noindent}
+\newcommand{\be}{\begin{equation}}
+\newcommand{\ee}{\end{equation}}
+\newcommand{\bi}{\begin{itemize}}
+\newcommand{\ei}{\end{itemize}}
+\newcommand{\bdm}{\begin{displaymath}}
+\newcommand{\edm}{\end{displaymath}}
+\newcommand{\bea}{\begin{eqnarray}}
+\newcommand{\eea}{\end{eqnarray}}
+\newcommand{\beaa}{\begin{eqnarray*}}
+\newcommand{\eeaa}{\end{eqnarray*}}
+\newtheorem{example}{Example}[section]
+\newcommand{\bex}{\begin{example} \normalfont}
+\newcommand{\eex}{\end{example}}
+\newtheorem{exercise}[example]{Exercise}
+\newcommand{\bexc}{\begin{exercise} \normalfont}
+\newcommand{\eexc}{\end{exercise}}
+\newtheorem{problem}{}
+\newcommand{\bpr}{\begin{problem} \normalfont}
+\newcommand{\epr}{\end{problem}}
+\newcommand{\babc}{\begin{list}{\alph{abc})}{\usecounter{abc}
+  \itemindent=-10pt}}
+\newcommand{\eabc}{\end{list}}
+\newcommand{\ben}{\begin{enumerate}}
+\newcommand{\een}{\end{enumerate}}
+\newcounter{abc}
+
+
+
+
+\textwidth=6.2in
+\textheight=8.5in
+%\parskip=.3cm
+\oddsidemargin=.1in
+\evensidemargin=.1in
+\headheight=-.3in
+
+\newcommand{\scscst}{\scriptscriptstyle}
+\newcommand{\scst}{\scriptstyle}
+\author{Elizabeth Ribble\footnote{emcclel3@msudenver.edu}}
+\date{18-24 May 2017}
+
+\begin{document}
+
+\title{Basic Course on {\tt R}:\\
+       Programming Structures 1\\
+       Practical}
+\maketitle
+\tableofcontents
+
+\newpage
+
+
+  
+\section{Part A: \texttt{if()}, \texttt{else}, and \texttt{ifelse()} and Vectorization}
+
+%I'm using this as a lab exercise.
+
+\begin{enumerate}
+
+\item Write a function \texttt{evenOrOdd()} involving \texttt{if()} and \texttt{else}
+that takes an argument \texttt{x} and returns
+\texttt{"Even"} or \texttt{"Odd"} depending on whether or not \texttt{x} is divisible by 2.
+({\em Do not} use the \texttt{ifelse()} function).
+
+%even.or.odd <- function(x) {
+%    if(x %% 2 ==0) {
+%        return("Even")
+%    } else {
+%        return("Odd")
+%    }
+%}
+
+\vspace{15mm}
+\item \label{evenorodd} Is your function \texttt{evenOrOdd()} {\em vectorized}?  Check by passing it the
+vector:
+
+<<>>=
+w <- c(3, 6, 6, 4, 7, 9, 11, 6)
+@
+
+\item Another way to determine if each element of a vector is even or odd is to use
+the \texttt{ifelse()} function, which serves as a vectorized version \texttt{if()} and \texttt{else}.
+Use \texttt{ifelse()} to obtain \texttt{"Even"} or \texttt{"Odd"} for
+each element of \texttt{w}.
+\vspace{15mm}
+\end{enumerate}
+
+
+
+
+
+\section{Part B: Loops}
+\begin{enumerate}
+\item  How many times will \texttt{"Frisbee Sailing"} be printed to the screen in each of the following 
+sets of commands? Try to answer without using R. 
+
+
+\babc
+
+\item 
+
+<<eval=FALSE>>=
+i <- 5
+while(i < 1) {
+  print("Frisbee Sailing")
+  i <- i + 1
+}
+@
+
+
+\item 
+
+
+<<eval=FALSE>>=
+i <- 0
+while(i < 5) {
+  print("Frisbee Sailing")
+}
+@
+
+
+\item 
+
+
+<<eval=FALSE>>=
+i <- 0
+while(i < 5) {
+  print("Frisbee Sailing")
+  i <- i + 1
+}
+@
+
+\eabc
+
+
+
+
+\newpage
+\item How many times will \texttt{"Masked Marvel"} be printed to the screen in the following 
+set of commands? Try to answer without using R.
+
+
+<<eval=FALSE>>=
+i <- 1
+repeat {
+  if(i > 5) break
+  print("Masked Marvel")
+  i <- i + 1
+}
+@
+
+
+\item The file {\bf kennedys.txt} has a command to create a list containing two generations of the famous Kennedy family: 
+
+<<>>=
+Kennedys <- list(
+    JosephJr = character(0),
+    John = c("Caroline", "JohnJr", "Patrick"),
+    Rosemary = character(0),
+    Kathleen = character(0),
+    Eunice = c("RobertIII", "Maria", "Timothy", "Mark", "Anthony"),
+    Patricia = c("Christopher", "Sydney", "Victoria", "Robin"),
+    Robert = c("Kathleen", "JosephII", "RobertJr", "David", 
+               "MaryC", "Michael", "MaryK", "Christopher", 
+               "Matthew", "Douglas", "Rory"),
+    Jean = c("Stephen", "William", "Amanda", "Kym"),
+    Edward = c("Kara", "EdwardJr", "Patrick")
+)
+@
+
+\noin Read in the file with the use of {\tt source()} and type {\tt ls()} to see if the list was created (type {\tt Kennedys} to view the object). \\
+
+
+\noin Loop over the list of the first generation of Kennedys, keeping track 
+of how many children each one has in a vector.
+
+\vspace{35mm}
+\end{enumerate}
+
+
+\newpage
+\section{Part C: Logical Operators \texttt{\&}, \texttt{|}, and \texttt{!}}
+
+\begin{enumerate}
+\item What will be the result of the following:
+
+
+<<eval=FALSE>>=
+(10 < 20 && 15 < 16) || 9 == 10
+@
+
+
+\item One of the following evaluates to \texttt{TRUE}, the other to \texttt{FALSE}.
+Which is which?
+<<eval=FALSE>>=
+4 < 3 && (5 < 6 || 8 < 9)
+(4 < 3 && 5 < 6) || 8 < 9
+@
+
+%The data set came from one of the SAS help files:
+% http://support.sas.com/documentation/cdl/en/procstat/63104/HTML/default/viewer.htm#procstat_univariate_sect056.htm
+
+\item The data set below contains the systolic and diastolic blood pressure readings for 22 patients (and can be found in the file {\bf BPressure.txt}).
+
+\scriptsize
+
+\begin{center}
+\begin{tabular}{lrr}
+PatientID & Systolic & Diastolic \\ \hline
+CK & 120 & 50  \\
+SS & 96 &  60 \\
+FR & 100 & 70 \\
+CP & 120 & 75  \\
+BL & 140 & 90 \\
+ES & 120 & 70 \\
+CP & 165 & 110 \\
+JI & 110 & 40 \\
+MC & 119 & 66 \\
+FC & 125 & 76  \\
+RW & 133 & 60 \\
+KD & 108 & 54 \\
+DS & 110 & 50  \\
+JW & 130 & 80 \\
+BH & 120 & 65 \\
+JW & 134 & 80  \\
+SB & 118 & 76 \\
+NS & 122 & 78 \\
+GS & 122 & 70  \\
+AB & 122 & 78 \\
+EC & 112 & 62 \\
+HH & 122 & 82 \\ \hline
+\end{tabular}
+\end{center}
+
+\normalsize
+
+
+
+\babc
+
+\item Read the data from {\bf BPressure.txt} into a data frame called \texttt{bp} using \texttt{read.table()}.
+
+\item A person's blood pressure is classified as normal if the systolic level is below 120 and the 
+diastolic level is below 80.Use square brackets \texttt{[ ]} to extract from \texttt{bp}
+the rows corresponding to patients with normal blood pressures.
+\vspace{15mm}
+
+\item Now use square brackets \texttt{[ ]} to extract 
+the rows corresponding to patients whose blood pressures {\em aren't} normal.
+\eabc
+
+
+\end{enumerate}
+
+
+
+
+  
+\end{document}
+  
+  
+  

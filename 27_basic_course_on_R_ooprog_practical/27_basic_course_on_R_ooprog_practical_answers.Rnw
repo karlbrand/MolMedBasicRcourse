@@ -1,0 +1,203 @@
+\documentclass [12pt]{article}
+
+\usepackage{graphics,latexsym,geometry,amsmath,bibunits,makeidx,fancyhdr,graphicx}
+\usepackage{hyperref}
+\usepackage[authoryear,round]{natbib}
+\usepackage{graphicx,color}
+\usepackage{enumerate}
+
+\newcommand{\noin}{\noindent}
+\newcommand{\be}{\begin{equation}}
+\newcommand{\ee}{\end{equation}}
+\newcommand{\bi}{\begin{itemize}}
+\newcommand{\ei}{\end{itemize}}
+\newcommand{\bdm}{\begin{displaymath}}
+\newcommand{\edm}{\end{displaymath}}
+\newcommand{\bea}{\begin{eqnarray}}
+\newcommand{\eea}{\end{eqnarray}}
+\newcommand{\beaa}{\begin{eqnarray*}}
+\newcommand{\eeaa}{\end{eqnarray*}}
+\newtheorem{example}{Example}[section]
+\newcommand{\bex}{\begin{example} \normalfont}
+\newcommand{\eex}{\end{example}}
+\newtheorem{exercise}[example]{Exercise}
+\newcommand{\bexc}{\begin{exercise} \normalfont}
+\newcommand{\eexc}{\end{exercise}}
+\newtheorem{problem}{}
+\newcommand{\bpr}{\begin{problem} \normalfont}
+\newcommand{\epr}{\end{problem}}
+\newcommand{\babc}{\begin{list}{\alph{abc})}{\usecounter{abc}
+  \itemindent=-10pt}}
+\newcommand{\eabc}{\end{list}}
+\newcommand{\ben}{\begin{enumerate}}
+\newcommand{\een}{\end{enumerate}}
+\newcounter{abc}
+
+
+
+
+\textwidth=6.2in
+\textheight=8.5in
+%\parskip=.3cm
+\oddsidemargin=.1in
+\evensidemargin=.1in
+\headheight=-.3in
+
+\newcommand{\scscst}{\scriptscriptstyle}
+\newcommand{\scst}{\scriptstyle}
+\author{Elizabeth Ribble\footnote{emcclel3@msudenver.edu}}
+\date{18-24 May 2017}
+
+\begin{document}
+
+\title{Basic Course on {\tt R}:\\
+  Object-Oriented Programming\\
+  Practical Answers}
+\maketitle
+\tableofcontents
+
+\newpage
+
+  
+\section{Part A: Object Oriented Programming}
+
+%Source:  Similar to Exercises 16.1, and 16.3, pg 311, of Learning R by Richard Cotton.
+
+\begin{enumerate}
+
+\item The {\bf \em geometric mean} can be defined as the $n$th root 
+of the product of $n$ positive numbers $x_1, x_2, \ldots, x_n$, i.e.
+
+\bdm \mbox{gm} \,\, = \,\, \left( x_1 \cdot x_2 \cdots x_n \right)^{\frac{1}{n}} \edm
+
+Write a function \texttt{gm()} that takes a vector argument
+\texttt{x} containing positive numbers and returns their geometric mean.
+Your function should include a \texttt{stop()} statement that returns an
+error message if any of the values in \texttt{x} are nonpositive.  {\bf Hint}: The
+function \texttt{prod()} can be used to compute the product of the values
+in \texttt{x}.
+{\color{red}
+<<>>=
+gm <- function(x) {
+  if(any(x <= 0)){
+    stop("All values in the vector must be positive.")
+  }
+  else{
+    y <- prod(x)
+    geom <- y^(1/length(x))
+    return(geom)
+  }
+}
+@
+}
+
+\item Determine the class of your output by running the following:
+\begin{Sinput}
+> class(gm(1:4))
+\end{Sinput}
+{\color{red}
+<<>>=
+class(gm(1:4))
+@
+}
+
+\item Modify your geometric mean function, using \texttt{class()}, so that the return value has the 
+class \texttt{"geometric"}.  
+{\color{red}
+<<>>=
+gm <- function(x){
+  if(any(x <= 0)){
+    stop("All values in the vector must be positive.")
+  }
+  else{
+    geom <- prod(x)^(1/length(x))
+    class(geom) <- "geometric"
+    return(geom)
+  }
+}
+@
+}
+
+\item  Verify the new class of your output is correct by running the following
+\begin{Sinput}
+> class(gm(1:4))
+\end{Sinput}
+{\color{red}
+<<>>=
+class(gm(1:4))
+@
+}
+
+\end{enumerate}
+\section{Part B: Performance Enhancement:  Speed}
+
+
+%Could try this next exercise using either:
+%1.  Move expressions within loops that are invariant to compute just once and assigned to variable.
+%2.  Avoid concatenating vectors, by pre-allocate and assign to the ith element.
+%i.e. x = c(); for(i in seq(along = y)) x = c(x, g(y[i]))
+
+\begin{enumerate}
+
+\item This problem concerns efficiency and timing code.  \\
+
+
+Using \texttt{system.time(expression)},
+explore how time changes with size of the inputs. Plot time versus input size and see if algorithm
+is linear, polynomial, or exponential.
+
+\begin{itemize}
+
+\item Move expressions within loops that are invariant to compute just once and assigned to a variable.
+
+
+\item Avoid concatenating vectors by pre-allocating and assigning to the ith element.
+i.e. 
+
+\begin{Sinput}
+> x <- c(); for(i in seq(along = y)) x = c(x, g(y[i]))
+\end{Sinput}
+
+\end{itemize}
+
+What are your conclusions?
+
+{\color{red} Answers may vary.
+<<>>=
+time <- function(n){
+  x <- runif(n)
+  y <- sqrt(2)  
+  t <- system.time( for(i in 1:n) {       
+    x[i] <- x[i] + y
+  }
+  )
+  return(t[["elapsed"]])
+}
+inputs <- c(100, 10^3, 10^4, 10^5, 10^6, 10^7)
+t1 <- time(100)
+t2 <- time(10^3)
+t3 <- time(10^4)
+t4 <- time(10^5)
+t5 <- time(10^6)
+t6 <- time(10^7)
+timeV <- c(t1, t2, t3, t4, t5, t6)
+@
+
+<<fig=TRUE>>=
+plot(x = inputs, y = timeV, main = "Number of Inputs vs System Time",
+     xlab = "Number of inputs", ylab = "System Time Elapsed", 
+     type = "b")
+@
+
+The scatterplot of computation time versus size of inputs is linear. 
+}
+\end{enumerate}
+
+\end{enumerate}
+
+\end{document}
+
+
+  
+  
+  

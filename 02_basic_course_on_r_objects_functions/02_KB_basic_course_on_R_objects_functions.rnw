@@ -1,0 +1,843 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Program: 02_KB_basic_course_on_R_objects_functions.rnw                  %
+% Path: ~/Dropbox/Cardioformatics/CTMM_management/projects/R_course_2013  %
+% Purpose: Provide an introduction to R for the MGC R Basic R course      %
+% Prerequisite(s): none                                                   %
+% Author: Karl Brand   / Elizazbeth Ribble                                %
+% Created: c. april 2013                                                  %
+% Last update: 2017-05-04                                                 %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% begin preamble %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\documentclass[12pt]{article}
+
+\usepackage{amsmath}
+\usepackage{hyperref}
+\usepackage[authoryear,round]{natbib}
+\usepackage{graphicx}
+\usepackage{enumerate}
+\usepackage{graphicx} % Compile only with pdfLaTeX
+% \usepackage{url,verbatim,a4wide,Sweave}
+\usepackage{parskip}
+
+\textwidth      = 6.2in
+\textheight     = 8.5in
+%% \parskip        = 0.3cm
+\oddsidemargin  = 0.1in
+\evensidemargin = 0.1in
+\headheight     = -0.3in
+
+\newcommand{\scscst}{\scriptscriptstyle}
+\newcommand{\scst}{\scriptstyle}
+\author{Karl Brand\footnote{brandk@gmail.com}\hspace{2mm}  and Elizabeth Ribble\footnote{emcclel3@msudenver.edu}}
+\date{18-24 May 2017}
+\begin{document}
+
+%% Bring figures to the top
+%% https://tex.stackexchange.com/questions/28556/how-to-place-a-float-at-the-top-of-a-floats-only-page?lq=1
+\makeatletter
+\setlength{\@fptop}{0pt}
+\setlength{\@fpbot}{0pt plus 1fil} %% usually redundant
+\makeatother
+
+\title{Basic Course on {\tt R}:\\
+Objects and Functions}
+\maketitle
+\tableofcontents
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% end preamble %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% \newpage\section{Getting things done with {\tt R}}
+%% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Not surprisingly everything about {\tt R} is built on the principle of
+%% KISS, i.e., keep it simple stupid. We get things done in {\tt R} by
+%% typing commands and asking {\tt R} to execute them with the {\tt
+%%   enter} key. Assuming you know the commands, it couldn't be any
+%% simpler. The `front end' of {\tt R}, the part that receives your
+%% commands, is the {\it terminal}. You can type your commands directly
+%% into the terminal and hit {\tt enter} to do your work. But if you need
+%% thousands of commands for a specific task, or want to share your
+%% method, this approach gets tiring fast. Since the
+%% commands are just text, it's easy to write a series of commands using
+%% any program built for working with text, i.e., text editors and word
+%% processors, to create {\it code} or a {\it script}, to get something
+%% done.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newpage\section{Things you can have: object classes and modes}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+ Any \emph{thing} in {\tt R} is of a certain type, defined as a {\tt class} and
+{\tt mode}. As an analogy, think of numbers as \emph{fruits} and text as
+\emph{vegetables}. They're not the same, although they can be analysed, or
+`cooked' like one another.
+
+\subsection{Numbers}
+\emph{Fruits}.
+<<>>=
+class(1)
+mode(1)
+
+class(2.3123)
+an_integer <- as.integer(2.3123)
+an_integer
+class(an_integer)
+mode(an_integer)
+@ 
+Change the class to numeric:
+<<>>=
+numeric_again <- as.numeric(an_integer)
+class(numeric_again)
+@
+
+\newpage
+\subsection{Text}
+The \emph{veggies}.
+<<>>=
+class("a")
+mode("a")
+class("1")
+mode("1")
+
+a_factor <- factor("a")
+a_factor
+class(a_factor)
+mode(a_factor)
+@
+
+\subsection{Logical}
+It can only be a \emph{yes} or a \emph{no}. More specifically, a {\tt TRUE} or a {\tt FALSE}.
+<<>>=
+class(TRUE)
+class(FALSE)
+mode(TRUE)
+@
+
+\subsection{Functions}
+An object that does something to the fruits and veggies, a \emph{frying pan!} Remember the function we defined?
+<<echo=FALSE>>=
+myFunc <- function(object = TRUE) {
+  if (object) {
+    print("hello world")
+  }
+}
+@ 
+<<>>=
+myFunc
+class(myFunc)
+mode(myFunc)
+@
+
+\section{Containers: more object classes and modes}
+Besides the basic types of things, there are different \emph{containers}
+available to hold these things which are also defined by {\tt class} and
+{\tt mode}. Containers are thus things, or {\tt objects}, that you can put other
+things, or {\tt objects}, into to conveniently hold them while we work
+with them. 
+
+\subsection{Vectors are an ordered series of elements}
+Think of them like a \emph{string} or a \emph{chain}.
+<<>>=
+a_vector <- c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12)
+class(a_vector)
+mode(a_vector)
+length(a_vector)
+ano_vector <- c(1)
+length(x = ano_vector)
+@ 
+Combine vectors to make another vector:
+<<>>=
+combined_vec <- c(a_vector, ano_vector)
+combined_vec
+@
+
+\subsection{Matrices are vectors with two dimensions}
+Matrices are like a spread sheet in that they have rows and
+columns. In addition the contents have a specific, column on column
+order or sequence exactly equivalent to a vector. Think of them
+like a \emph{string on a tray}. Matrices consist of
+only one type or \emph{class} of data.
+<<>>=
+a_matrix <- matrix(data = a_vector)
+a_matrix
+a_vector
+
+dim(a_matrix)
+ano_matrix <- matrix(data = a_vector, nrow = 3)
+ano_matrix
+dim(ano_matrix)
+letters_mat <- matrix(data = letters[1:12], nrow = 3)
+
+class(a_matrix)
+mode(a_matrix)
+
+class(letters_mat)
+mode(letters_mat)
+@ 
+
+\subsection{Arrays are matrices with multiple dimensions}
+<<>>=
+an_array <- array(letters[1:12], c(2, 2, 3))
+an_array
+class(an_array)
+mode(an_array)
+@
+
+\subsection{Lists hold just about anything and everything}
+Similar to vectors, lists have a specific order or sequence. Unlike
+vectors however, each element of a list can be of any {\tt class} or
+{\tt mode}. Think of them like a \emph{shopping list} of: a string
+of fruit, a tray veggies, another sublist of items
+<<>>=
+a_list <- list(a_vector, a_matrix, letters_mat)
+a_list
+class(a_list)
+mode(a_list)
+
+named_list <- list("vec" = a_vector, "mat" = a_matrix,
+                   "lets" = letters_mat,
+                   "log" = matrix(rep(c(TRUE, FALSE), 5), nrow = 5),
+                   "lis" = list(1:5, letters[1:9])) 
+named_list
+class(named_list)
+mode(named_list)
+
+named_list[["log"]]
+class(named_list[["log"]])
+mode(named_list[["log"]])
+@ 
+
+\subsection{Data frames are special lists}
+Data frames are even more similar to the familiar excel spreadsheets: a
+series, or {\tt list} of equal length columns, or {\tt
+  vectors}. Notably, the columns ({\tt vectors}) can be of different
+classes, \underline{unlike} a matrix or array.
+
+\newpage
+<<>>=
+aDF <- data.frame("vec" = a_vector, "lets" = letters[1:12])
+aDF
+dim(aDF)
+class(aDF)
+mode(aDF)
+str(aDF)
+
+aDF[, 1]
+class(aDF[, 1])
+mode(aDF[, 1])
+
+aDF[, 2]
+class(aDF[, 2])
+mode(aDF[, 2])
+str(aDF[, 1])
+@
+
+It's important to understand that the things we work with in {\tt R} have a
+`mode' (mutually exclusive classification of basic structure) and a `class' (property used to determine how functions operate with object). Pay attention to your modes and classes.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Functions are things you can do}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+{\tt R} comes with predefined functions which do many things from
+basic file management to complex statistics. To get started, below are
+some oft used functions. This default set of functions is easily
+extended by defining your own functions and adding those defined by
+others conveniently in CRAN and BioConductor packages:
+
+\url{http://stat.ethz.ch/R-manual/R-patched/library/base/html/00Index.html}
+
+\url{http://cran.r-project.org/web/packages/available_packages_by_name.html}
+
+\url{http://www.bioconductor.org/packages/release/bioc/}
+
+Functions are expressed as:
+
+\hspace{4ex}   {\tt function.name()}, e.g., {\tt t.test()}
+   
+\hspace{4ex}   or,
+   
+\hspace{4ex}   an operator, e.g., {\tt +}
+
+Note that operators can be expressed in {\tt function.name()} format
+by enclosing in double quotes, e.g. {\tt "+"()}. This is occasionally
+required for some expressions.
+
+Easily obtain functions from other {\tt R} users using {\tt install.packages()}:
+<<eval=FALSE>>=
+install.packages("packageName",
+                 lib = "/directory/to/my custom R library",
+                 repos = "http://cran.xl-mirror.nl")
+@
+
+The package name must be quoted when installing. Besides installing
+the package on your PC, you need to load it into your {\tt R} session
+before you can use it:
+
+<<eval=FALSE>>=
+library("packageName")      ## quotes are optional when loading a package
+@
+
+\subsection{The Arithmetic Operators}
+That is, {\tt R} as a \emph{calculator}.
+<<>>=
+x <- 10
+y <- 3
+x + y
+x - y
+x * y
+x / y
+x ^ y           # exponentiation
+x %% y          # modular arithmetic, remainder after division
+x %/% y         # integer part of a fraction
+@
+
+How these functions work on vectors:
+<<>>=
+a_vector
+@
+
+\newpage
+\subsubsection{By the way, {\tt R} is Green}
+By design, {\tt R} \emph{recycles} data without telling you, at least
+when the recycling fits neatly.
+
+<<>>=
+a_vector + x                    # x is recycled without warning
+@
+
+Operators can also be used in the {\tt function.name()}
+format. Note the quotes:
+<<>>=
+"+"(a_vector, x)
+@
+<<>>=
+a_vector - y
+a_vector + a_vector
+vec_of_thr <- c(2, 4, 6)
+a_vector
+@
+<<>>=
+a_vector + vec_of_thr           # recycled without warning
+
+vec_of_fi <- c(1, 2, 3, 4, 5)
+a_vector
+@ 
+When it doesn't fit neatly, you'll get a warning:
+<<eval=TRUE, echo=TRUE>>= 
+a_vector + vec_of_fi            # warning
+@ 
+<<eval=TRUE, echo=FALSE>>= 
+head(warnings(), 1)
+@
+
+How these functions work on matrices:
+<<>>=
+ano_matrix
+ano_matrix + x
+ano_matrix - y
+ano_matrix + ano_matrix
+ano_matrix * ano_matrix
+@
+
+%% \subsection{Extraction}
+%% \subsubsection{Vectors}
+%% <<>>=
+%% lets_vec <- c("a", "b", "c", "d", "e")
+%% lets_vec
+%% lets_vec[2]
+%% lets_vec[c(2, 3)]
+%% lets_vec[-c(2, 3)]
+%% @
+
+%% \subsubsection{Matrices}
+%% <<>>=
+%% letters_mat         # note the way R references the rows *then* columns
+%% letters_mat[2, 2]
+%% letters_mat[2, ]
+%% letters_mat[, 2]
+
+%% letters_mat[2]      # recall that matrices are also (stacked) vectors
+
+%% letters_mat[c(2, 3), 2]
+%% letters_mat[-c(2, 3), 2]
+%% @ 
+%% A useful way to extract sub-elements from complicated lists.
+
+%% <<>>=
+%% "["(letters_mat, , 2) == letters_mat[, 2] 
+%% @ 
+%% Just pay attention to the commas (and warning):
+%% <<>>=
+%% "["(letters_mat, 2 ,) == letters_mat[, 2]        # invokes a warning
+%% @
+%% <<eval=TRUE, echo=FALSE, results=verbatim>>= 
+%% tail(warnings(), 1)
+%% @
+
+%% \subsubsection{Lists}
+%% <<>>=
+%% named_list
+%% named_list[1]              # element 1
+%% named_list[c(3, 4)]        # elements 3 and 4
+
+%% named_list[[1]]            # only element 1
+%% named_list[[c(3, 4)]]      # only element 4 *of* element 3 
+
+%% class(named_list[1])
+%% class(named_list[[1]])
+
+%% named_list["lets"]         # named extraction (requires quotes)
+%% named_list$lets            # list specific extraction (quotes optional)
+%% named_list[["lets"]]
+
+%% named_list[["lets"]][2, 2] # extraction from extraction
+%% @
+
+%% Artist: "Rabbit Island", track: "Jay and Silent"
+
+%% \subsubsection{Data frames}
+%% <<>>=
+%% a_dat.f
+%% a_dat.f["vec"]
+%% class(a_dat.f["vec"])
+
+%% a_dat.f[["vec"]]
+%% class(a_dat.f[["vec"]])
+%% a_dat.f$vec
+%% class(a_dat.f$vec)
+
+%% a_dat.f[, 1]
+%% class(a_dat.f[, 1])
+%% @
+%% <<eval=FALSE, echo=TRUE>>= 
+%% a_dat.f[[1, ]]             # error
+%% @
+%% <<eval=TRUE, echo=FALSE, results=verbatim>>= 
+%% try_out <- try(a_dat.f[[1, ]])  
+%% cat(try_out)
+%% @
+
+\subsection{Functions you'll use to interact with data}
+Relational Operators:
+<<>>=
+x < y
+x > y
+x <= y
+x >= y
+x == y
+x != y
+@
+
+\subsection{Functions you need to get work done with {\tt R}}
+\item R has an extensive set of built-in {\bf \em functions}, a few of which are listed below:
+
+Print structure of an object:
+<<eval=FALSE>>=
+str()
+@ 
+Print structure of an object:
+<<eval=FALSE>>=
+class()
+@
+First six elements/rows:
+<<eval=FALSE>>=
+head()
+@ 
+Last six elements/rows:
+<<eval=FALSE>>=
+tail()                     
+@
+List all objects and functions held in your global environment:
+<<eval=FALSE>>=
+ls()                       
+@ 
+Generate a sequence of values:
+<<eval=FALSE>>=
+seq()
+@
+Or, use the {\tt :} operator:
+<<>>=
+1:10
+@
+Run the entire contents of a script:
+
+<<eval=FALSE>>=
+source("myScript.R")
+@
+
+
+
+Each function accepts one or more values passed to it as {\bf \em arguments}, performs computations or operations 
+on those values, and returns a result.  
+
+To perform a {\bf \em function call}, type the name of the function with the values of its argument(s) in parentheses, then hit `Enter'.  For example:
+
+<<>>=
+sqrt(2)
+@
+
+Values passed as arguments can be in the form of variables, such as \texttt{x} below:
+
+<<>>=
+x <- 2
+sqrt(x)
+@
+
+or they can be entire expressions, such as \texttt{x\^{ }2 + 5} below:
+
+<<>>=
+sqrt(x^2 + 5)
+@
+
+\subsection{Viewing a Function's Formal Arguments}
+
+Most functions take multiple arguments, each of which has a name, and 
+some of which are optional.  
+
+One way to see what arguments a function takes and which ones are optional is to use the function:
+
+\begin{Sinput}
+args()                   # View a function's formal arguments
+\end{Sinput}
+
+Another way to view a function's arguments is to look at its help file (e.g. \texttt{?sqrt}).
+
+For example, to see what arguments \texttt{round()} takes (using \texttt{args()}), we'd type:
+
+<<>>=
+args(round)
+@
+
+We see that \texttt{round()} has two arguments, \texttt{x}, a numeric value to be rounded, 
+and \texttt{digits}, an integer specifying the number of decimal places to round to.  Thus to round 4.679
+to 2 decimal places, we type:
+
+<<>>=
+round(4.679, 2)
+@
+
+\subsection{Optional Arguments and Default Values}
+
+The specification \texttt{digits = 0} in the output from \texttt{args(round)} tells us that \texttt{digits} has a {\bf \em default value} 
+of 0.  This means that it's an {\bf \em optional argument} and if no value is passed for that argument, rounding is done to 0 decimal places (i.e. to the nearest integer). 
+
+\subsection{Positional Matching and Named Argument Matching}
+
+When we type
+
+<<>>=
+round(4.679, 2)
+@
+
+R knows, by {\bf \em positional matching}, that the first value, 4.679, is the value to be rounded and the second one, 2, is the number of decimal places to round to.  
+
+We can also specify values for the arguments by name.  For example:
+
+<<>>=
+round(x = 4.679, digits = 2)
+@
+
+When {\bf \em named argument matching} is used, as above, the order of the arguments is
+irrelevant.  For example, we get the same result by typing:
+
+<<>>=
+round(digits = 2, x = 4.679)
+@
+
+\item The two types of argument specification (positional and named argument
+matching) can be be mixed in the same function call.
+
+\subsection{Formal Arguments and Actual Arguments}
+
+In the function call
+
+<<eval=FALSE>>=
+round(x = 4.679, digits = 2)
+@
+
+the values \texttt{4.679} and \texttt{2} passed to \texttt{round()} are referred to as {\bf \em actual arguments}.  
+
+The {\bf \em formal arguments} for the function \texttt{round()} are \texttt{x} and \texttt{digits}, to which we pass the actual values \texttt{4.679} and \texttt{2}.
+
+\newpage
+Look at the arguments for the function \texttt{signif()}:
+
+<<>>=
+args(signif)
+@
+
+\texttt{signif()} prints the value passed for \texttt{x} to the number of significant digits specified by \texttt{digits}.
+
+%' 
+%' \subsection{Define your own functions}
+%' <<>>=
+%' do_something <- function(x) x + 10
+%' do_something(5)
+%' @
+%' Note \emph{lexical scoping} hides the objects created within
+%' a function from the global environment. This keeps your global
+%' environment from cluttering up, lets you reuse the easy object names
+%' {\tt x, y} etc. and conserves PC memory from having to permanently store
+%' a copy of the object's contents. The latter is critical when working
+%' with large data sets.
+%' <<>>=
+%' do_another <- function(x) {
+%'   y <- x + 10
+%'   scoped_func <- function(z) {
+%'     z*2
+%'   }
+%'   scoped_func(y)
+%' }
+%' do_another(10)
+%' ls()
+%' @
+%' 
+%' \subsection{Loops}
+%' A convenient way to repeat an operation is the {\tt for()}
+%' function. Note that this is \underline{not} a computationally
+%' efficient method to accomplish a repetitive task. Try to use the much
+%' more efficient {\tt apply()} family of functions when you need to do
+%' something more than about 1000 times.
+%' <<>>=
+%' for (i in 1:10) {
+%'   print(i)
+%' }
+%' @
+%' 
+%' Here {\tt i} is idiomatic. Any letter(s) can be used as
+%' an object name for the \emph{index}. Combine with extraction to loop
+%' over a data set:
+%' <<>>=
+%' letters
+%' for (i in 1:length(letters)) {  
+%'   print(letters[i])
+%' }
+%' @
+%' 
+%' \subsection{The `if' something, `else' rules}
+%' <<>>=
+%' x <- 2.2
+%' if (x <= 1) {
+%'     cat("\n'x' is smaller than or equal to one.\n")
+%' } else if (x > 1 && x < 2) {
+%'     cat("\n'x' is between one and two.\n")
+%' } else {
+%'     cat("\n'x' is greater than or equal to two.\n")
+%' }
+%' @
+%' 
+%' Vectorised version:
+%' <<>>=
+%' ifelse(1:10 >= 5, "greater than or equal to 5", "smaller than 5")
+%' @ 
+
+%% \subsection{Plotting in brief}
+
+%% <<>>=
+%% head(cars)                       # R ships with some example data sets
+%% str(cars)
+%% class(cars)
+%% @ 
+
+%% Publication ready just using {\tt plot()}:
+%% \begin{center}
+%% <<fig=TRUE>>=plot(cars)
+%% plot(cars)
+%% @
+%% \end{center}
+
+%% Adjust axis labels easily with {\tt xlab} and {\tt ylab} arguments:
+%% \begin{center}
+%% <<fig=TRUE>>=plot(cars)
+%% plot(cars, xlab = "Speed (mph)", ylab = "Stopping distance (ft)")
+%% @
+%% \end{center}
+
+%% Make a histogram like type of plot with the {\tt type} argument:
+%% \begin{center}
+%% <<fig=TRUE>>=plot(cars)
+%% plot(cars, xlab = "Speed (mph)", ylab = "Stopping distance (ft)",
+%%      type = "h")
+%% @ 
+%% \end{center}
+
+%% %% <<fig=TRUE>>=
+%% %% plot(cars)
+%% %% points(cars)
+%% %% @
+%% %% \end{center}
+
+%% Function to kill the plot window, or \emph{graphical device} :
+%% <<eval=FALSE>>=
+%% dev.off()
+%% @ 
+
+%% Sequentially overlay lines and the line of best fit:
+%% \begin{center}
+%% <<fig=TRUE>>=
+%% plot(cars)
+%% lines(cars)
+%% z <- lm(dist ~ speed, data = cars)   
+%% abline(z)
+%% @
+%% \end{center}
+
+%% Open a device window under Linux with 5 x 10 inch dimensions:
+%% <<eval=FALSE>>=
+%% x11(height = 5, width = 10)
+%% @ 
+
+%% Equivalent command under Windows:
+%% <<eval=FALSE>>=
+%% windows(height = 5, width = 10)
+%% @
+
+%% Many graphical \underline{par}ameters can be adjusted:
+%% <<>>=
+%% par(mfrow=c(1, 2))
+%% @
+
+%% \begin{center}
+%% <<fig=TRUE>>= 
+%% # plot(cars)
+%% plot(cars, type = "l")
+%% @
+%% \end{center}
+
+\subsection{Saving and restoring your session}
+Because the typical way of using {\tt R} involves writing text into a
+file with the {\tt .r} or {\tt .R} extension it's natural to save your
+commands written for a specific purpose in this {\tt
+  my-r-file.r}. Hopefully you're doing this right now. However there
+are other bits and pieces of your {\tt R} session described below you
+may want or need to save.
+
+Save all objects to the working directory in a file called {\tt .RData}:
+<<eval=FALSE>>=
+save.image()
+@ 
+Or give the file a name:
+<<eval=FALSE>>=
+save.image("mySession.RData") 
+@ 
+
+Save all commands entered into the {\tt R} console during your session to
+the working directory in a file called {\tt .Rhistory}: 
+<<eval=FALSE>>=
+savehistory()
+@
+%Such a file may be hidden by default in some file browsers, including linux.
+
+Note that this typically occurs (console dependent) by default when you
+quit your {\tt R} session. If an {\tt .Rhistory} file already exists from a previous
+session, the current session is appended to the end of this file and
+saved. Thus, by design, a complete log of your work is saved together
+with your script file, if your console session contains less than 512 lines.
+
+Save specific objects:
+<<eval=FALSE>>=
+save(object_1, object_2, object_3, file = "rObjects123.RData")
+@
+
+Restore or load previous sessions or objects:
+<<eval=FALSE>>=
+load("mySession.RData")        # load from the working directory
+@
+
+Load {\tt .Rhistory} file to access the history from the console:
+<<eval=FALSE>>=
+loadhistory()
+@
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Miscellaneous Tips}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+{\tt R} is case sensitive:
+<<>>=
+c("Hello" == "hello", "goodbye" == "goodbye")
+@
+
+And is \emph{very} sensitive in general:
+<<eval=FALSE, echo=TRUE>>=
+# c("Hello" == "hello" "goodbye" == "goodbye") # not run
+@
+%% <<eval=TRUE, echo=FALSE, results=verbatim>>=
+%% catchagain <- try(c("Hello" == "hello" "goodbye" == "goodbye"))
+%% cat(catchagain)
+%% @
+
+Missing data. {\tt NA} 'Not Available' is how {\tt R} defines a missing value
+i.e., an empty cell in excel
+<<>>=
+c(1, NA, 3, 4, NA)
+@ 
+
+{\tt R} is an environment. What's in yours?
+<<eval=FALSE>>=
+ls()                              # global environment
+objects()                         # alias for ls()
+@
+
+Too many objects cluttering up your environment and computer memory?
+Remove the ones you don't need:
+<<eval=FALSE>>=
+rm(object_name)
+@
+
+What is the current \emph{working directory} where files are saved and loaded from by default?
+<<eval=FALSE>>=
+getwd()
+@
+
+Need to set or change the current working directory?
+<<eval=FALSE>>=
+setwd(dir = "c:\\Windows\\Users\\karl\\My Documents\\R stuff")
+setwd(dir = "c:/Windows/Users/karl/My Documents/R stuff")
+@
+Note the double backslashes required by {\tt R} running under
+Windows. Single forward slashes, the Unix convention works equivalently.
+
+Also be aware that if you started your {\tt R} session by double
+clicking a {\tt file.name.r} file, by design the directory where this
+file resides is set as the working directory. This directory is also a
+good place, and the default place, to store the respective {\tt
+  .RData} and {\tt .Rhistory} files if you have any. When these
+files are present in the same directory they will be loaded
+automatically, unless you explicitly tell {\tt R} not to load them by
+using the {\tt ---no-restore-data} argument when starting {\tt R}.
+
+Quit your {\tt R} session:
+<<eval=FALSE>>=
+q()                           # not run
+@
+
+Object names can not begin with numbers. For example:
+<<eval=FALSE>>=
+## 3vector <- c(2, 4, 6))    # not run
+@
+But can end with numbers if necessary:
+<<>>=
+vector3 <- c(2, 4, 6)
+@
+
+Try to code with style, for example:
+
+\url{https://google.github.io/styleguide/Rguide.xml}
+
+\url{http://adv-r.had.co.nz/Style.html}
+
+% 
+% 
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% \section{SessionInfo}
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% \label{sec:SessionInfo}
+% 
+% <<sessionInfo, results=tex, echo=TRUE>>=
+% toLatex(sessionInfo())
+% @ 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Document License}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\href{https://www.gnu.org/licenses/gpl-3.0.html}{GNU General Public License v2.0 or higher (GPL$>=$v2)}
+\end{document}

@@ -1,0 +1,187 @@
+\documentclass[12pt]{article}
+
+\usepackage{amsmath}
+\usepackage{hyperref}
+\usepackage[authoryear,round]{natbib}
+\usepackage{graphicx, subfig}
+\usepackage{enumerate}
+
+\textwidth=6.2in
+\textheight=8.5in
+%\parskip=.3cm
+\oddsidemargin=.1in
+\evensidemargin=.1in
+\headheight=-.3in
+
+\newcommand{\scscst}{\scriptscriptstyle}
+\newcommand{\scst}{\scriptstyle}
+\author{Elizabeth Ribble\footnote{emcclel3@msudenver.edu}}
+\date{18-24 May 2017}
+
+\begin{document}
+
+\title{Basic Course on {\tt R}:\\
+Linear Regression}
+\maketitle
+\tableofcontents
+
+\newpage\noindent Most of the following examples use the data ``R\_data\_January2015.csv'' which contains variables on mothers whose babies are either intellectually disabled or developmentally normal.
+<<>>=
+babies <- read.csv("R_data_January2015.csv",header=T,row.names=1)
+names(babies)
+attach(babies)
+@
+
+\section{Linear Regression Basics}
+There is a high positive correlation between birth weight and gestational age, but this says nothing about predictive power of the variables. We would like to explain how gestational age influences changes in birth weight. 
+\begin{center}
+<<out.width="3.2in">>=
+plot(pregnancy_length_weeks,birthweight)
+@
+\end{center}
+<<>>=
+cor(pregnancy_length_weeks,birthweight)
+@
+We'll quantify this relationship using linear regression, distinguishing between an independent, or predictor or explanatory, variable (gestational age) and a dependent, or response or outcome, variable (birth weight). Simple linear regression uses the following model: 
+\begin{align*}
+\mbox{response}_i &= (\mbox{model}_i) + \mbox{error}_i\\
+y_i &= b_0 + b_1X_i + \epsilon_i
+\end{align*}
+where $1\leq i\leq n$, model is a straight line, and error is remaining variation which cannot be explained by the model.\\ 
+
+\noindent The parameters $b_0$ and $b_1$ are the intercept and slope of a straight line, respectively: 
+\begin{center}
+\includegraphics{reg1.png}
+\end{center}
+Note that intercept and slope represent different things:
+\begin{center}
+<<out.width="3.2in">>=
+plot(1:10, 1:10, type="l", col="blue", lwd=3, 
+     ylim=c(0,20), xlim=c(0,10), xlab="x", ylab="y")
+abline(0, 1.5, lty=2, col="orange", lwd=3)
+abline(0, .3, lty=2, col="orange", lwd=3)
+abline(10, 1, lty=1, col="blue", lwd=3)
+@
+\end{center}
+\noindent The error term $\epsilon_i$ denotes the residuals: the differences between observed values and the fitted line.
+\begin{center}
+<<out.width="3.2in">>=
+plot(pregnancy_length_weeks,birthweight)
+abline(-12441.4, 400.3, col="red", lwd=2)
+lines(c(35,35), c(1380,1568.921), lwd=2, col="purple")
+text(35.5, 1560, expression(epsilon), cex=2, col="purple")
+@
+\end{center}
+The $b_0$ and $b_1$ of the one straight line that best fits the data is estimated via the method of least squares. The ``best'' line is the one that has the lowest sum of squared residuals. The command to get these estimates in R is {\tt lm}:
+<<>>=
+lm1 <- lm(birthweight ~ pregnancy_length_weeks)
+lm1
+@
+and that's how I knew the line in the above plot should have intercept -12441.4 and slope 400.3! Also, the point on the line for 35 weeks is $-12441.4 + 400.3 * 35 = 1568.921$, which can be more accurately provided by
+<<>>=
+predict(lm1)[pregnancy_length_weeks==35]
+@
+You can also use {\tt predict} to predict $y$ for $x$'s that are not already in your data:
+<<>>=
+predict(lm1, newdata=data.frame(pregnancy_length_weeks=c(seq(25,50,5))))
+@
+but watch out for extrapolating (predicting outside the range of your data) - clearly we can't have negative birth weights!\\
+
+\noindent Now, before we make inference on or, actually, even find and use this line, we \textbf{must} check that the following assumptions hold, otherwise we will not obtain trustworthy results:
+\begin{itemize}
+\item relationship between $x$ and $y$ can be described by a straight line
+\item outcomes $y$ are independent
+\item variance of residuals is constant across values of $x$
+\item residuals follow a normal distribution
+\end{itemize}
+To get diagnostic plots in R, we can check a histogram of the data and additionally plot our model to check that the residuals are normal and homoscedastic (have constant variance) across the weeks:
+\begin{center}
+<<out.width="3.2in">>=
+hist(birthweight)
+@
+
+<<out.width="3.2in">>=
+par(mfrow=c(2,2))
+plot(lm1)
+@
+%\includegraphics[width=.8\textwidth]{18_basic_course_on_R_linreg-diagnostics.pdf}
+\end{center}
+The top left plot tells us if our residuals are homoscedastic, and the top right plot displays a quantile-quantile (QQ) plot to check for normality. Here are examples of bad QQ plots and heteroscedasticity: 
+\begin{center}
+<<out.width="3.2in">>=
+set.seed(1234)
+par(mfrow=c(2,2))
+x <- sort(rnorm(100))
+y1 <- sort(rt(100,2))
+plot(x, y1, xlim=c(-3,3), xlab="normal", ylab="t, df=2")
+abline(0, 1)
+y2 <- sort(rexp(100))
+plot(x, y2, xlim=c(-3,3), ylim=c(-6,6), xlab="normal", ylab="exponential")
+abline(0, 1)
+plot(x, x^2-5+rexp(100))
+abline(0, 0, col="red")
+plot(x, x*rexp(100))
+abline(0, 0, col="red")
+@
+%\includegraphics[width=.8\textwidth]{18_basic_course_on_R_linreg-qq.pdf}
+\end{center}
+However, the assumptions reasonably hold for our baby data, so we'll go ahead and use the model fit to make inference on the slope $b_1$.\\
+
+\noindent Actually, R has already done the inference...we just need to extract it from the model:
+<<>>=
+summary(lm1)
+@
+R has performed a one-sample $t$-test on the intercept $b_1$ and slope $b_0$ to determine if they are each statistically significantly different from 0. The probabilities are quite small, so we can reject the null hypothesis that they are equal to 0 and conclude that birthweight significantly increases, on average, by 400 grams per every additional week of gestation. The intercept is (usually) unimportant and we don't really care that it is different from 0. If the $p$-value for the slope is not small (e.g. greater than 0.05) then we would say ``we do not have enough evidence to reject the null hypothesis that the slope is 0.''\\
+
+\noindent Now, how good does the model actually fit our data? How well does $x$ predict $y$? In a previous lecture, I told you that the square of Pearson's correlation coefficient, $r$, is a measure of goodness of fit. It is the proportion of variance in $y$ that can be explained by the model (so, $x$). In our example, $r^2$ is:
+<<>>=
+cor(pregnancy_length_weeks,birthweight)^2
+summary(lm1)$r.squared
+@
+\noindent which means that 96\% of the variability in birth weight can be explained by gestational age.\\
+
+\section{Multiple Linear Regression}
+Simple linear regression models one $y$ on one $x$. If we have multiple predictor variables, we use multiple linear regression to determine if the variability in $y$ can be explained by this set of variables. In addition to the assumptions required for a valid simple linear regression, we now include that the covariates have no perfect multicollinearity, that is there is no strong correlation between the multiple $x$'s. The model is
+\begin{align*}
+y &= b_0 + b_1X_1 + b_2X_2 + ... + b_kX_k + \epsilon_i
+\end{align*}
+\noindent In R, the addition of an extra variable is quite straightforward:
+<<>>=
+cor(pregnancy_length_weeks, BMI)
+lm2 <- lm(birthweight ~ pregnancy_length_weeks + BMI)
+lm2stats <- summary(lm2)
+lm2stats
+@
+\noindent Since the 2 variables are uncorrelated, we can add BMI to the model. We see that it does not significantly predict birth weight, but gestational age still does. We use the adjusted $r^2$ to check goodness of fit: 
+<<>>=
+lm2stats$adj.r.squared
+@
+\noindent So adding BMI does not help explain any of the variability in birth weight (since $r^2$ was previously already 0.96). This is also confirmed by visualization: 
+\begin{center}
+<<out.width="3.2in">>=
+plot(BMI,birthweight)
+@
+\end{center}
+Note that the {\tt summary} function returns a lot of information. If, for example, you wanted to extract only the $p$-values you could do the following:
+<<>>=
+names(lm2stats)
+lm2stats$coef[,4]
+@
+\noindent We can predict birthweights with new data:
+<<>>=
+predict(lm2, newdata=data.frame(pregnancy_length_weeks=32, 
+                                BMI=30))
+## same as
+lm2coefs <- lm2$coef
+lm2coefs[1] + lm2coefs[2]*32 + lm2coefs[3]*30
+@
+\noindent But we cannot forget to check assumptions! 
+\begin{center}
+<<out.width="3.2in">>=
+par(mfrow=c(2,2))
+plot(lm2)
+@
+%\includegraphics[width=.8\textwidth]{18_basic_course_on_R_linreg-diag2.pdf}
+\end{center}
+
+\end{document}

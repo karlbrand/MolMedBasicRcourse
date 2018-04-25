@@ -1,0 +1,806 @@
+\documentclass [12pt]{article}
+
+\usepackage{graphics,latexsym,geometry,amsmath,bibunits,makeidx,fancyhdr,graphicx}
+\usepackage{hyperref}
+\usepackage[authoryear,round]{natbib}
+\usepackage{graphicx,color}
+\usepackage{enumerate}
+
+\newcommand{\noin}{\noindent}
+\newcommand{\be}{\begin{equation}}
+\newcommand{\ee}{\end{equation}}
+\newcommand{\bi}{\begin{itemize}}
+\newcommand{\ei}{\end{itemize}}
+\newcommand{\bdm}{\begin{displaymath}}
+\newcommand{\edm}{\end{displaymath}}
+\newcommand{\bea}{\begin{eqnarray}}
+\newcommand{\eea}{\end{eqnarray}}
+\newcommand{\beaa}{\begin{eqnarray*}}
+\newcommand{\eeaa}{\end{eqnarray*}}
+\newtheorem{example}{Example}[section]
+\newcommand{\bex}{\begin{example} \normalfont}
+\newcommand{\eex}{\end{example}}
+\newtheorem{exercise}[example]{Exercise}
+\newcommand{\bexc}{\begin{exercise} \normalfont}
+\newcommand{\eexc}{\end{exercise}}
+\newtheorem{problem}{}
+\newcommand{\bpr}{\begin{problem} \normalfont}
+\newcommand{\epr}{\end{problem}}
+\newcommand{\babc}{\begin{list}{\alph{abc})}{\usecounter{abc}
+  \itemindent=-10pt}}
+\newcommand{\eabc}{\end{list}}
+\newcommand{\ben}{\begin{enumerate}}
+\newcommand{\een}{\end{enumerate}}
+\newcounter{abc}
+
+
+
+
+\textwidth=6.2in
+\textheight=8.5in
+%\parskip=.3cm
+\oddsidemargin=.1in
+\evensidemargin=.1in
+\headheight=-.3in
+
+\newcommand{\scscst}{\scriptscriptstyle}
+\newcommand{\scst}{\scriptstyle}
+\author{Elizabeth Ribble\footnote{emcclel3@msudenver.edu}}
+\date{18-24 May 2017}
+
+\begin{document}
+
+\title{Basic Course on {\tt R}:\\
+  Object-Oriented Programming}
+\maketitle
+\tableofcontents
+
+\newpage
+
+  
+
+\section{Object Oriented Programming}
+
+
+
+
+\subsection{Objects and Classes}
+
+\subsubsection{Objects}
+
+\bi
+
+\item In R, every ``thing'' is an {\bf \em object}.  The vectors \texttt{x} and 
+\texttt{logicVec} and the matrix \texttt{X} are examples of objects:
+
+<<echo = F>>=
+x <- c(2, 4, 2, 7, 9, 11, 9, 4, 2, 6, 7, 9, 9, 4, 3)
+@
+
+<<>>=
+x
+@
+
+<<echo = F>>=
+logicVec <- c(TRUE, FALSE, TRUE)
+@
+
+<<>>=
+logicVec
+@
+
+
+<<echo = F>>=
+X <- matrix(x, nrow = 5, ncol = 3)
+@
+
+<<>>=
+X
+@
+
+
+\item Objects can be passed as arguments to functions which perform 
+operations on them and then return other objects. 
+
+%\item One special object is the \texttt{NULL} object.  It's an "empty" object
+%sometimes returned by expressions or functions whose value is undefined.
+
+\ei
+
+
+\subsubsection{Classes of Objects}
+
+\bi
+
+\item Each object belongs to a certain {\bf \em class} of objects. We
+can determine what class an object belongs to using \texttt{class()}
+or \texttt{is.cname()}:
+
+<<eval=FALSE,background="lightgrey">>=
+class()     # Determines the class of an object.  Can also be  
+            # used to assign a class to an object.
+is.cname()  # Returns TRUE if an object belongs to the class 
+            # "cname" (e.g. is.numeric(), is.data.frame(), etc.) 
+            # and FALSE otherwise.
+@
+
+\item For example, the object \texttt{x} belongs to the {\em numeric vector}
+class, \texttt{logic.vec} belongs to the {\em logical vector}
+class, and \texttt{X} belongs to the {\em matrix} class:
+
+<<>>=
+class(x)
+class(logicVec)
+class(X)
+@
+
+%\item Three other important classes of objects are {\em lists} and {\em data frames}, 
+%which are described in Sections \ref{sec:lists} and \ref{sec:data_frames}, and 
+%{\em factors}, which are discussed in later set of R Notes.
+
+\item There are two types of classes in R, {\bf S3} classes and {\bf S4}
+classes.  Nearly all of R's built-in classes are the S3 type, including numeric, character, 
+and logical vectors, matrices and arrays, lists, and data frames.
+
+\ei
+
+
+\subsection{Generic Functions and Methods}
+
+
+\subsubsection{Generic Functions}
+
+\bi
+
+\item Some R functions only accept arguments from a single class.
+Others accept objects from more than one class. 
+
+\item Functions that accept objects from more than one class are called 
+{\bf \em generic functions}.  
+
+\item For example, \texttt{boxplot()} is a generic function because it 
+can be passed a numeric vector {\em or}
+a matrix (among other classes of objects).  Below it's first
+passed a vector and then a matrix:
+
+
+<<out.width="3.2in">>=
+boxplot(x)               # x is a vector.
+boxplot(X)               # X is a matrix with 3 columns.
+@
+
+
+\noin Notice that \texttt{boxplot()} does different
+things depending on what class of object is passed to it -- when passed a vector 
+it produces a single boxplot, but when passed a matrix,
+it produces side-by-side boxplots of the matrix's columns.  \\
+
+%Notice that \texttt{mean()} {\em doesn't} accept {\em character vectors}:
+
+%\begin{Sinput}
+%> char.vec <- c("a", "b", "c", "a", "c", "a", "b")
+%> char.vec
+%[1] "a" "b" "c" "a" "c" "a" "b"
+
+%> mean(char.vec)
+%[1] NA
+%Warning message:
+%In mean.default(char.vec) :
+%  argument is not numeric or logical: returning NA
+%\end{Sinput}
+
+\ei
+
+
+
+\subsubsection{Methods}
+
+\bi
+
+\item There are actually different ``versions'' of the \texttt{boxplot()} function that
+are referred to as its {\bf \em methods}.  
+
+\item Each \texttt{boxplot()} {\em method} accepts a specific class of arguments.
+One method accepts vectors 
+and another accepts matrices.   
+
+\item When we pass an object to a generic function, the function determines the 
+class of the object and then "dispatches" it to the appropriate method.
+
+
+%such as 
+%a {\em vector} or a {\em matrix} to the generic function \texttt{boxplot()}, it simply determines the 
+%class of the object and then dispatches that object it to the appropriate {\em method}.
+
+
+\item If we look at a generic function's definition (by typing its name on the command 
+line), we see that it calls another function, \texttt{UseMethod()}, which 
+dispatches the object to the appropriate method.  For example:
+
+<<>>=
+boxplot
+@
+
+\item We can view the methods associated with a given generic function using:
+
+<<eval=FALSE, background="lightgrey">>=
+methods()      # Determine the S3 methods that are associated   
+               # with a given generic function
+showMethods()  # Determine the S4 methods that are associated   
+               # with a given generic function
+@
+
+\item  For 
+example, to see the methods for \texttt{boxplot()}
+type:
+
+<<>>=
+methods(boxplot)
+@
+
+\item The method \texttt{boxplot.default()} is the ``version'' of \texttt{boxplot()}
+that accepts vectors.  The \texttt{boxplot.matrix()} method is the one that 
+accepts matrices. So typing
+
+<<eval=FALSE>>=
+boxplot(x)
+@
+is equivalent to typing
+
+<<eval=FALSE>>=
+boxplot.default(x)
+@
+and typing 
+
+<<eval=FALSE>>=
+boxplot(X)
+@
+
+is equivalent to typing
+
+<<eval=FALSE>>=
+boxplot.matrix(X)
+@
+(Actually, in addition to vectors, \texttt{boxplot.default()}
+also accepts several other classes of objects.)  
+
+\item In general, methods have names of the form \texttt{fname.cname()},
+where \texttt{fname()} is name of the generic function and \texttt{cname}
+is the class of objects that the method accepts.
+
+\item ``Non-visible'' methods (such as \texttt{boxplot.formula})
+are ones that are ``not found'' when you type their name on the command line, 
+but R can find them when it needs them.   (If you need to view a ``Non-visible'' method's definition you can do so 
+using \texttt{getAnywhere()}, for example \texttt{getAnywhere(boxplot.formula)}.)
+
+% but they're "hidden" in the so-called "graphics namespace".
+
+%Type 
+%> graphics:::boxplot.formula
+%to see the function.
+
+\item For the other (``visible'') methods, we can view their definitions by typing their name on the command line, e.g.
+
+<<>>=
+boxplot.matrix;
+@
+
+\ei
+
+
+
+
+\section{Performance Enhancement:  Speed and Memory}
+
+
+\subsection{Writing Faster R Code}
+
+\bi 
+
+\item Computationally intensive tasks, e.g.\ those involving very large data
+sets, can require excessive amounts of computing time and/or memory usage.
+
+\item Some ways of speeding up your R code 
+are:
+
+\bi
+
+\item Optimizing your code by using {\em vectorization} (and avoiding loops),
+{\em bytecode compilation}, and other techniques.
+
+\item Writing the computationally intensive chunks code in C or C$^{++}$ 
+and then calling them from R (see Chapter 15).
+
+\item Using parallel R computing (see Chapter 16).
+
+\ei
+
+\item The amount of time required to run your code will depend on:
+
+\bi
+
+\item The computer it's being run on.  
+
+\item The number and types of other processes (applications) that are running while 
+your R code is being executed, such as web 
+browsers, word processors, music players, etc.
+
+\ei
+
+
+\item To test the speed of a chunk of R code, we use:
+
+\begin{Sinput}[frame=single, framerule=1mm,  formatcom={\color{black}}]
+system.time()     # Returns the computation time required to  
+                  # execute a chunk of R code (in seconds)
+\end{Sinput}
+
+\item \texttt{system.time()} takes as its argument one or more R commands (enclosed 
+by curly brackets if there are more than one), and returns time spent executing them.  
+
+\item Here's an example in which we time how long it takes to add two vectors together using a loop:
+
+<<>>=
+x <- runif(100000)
+y <- runif(100000)
+z <- NULL
+system.time(
+    for(i in 1:100000) {
+       z[i] <- x[i] + y[i]
+    }
+)
+@
+        
+
+\item The return value of \texttt{system.time()} contains three components,
+all reported in seconds:
+
+%The definition of 'user' and 'system' times is from your OS. 
+
+%From the R Help mailing list:
+
+%"User CPU time" gives the CPU time spent by the current 
+%process (i.e., the current R session) and "system CPU time" 
+%gives the CPU time spent by the kernel (the operating 
+%system) on behalf of the current process.  The operating 
+%system is used for things like opening files, doing 
+%input or output, starting other processes, and looking at 
+%the system clock:  operations that involve resources that many 
+%processes must share.  Different operating systems will 
+%have different things done by the operating system. 
+
+%E.g., look at the difference between opening a file once 
+%per write for many writes and opening it just once: 
+
+%> system.time(for(i in 1:10^4)cat(i, file="e:/temp/i.txt", append=TRUE)) 
+%   user  system elapsed 
+%   1.00    2.92    4.08 
+%> system.time({file<-file("e:/temp/i.txt","w");for(i in 1:10^4)cat(i, file=file);close(file)}) 
+%   user  system elapsed 
+%   0.10    0.08    0.15 
+
+%Most of the time you are not terribly interested in whether 
+%the CPU is being used by R or by the operating system on 
+%R's behalf.  However, a large system time can point towards 
+%problems in not batching up I/O or other OS requests enough.   
+
+
+\bi
+
+\item {\bf \em User time}: The CPU time spent by the {\em current process} (i.e.\ the current R session).$^1$
+
+% executing R commands
+
+\item {\bf \em System time}: The CPU time spent by the {\em operating 
+system} on behalf of the current process (R session) carrying out tasks 
+that must also be carried out on behalf of other processes (applications), 
+e.g.\ input/output tasks such as accepting keyboard input, printing to the screen, 
+opening files for reading or writing, etc.$^2$ 
+
+\item {\bf \em Elapsed time}.  This is the 
+time you would get using a stopwatch, and includes time spent on processes (applications) 
+unrelated to the R session (e.g.\ open web browsers, music players, word processors, etc.). 
+
+\ei
+
+$^1${\scriptsize The {\bf \em CPU} (central processing unit) is the computer's hardware
+that carries out instructions
+of processes (applications) and the operating system, such as performing arithmetic and logical operations and
+input/output tasks such as receiving messages from the keyboard, printing to the screen,
+and writing to a file.} 
+
+$^2${\scriptsize The {\bf \em operating system} is the computer's software that manages 
+processes (applications), making sure they don't interfere with
+each other, and performs
+common services for those applications such as directing input/output, e.g.\ from the keyboard to the screen, 
+to or from a  
+file, or a to printer.}
+
+%the currently running 
+
+
+\item Usually we don't care too much whether the CPU is being used by
+R or by the operating system (on behalf of R).   We just want to know how much 
+total CPU time was used.  {\bf The sum of the user and
+system times gives the total CPU time spent executing the R code}.  
+
+\ei
+
+\subsection{Removing Unnecessary Computations from Loops}
+
+\bi
+
+
+\item Here are two examples, both of which add $\sqrt{2}$ to 
+each of 100,000 numbers.  The first is {\em inefficient}.
+The second improves upon the first by removing the computation
+of $\sqrt{2}$ from the loop because it doesn't belong there:
+
+\begin{enumerate}
+
+\item In this code we unnecessarily compute $\sqrt{2}$ during each of 100,000 iterations of the loop:
+
+<<>>=
+x <- runif(100000)
+system.time(
+    for(i in 1:100000) {
+      y <- sqrt(2)    # This statement can be moved outside the loop
+      x[i] <- x[i] + y
+    }
+)
+@
+
+
+\item The code can be made more efficient by moving the command
+\texttt{y <- sqrt(2)} outside the loop:
+
+
+<<>>=
+system.time({
+    y <- sqrt(2)           # This statement was pulled from the loop
+    for(i in 1:100000) {
+        x[i] <- x[i] + y
+    }
+})
+@
+
+\end{enumerate}
+
+
+\item It turns out that function calls (like \texttt{sqrt(2)} above) are time consuming 
+in R, in part because they involve setting up environments, sometimes several nested inside each other,
+to store local variables.  The second loop above only calls \texttt{sqrt()} once (as opposed to 
+100,000 times), so it's faster.
+(The task can be performed even faster using 
+vectorization).
+
+\ei
+
+
+\subsection{Vector Preallocation}
+
+\bi
+
+\item {\bf \em Vector preallocation} refers to creating a vector {\em prior} to
+executing a loop, and then replacing its elements during the loop's iterations.
+Preallocation can speed up
+R code. 
+
+\item Here are three examples in which we use a loop to add two vectors \texttt{x}
+and \texttt{y} together, storing the result in another vector \texttt{z}.  The first two 
+don't use preallocation, the third does.
+
+%Part of this came from the web (http://www.ats.ucla.edu/stat/r/faq/timing_code.htm):
+
+\begin{enumerate}
+
+\item Here's an {\em inefficient} set of code that uses \texttt{c()} to {\em recreate} \texttt{z} each iteration of the loop:
+
+<<>>=
+x <- runif(100000)
+y <- runif(100000)
+z <- NULL                 # We do not preallocate the elements of z
+system.time(
+    for (i in 1:100000) {
+        z <- c(z, x[i] + y[i])  # R has to recreate z entirely 
+                                # each iteration
+    }
+)
+@
+
+\item An alternative approach is to {\em redimension} \texttt{z} by increasing
+its length one element each iteration, but this too is {\em inefficient} because 
+it turns out that redimensioning a vector
+takes as much time as recreating it altogether:
+
+<<>>=
+z <- NULL                   # do not preallocate the elements of z
+system.time(
+    for (i in 1:100000) {
+        z[i] <- x[i] + y[i] # R has to redimension z (change  
+    }                       # its length) each iteration
+)
+@
+
+
+
+\item Now watch how much faster the code is when we {\em preallocate} 
+space for the elements 
+of \texttt{z} before entering the loop:
+
+<<>>=
+z <- rep(NA, 100000)      # Now preallocate 100,000 elements of z,
+                          # assigning each the value NA
+system.time(
+    for (i in 1:100000) {
+        z[i] <- x[i] + y[i] # R only has to assign to a single  
+    }                       # element of z, with no redimensioning
+)
+@
+
+%# Stop the clock
+%proc.time() - ptm
+
+%   user  system elapsed 
+%   0.34    0.06    0.41
+
+%Alternatively, we can use a non-looping approach:
+
+%ptm <- proc.time()
+%h <- g + 1
+%proc.time() - ptm
+
+%   user  system elapsed 
+%   0.00    0.02    0.01
+
+We see that preallocation speeds the code up
+considerably.
+
+\end{enumerate}
+
+
+%\item The reason why preallocation is faster is that each time the line
+%\texttt{h <- c(h, g[i] + 1)} is encountered, R has to recreate \texttt{h},
+%which takes more time than just assigning a value to an element of \texttt{h}
+%(as in the line \texttt{h[i] <- g[i] + 1}).
+
+%\item changing the length of a vector (i.e.\ {\bf \em redimensioning} it) takes about as much 
+%time as creating a new vector, so each time we increase the length of the vector 
+%\texttt{h}, it takes about as much time as recreating it altogether.
+
+
+
+\ei
+
+
+
+
+\subsection{Using Vectorization and Avoiding Loops} \label{vectorize}
+
+
+
+%Also from the web:
+
+%1 Array preallocation
+
+%There are many cases in which we want to collect the results of many computations together into a single %data structure, e.g. a vector or array. One way of doing this is to start with an empty array, and each time %through the loop, add a value to it (and hence lengthening it). It turns out this way is very slow. What's %much, much faster is to pre-allocate the array (and fill it with whatever values you want, e.g. zeros, or %NaNs), and then set each value as you go through the loop to the result of your computation. 
+
+%Here is an example in MATLAB: 
+
+%% let's compute the following formula
+%% for values between 0 and n:
+%%
+%% f(i) = (i + f(i-1)) / n
+
+%n = 1e5;
+
+%% the slow way:
+%%
+%tic
+%c = [0];
+%for i=2:n
+%  c = [c, (i + c(i-1)) / n];
+%end
+%toc
+%%
+%% on my laptop this takes 3.6421 seconds
+
+%% the fast way, with array pre-allocation
+%%
+%tic
+%c = zeros(1,n);
+%for i=2:n
+%  c(i) = (i + c(i-1)) / n;
+%end
+%toc
+%%
+%% on my laptop this takes 0.0014 seconds
+%% this is over 2,500 times faster than the slow version
+
+%In the slow version, we start with an array of length 1 containing the number zero. Each time through the loop we concatenate the array with the next value, and in this way we "build up" the array. 
+
+%In the fast version, we pre-allocate an array of the required length, fill it with zeros, and then each time through the loop we simply assign the appropriate value to the appropriate array position. 
+
+%The reason the slow version is so slow, is that each time we concatenate the array, several steps take place: 
+%1.a new array is created that has length one greater than the old array 
+%2.the old array is copied into the new array 
+%3.the new value is copied to the end of the new array 
+
+%As you can imagine, when the array gets large, the copy operation can take a lot of time. It's inefficient to keep copying the array over and over again. 
+
+%With pre-allocation, there is no copying, only assignment, and only single values are assigned. 
+
+
+
+\bi
+
+\item Recall that many of R's built-in functions (\texttt{sqrt()}, \texttt{abs()}, etc.) 
+and operators (`\texttt{+}', `\texttt{-}',
+`\texttt{*}', `\texttt{/}', `\texttt{\^{ }}', etc.) are {\em vectorized}.
+
+\item  It's usually 
+{\em much} faster to use {\em vectorization} than to perform the same task using a loop.
+
+\item For example, below we time two sets of code that perform the same task, 
+adding the elements of two vectors \texttt{x} and \texttt{y} together.  The first 
+uses a loop and the second 
+the vectorized property of the `\texttt{+}' operator:
+
+<<>>=
+x <- runif(100000)
+y <- runif(100000)
+z <- rep(NA, 100000)
+@
+
+\begin{enumerate}
+
+\item Here we use a loop, which is {\em inefficient}:
+
+<<>>=
+system.time( 
+    for(i in 1:length(x)) {
+        z[i] <- x[i] + y[i]
+    }
+)
+@
+
+\item Now we use vectorization to speed up the code:
+
+<<>>=
+system.time( 
+    z <- x + y
+) 
+@
+
+Note that the vectorized code was {\em much} faster than the loop.
+
+\end{enumerate}
+
+\item The reason why vectorization is (usually) faster than looping is that
+vectorized computations are carried out behind the scenes in the C language, 
+which is much
+faster than R.  (Recall that underlying R is a suite of C functions 
+that R invokes when it needs them). \\
+
+More precisely, vectorization usually involves fewer R function calls, which as 
+noted can be slow.  For example, although it may not look
+like it, in the loop above, the `\texttt{+}' operation actually involves making 100,000 calls to a function \texttt{"+"()}:
+
+<<>>=
+"+"(2, 3)
+@
+
+Using vectorization, the \texttt{"+"()} function is only called once, at which point
+all further computational tasks are passed to the C language.
+
+\ei
+
+
+
+\subsection{Bytecode Compilation}
+
+\bi
+
+\item A {\bf \em bytecode compiler} translates a so-called 
+{\bf \em high-level} language like R, which is closer to human spoken language and 
+therefore easier to understand but
+relatively slow, into a {\bf \em low-level} language called 
+{\bf \em bytecode}, which is closer to the computer's {\bf \em machine
+instruction language} and therefore harder to 
+understand but much faster.  
+
+\item R comes equipped with its own bytecode compiler, in the built-in
+package \texttt{compile}, which we can 
+use to try to speed up our code.  We'll look at one function from the 
+\texttt{compile} package:
+
+\begin{Sinput}[frame=single, framerule=1mm,  formatcom={\color{black}}]
+cmpfun() # Translate (compile) a function from R code to bytecode             
+\end{Sinput}
+
+%compile()    # Translate (compile) an R expression or sequence of R 
+%             # commands (in curly brackets) to bytecode   
+
+
+\item Here's an example of how \texttt{cmpfun()} is used to speed up the 
+first example of Subsection \ref{vectorize}:
+
+<<>>=
+x <- runif(100000)
+y <- runif(100000)
+z <- rep(NA, 100000)
+library(compiler)     # The 'compiler' package comes built-in with R
+f <- function() {
+    for(i in 1:length(x)) {
+        z[i] <<- x[i] + y[i]   # Note the use of '<<-'
+    }
+}
+@
+
+<<>>=
+cf <- cmpfun(f)
+@
+
+<<>>=
+system.time(cf())
+@
+
+We see by comparison that the compiled code runs faster than the uncompiled code in the first example of Subsection \ref{vectorize}.  (Note, though, that using bytecode still isn't as fast as using vectorization.)
+
+
+\ei
+
+
+%\subsubsection{Using \texttt{sapply()} Instead of a Loop}
+
+%\bi
+
+%\item It's often possible use the \texttt{sapply()} function to accomplish a task that would otherwise 
+%involve the use of a loop.  \texttt{sapply()} accepts a {\em vector} argument \texttt{X}
+%and a {\em function} argument \texttt{FUN} and applies the function
+%successively to each element of \texttt{X}. 
+
+%\item For example, the following squares each of the integers \texttt{1:100000}:
+
+%<<>>=
+%square <- function(x) {
+%  return(x^2)
+%}
+%x <- rep(NA, 100000)
+%@
+
+%<<>>=
+%system.time(
+%    for(i in 1:100000) {
+%        x[i] <- square(i)
+%    }
+%)
+%@
+
+%<<>>=
+%system.time(
+%    x <- sapply(1:100000, FUN = square)
+%)
+%@
+
+%\item Of course, we could've gotten the same result by typing
+%\texttt{x\^{ }2}.
+
+%\ei
+
+
+
+
+%\subsection{Memory}
+
+%Here's an example of something slow:
+
+%system.time(for(i in 1:1000000) x <- c(x, i))
+
+
+\end{document}
+
+
+  
+  
+  

@@ -1,0 +1,236 @@
+\documentclass[12pt]{article}
+
+\usepackage{amsmath}
+\usepackage{hyperref}
+\usepackage[authoryear,round]{natbib}
+\usepackage{graphicx}
+\usepackage{enumerate}
+
+\textwidth=6.2in
+\textheight=8.5in
+%\parskip=.3cm
+\oddsidemargin=.1in
+\evensidemargin=.1in
+\headheight=-.3in
+
+\newcommand{\scscst}{\scriptscriptstyle}
+\newcommand{\scst}{\scriptstyle}
+
+\author{Karl Brand\footnote{brandk@gmail.com}\hspace{2mm}  and Elizabeth Ribble\footnote{emcclel3@msudenver.edu}}
+\date{18-24 May 2017}
+
+\begin{document}
+
+\title{Basic Course on {\tt R}:\\
+Manipulating / Selecting Data}
+\maketitle
+\tableofcontents
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% end preamble %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newpage\section{Manipulating / Selecting Data}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Indexing}
+Select data from vectors, arrays, lists, rows/columns in matrices and
+data.frames, using
+\begin{itemize}
+\item Explicit numeric selection
+\item Named element selection
+\item Logical and relational filtering
+\end{itemize}
+
+\subsubsection{Explicit numeric selection}
+We can specify positions or \emph{indices i} in numbers of the data we
+wish to select using square brackets which are the `extract' function, i.e.,
+{\tt object[i]}.
+<<>>==
+x <- c(11, 10, 12, 15)
+x[2]
+y <- c(13, 17, 21, 18)
+y[c(2,3)]
+m <- matrix(c(x, y), ncol=2)
+m
+m[, 1]
+m[c(2, 4), 1:2]
+@
+\noindent We can also use negative indices to remove/exclude elements
+we do not want:
+<<>>=
+x[-2]
+m[, -c(1, 3)]
+@
+
+\subsubsection{Named element selection} 
+Here we make use of the {\tt names} attribute:
+<<>>==
+names(x) <- c("a", "b", "c", "d")
+x
+str(x)
+x["b"]
+row.names(m) <- LETTERS[1:4]
+m
+m["A",]
+@
+\noindent Note that this is case sensitive and that {\tt LETTERS} is different from {\tt letters}. \\
+
+\noindent We can even combine the use of numbers and names:
+<<>>=
+m["A", 2]
+@
+\noindent Let's look at an example where row names are gene symbols and column names are sample IDs:
+<<>>==
+mygenes <- data.frame(samp1 = c(33, 22, 12), 
+                      samp2 = c(44, 111, 13), 
+                      samp3 = c(33, 53, 65))
+row.names(mygenes) <- c("CRP", "BRCA1", "HOXA")
+mygenes
+mygenes["CRP", ]
+mygenes[, "samp1"]
+mygenes[, c("samp1", "samp3")]
+mygenes["HOXA", "samp2"]
+@
+\noindent Note that we can also change the names of a {\tt data.frame} in the same way
+we would do so for a {\tt list} using the {\tt names} attribute:
+<<>>==
+names(mygenes) <- c("samp10", "samp20", "samp30")
+mygenes
+## but let's change it back...
+names(mygenes) <- c("samp1", "samp2", "samp3")
+@
+
+Note that the {\tt colnames} function also performs the same job for
+data frames.
+
+\subsubsection{Logical and relational filtering}
+Expressions like {\tt <}, {\tt <=}, {\tt |}, and {\tt !=} can also be used to select data:
+<<>>==
+x
+y
+keep <- c(TRUE, TRUE, FALSE, FALSE, TRUE)
+x[keep]
+x[y>=18]
+@
+\noindent Why? 
+<<>>=
+y>=18
+which(y>=18)
+x[x<=11 | x==15]
+x[x!=10]
+@
+\noindent This works for factors as well:
+<<>>==
+gender <- factor(c("M", "M", "F", "F"))
+gender
+males <- gender[gender=="M"]
+levels(males)
+@
+
+
+
+\subsection{Other useful functions}
+
+Besides square brackets ({\tt [}, {\tt [[}), other useful functions
+      exist for selecting data: {\tt duplicated}, {\tt
+        match()}, {\tt \%in\%}, {\tt grep}, {\tt is.na} and  {\tt \$}.
+\\
+
+\noindent To select e.g. rows that are not duplicated:
+<<>>==
+mm <- matrix(c(x, x, y, y), nrow=4, byrow=T)
+@
+
+<<>>==
+mm
+mm[!duplicated(mm), ]
+@
+\noindent The above can also be done with {\tt unique}, but the use of {\tt duplicated} might be more appropriate in more complex situations:
+<<>>==
+unique(mm)
+@
+\noindent Calling {\tt match} returns the position of the first match of its first argument in the second argument:
+<<>>=
+match(c("a", "b"), c("a", "c", "a", "b", "a", "b"))
+@
+\noindent whereas {\tt \%in\%} tells you whether the elements of the first argument appear in the second argument:
+<<>>=
+c("a", "b", "d") %in% c("a", "c", "a", "b", "a", "b")
+@
+\noindent Recall our data frame mygenes:
+<<>>=
+mygenes
+is.data.frame(mygenes)
+@
+\noindent Note that since {\tt mygenes} is a data frame, it is therefore also an array, which means we can select by the name of the elements in the array:
+<<>>=
+mygenes[match(c("samp1", "samp3"), colnames(mygenes))]
+mygenes[colnames(mygenes)%in%c("samp1", "samp4")]
+@
+\noindent However, in this case we could just use the names...
+<<>>=
+mygenes[c("samp1", "samp3")]
+@
+\noindent But this gives an error:
+<<>>=
+mygenes[c("samp1", "samp30")])
+@
+\noindent where this does not:
+<<>>=
+mygenes[colnames(mygenes)%in%c("samp1", "samp30")]
+@
+
+\noindent We can also use functions like {\tt grep} to search for the names we are interested in:
+<<>>=
+mygenes[grep(2, names(mygenes))]
+mygenes[grep("A", row.names(mygenes)), ]
+@
+
+\noindent If we want to find or exclude data with missing values, we can use {\tt is.na}:
+<<>>==
+z <- c(1:4, NA, 5:10)
+z
+is.na(z)
+which(is.na(z))
+z[!is.na(z)]
+@
+
+\noindent Double brackets {\tt [[} and {\tt \$} extract \emph{single}
+    elements of objects, whereas {\tt [} can extract multiple
+      elements. Recall that a data frame is a special list, where each
+      column is an element of a list:
+<<>>=
+## retrieve element
+mygenes[[3]]
+@
+
+<<>>=
+## retrieve element
+mygenes$samp3
+## subset
+mygenes[3]
+@
+\noindent These work for lists as well:
+<<>>=
+mygenelist <- list(mygenes = mygenes, mygenes2 = mygenes * 2)
+mygenelist
+## retrieve list element
+mygenelist[[1]] 
+mygenelist$mygenes
+## subset list
+mygenelist[1]
+@
+\noindent And we can even combine {\tt \$} with {\tt [} :
+<<>>=
+mygenelist$mygenes[2]
+@
+The {\tt \$} notation is useful for accessing elements of objects output by functions, e.g. a $t$-test: 
+<<>>=
+tt <- t.test(x, y)
+names(tt)
+tt$p.value
+tt$estimate
+@
+
+
+
+
+\end{document}

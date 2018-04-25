@@ -1,0 +1,123 @@
+\documentclass[12pt]{article}
+
+\usepackage{amsmath}
+\usepackage{hyperref}
+\usepackage[authoryear,round]{natbib}
+\usepackage{graphicx}
+\usepackage{enumerate}
+
+\textwidth=6.2in
+\textheight=8.5in
+%\parskip=.3cm
+\oddsidemargin=.1in
+\evensidemargin=.1in
+\headheight=-.3in
+
+\newcommand{\scscst}{\scriptscriptstyle}
+\newcommand{\scst}{\scriptstyle}
+\author{Karl Brand\footnote{brandk@gmail.com}\hspace{2mm}  and Elizabeth Ribble\footnote{emcclel3@msudenver.edu}}
+\date{18-24 May 2017}
+
+\begin{document}
+
+\title{Basic Course on {\tt R}:\\
+      Basic Plotting Practical}
+\maketitle
+\tableofcontents
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% end preamble %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newpage\section{Basic Plotting}
+
+\subsection{Use {\tt R} to do the following exercises on the {\tt BOD} data.}  
+
+\begin{enumerate}[{1.1}.1]
+ \item Display the built-in dataset called {\tt BOD} by running {\tt BOD}.
+ \vspace{5 mm}
+ \item What is the data structure of {\tt BOD}? What are the dimensions?
+ \vspace{10 mm}
+ \item What are the names of {\tt BOD}? Use a function other than {\tt str}.
+ \vspace{10 mm}
+ \item Make a line graph of demand versus time, where the line is a pink dot-dashed line [Hint: run {\tt ?par} and look for the parameter {\tt lty} to see the line types]. Add a blue dashed line of 1.1 times the demand and give it a thickness of 2 using the line width parameter {\tt lwd}. Make sure both lines are entirely visible by adjusting the range of y using the parameter {\tt ylim} in the original plot.
+ \vspace{10 mm}
+\end{enumerate}
+
+
+\subsection{Use {\tt R} to do the following exercises on the {\tt chickwts} data.}  
+
+
+\begin{enumerate}[{1.2}.1]
+ \item Display the built-in {\tt chickwts} data.
+ \item What is the data structure of {\tt chickwts}? What are the
+   dimensions?
+ \vspace{10 mm}
+ \item What are the names of {\tt chickwts}? Use a function other than
+   {\tt str}.
+ \vspace{10 mm}
+ \item What are the levels of {\tt feed}?
+ \vspace{10 mm}
+ \item Make the following plots in one 2 x 2 image:
+   \begin{itemize}
+     \item A bar chart of the feed types, each bar a different color.  
+     \item A bar chart of the proportions of feed types, each bar a
+       different color.
+     \item A boxplot of the weights by feed type, each box a different
+       color.
+     \item A horizontal boxplot of the weights by feed type, each box
+       a different color.
+   \end{itemize}
+ \vspace{10 mm}
+\end{enumerate}
+
+
+\subsection{Use {\tt R} to do the following exercises on the {\tt Puromycin} data.}  
+
+
+\begin{enumerate}[{1.3}.1]
+\item Display the built-in {\tt Puromycin} data.
+\item Make a scatterplot of the rate versus the
+  concentration. Describe the relationship.
+  \vspace{20 mm}
+\item Make a scatterplot of the rate versus the log of the
+  concentration. Describe the relationship.
+  \vspace{20 mm}
+\item Make a scatterplot of the rate versus the log of the
+  concentration and color the points by treatment group ({\tt
+    state}). Describe what you see.
+  \vspace{20 mm}
+\item Make a scatterplot of the rate versus the log of the
+  concentration, color the points by treatment group ({\tt state}),
+  label the x-axis ``Concentration'' and the y-axis ``Rate'', and
+  label the plot ``Puromycin''.
+  \vspace{5 mm}
+\item Add a legend to the above plot indicating what the points
+  represent.
+  \vspace{5 mm}
+\item Make a boxplot of the treated versus untreated rates. Using the
+  function {\tt pdf}, save the image to a file with a width and height
+  of 7 inches.
+  \vspace{5 mm}
+\item Make a histogram of the frequency of concentrations. What is the
+  width of the bins?
+  \vspace{10 mm}
+\item Make a histogram of the frequency of concentrations with a bin
+  width of 0.10. How is this different from the histogram above?
+  \vspace{20 mm}
+\item Plot the histograms side by side in the same graphic window and
+  make sure they have the same range on the y-axis. Does this make it
+  easier to answer the question of how the two histograms differ?
+  \vspace{20 mm}
+\end{enumerate}
+
+\begin{center} 
+\textbf{If you want to save your work: save your {\tt R} session and/or source code!}
+\end{center}
+
+
+
+
+
+\end{document}
+
+
+

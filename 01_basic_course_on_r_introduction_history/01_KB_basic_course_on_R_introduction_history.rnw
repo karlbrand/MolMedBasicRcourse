@@ -1,0 +1,504 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
+% Program: 01_KB_basic_course_on_R_introduction_history.rnw               %
+% Path: ~/Dropbox/Cardioformatics/CTMM_management/projects/R_course_2013  %
+% Purpose: Provide an introduction to R for the MGC R Basic R course      %
+% Prerequisite(s): none                                                   %
+% Author: Karl Brand                                                      %
+% Created: c. april 2013                                                  %
+% Last update: 2017-05-01                                                 %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% begin preamble %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\documentclass[12pt]{article}
+
+\usepackage{amsmath}
+\usepackage{hyperref}
+\usepackage[authoryear,round]{natbib}
+\usepackage{graphicx}
+\usepackage{enumerate}
+\usepackage{graphicx} % Compile only with pdfLaTeX
+% \usepackage{url,verbatim,a4wide,Sweave}
+\usepackage{parskip}
+%% \usepackage[T1]{fontenc}
+
+\textwidth      = 6.2in
+\textheight     = 8.5in
+%% \parskip        = 0.3cm
+\oddsidemargin  = 0.1in
+\evensidemargin = 0.1in
+\headheight     = -0.3in
+
+\newcommand{\scscst}{\scriptscriptstyle}
+\newcommand{\scst}{\scriptstyle}
+
+\author{Karl Brand\footnote{brandk@gmail.com}\hspace{2mm}  and Elizabeth Ribble\footnote{emcclel3@msudenver.edu}}
+\date{18-24 May 2017}
+
+\begin{document}
+
+%% Bring figures to the top
+%% https://tex.stackexchange.com/questions/28556/how-to-place-a-float-at-the-top-of-a-floats-only-page?lq=1
+\makeatletter
+\setlength{\@fptop}{0pt}
+\setlength{\@fpbot}{0pt plus 1fil} %% usually redundant
+\makeatother
+
+\title{Basic Course on {\tt R}:\\
+Introduction and History}
+\maketitle
+\tableofcontents
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% end preamble %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
+\newpage\section{Course Overview}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
+In the first part of the course we are introduced to the {\tt R}
+software package, or \emph{environment}, and learn about {\tt R}, how
+to interact with it and it's basic programming elements. In the second
+part of the course we'll learn how to use {\tt R} for it's initial
+intended function: doing statistics quickly and effectively.
+
+We will cover essential topics including how to use {\tt R} and
+why we use it; objects, classes and functions; and creating,
+importing, saving, manipulating, combining, sub-setting and plotting
+data.
+
+By the end of the first couple of introductory days I expect that you
+can write your own code and have a reasonable understanding of what's
+going on when you cut and paste other people's code, which is typical
+of how people get started with {\tt R} (or any other language for that
+matter).
+
+\textbf{Day 1}
+\begin{itemize}
+\item Introduction, {\tt R} history, getting familiar with {\tt R}
+  console, RStudio
+\item Objects, data structures, classes, using functions, arguments
+\item Containers, names, selection rules, accessing data.frame elements, lists
+\end{itemize}
+
+\textbf{Day 2}
+\begin{itemize}
+\item Entering, importing \& manipulating data  with {\tt c(), cbind(), rbind(), dim()}; importing from a file; working directory
+\item Basic plotting of boxplots, bargraphs, scatterplots \& line graphs
+\item Hypothesis testing \& confidence intervals part 1: summary
+  statistics, $t$-test, Mann-Whitney $U$ test
+\end{itemize}
+
+\textbf{Day 3}
+\begin{itemize}
+\item Hypothesis testing \& confidence intervals part 2: correlations, ANOVA, chi-squared test
+\item Distribution-free ANOVA
+\item Plotting with ggplot2 
+\end{itemize}
+  
+\textbf{Day 4}
+\begin{itemize}
+\item Basic linear regression, diagnostics and plotting
+\item Basics of logistic regression
+\item Programming structures 1: creating your own functions, if/else functions, loops
+\end{itemize}
+
+\textbf{Day 5}
+\begin{itemize}
+\item Programming structures 2: scope, recursion, replacement, search path
+\item Object-oriented programming and performance enhancement: generic functions and methods, memory optimization
+\end{itemize}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Introduction}                  
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsection{History}
+Before {\tt R} there was the statistical analysis program, {\tt S},
+developed at Bell Laboratories in 1976 by John Chambers. {\tt S} was
+later commercialised as {\tt S-PLUS}. John Chambers is also a current
+member of the {\tt R} core group responsible for developing {\tt R}.
+
+Ross Ihaka and Robert Gentleman of Dept of Statistics, University of
+Auckland, New Zealand begin coding (1991) the {\tt S} clone, {\tt R},
+as an open source alternative for academic use. Together with the `R
+core group' they released version 1 under the GNU Public License (GPL)
+v2 and v3 in 2000. The name, {\tt R}, probably derives from the first
+letter of creator's
+names. \url{http://cran.r-project.org/doc/FAQ/R-FAQ.html#Why-is-R-named-R_003f}
+
+% I installed {\tt R} in 2006 to analyse Affymetrix microarray data with
+% various BioConductor packages: customised normalisation methods I
+% wanted to try were best performed with BioConductor. Complex
+% statistical methods were \emph{only} practically possible using {\tt
+%   R}. I also learned to use a plethora of other programs and apps
+% including TM4, BRB-Arraytools, EASE/DAVID, Ingenuity Pathway Analysis,
+% Partek, Spotfire, etc. But it quickly became obvious that
+% bioinformaticians developed and published their work most often as an
+% {\tt R} package or script. Since 2010 most of my work was
+% bioinformatics. I eschewed Excel and other programs on Windows in
+% favour of {\tt R} on Linux and have steadily increased my productivity
+% since. Although many books and online resources exist to learn {\tt
+%   R}/BioConductor, there remains a lack of educational support in The
+% Netherlands and in many parts of the world.
+
+\subsection{Strengths and weaknesses}
+I attribute much of {\tt R}'s success to its GPL v2 license: created
+\underline{by users for users} to run well on Linux, Apple and
+Windows. These licenses give everyone the freedom to use, the freedom
+to distribute and the freedom to contribute their own intellectual
+input to the project. The result is that performance and fitness of
+purpose is and always will be the primary focus. I attribute {\tt
+  R}'s limited general use to its steep learning curve for
+non-programmers. Base {\tt R} is also yet to take advantage of the
+multi-threaded architecture of current computing technology.
+
+\subsection{Get it}
+ \subsubsection{Install it}
+ To get {\tt R} on your PC {\bf first} you need to install the core
+ {\tt R} application. Of course you'll need to download the version
+ for your operating system and architecture first.
+ 
+\begin{figure}
+  \begin{center}
+    \includegraphics[width=6in]{cran.png}
+  \end{center}
+  \caption{Get R: \url{http://www.r-project.org/}\url{http://www.illumina.com/technology/beadarray_technology.ilmn}}
+\end{figure}
+
+For Linux: \url{http://cran.r-project.org/bin/linux/}
+  
+For Mac: \url{http://cran.r-project.org/bin/macosx/}
+
+For Windows: \url{http://cran.r-project.org/bin/windows/base/}
+
+Although {\tt R} for Windows (and Mac?) ships with a basic text
+editor, and it's possible to execute code from the terminal under
+linux, a fully featured editor increases convenience and
+productivity. Grab an awesome text editor:
+
+RStudio: \url{http://www.rstudio.com/ide/download/}
+
+EMACS/ESS: \url{http://ess.r-project.org/index.php?Section=download/}
+
+Here's a full list available editors:
+\url{https://en.wikipedia.org/wiki/R_(programming_language)#Graphical_user_interfaces}
+
+\subsection{Not convinced?}
+\href{http://r4stats.com/articles/popularity/}{r4stats.com} has a
+nice evaluation of {\tt R}'s value `in the field'.
+More and more people are discussing R:\\
+\includegraphics[width=5.5in]{fig_1a_listserv11.png}\\
+\url{http://r4stats.files.wordpress.com/2012/04/fig_1a_listserv11.png}\\
+
+%\includegraphics[width=4in]{fig_3_rexersurvey.png}\\
+%\url{http://r4stats.files.wordpress.com/2012/04/fig_3_rexersurvey.png}\\
+
+\includegraphics[width=4in]{fig_4_kdnuggets1.png}\\
+{\tt R} is the most used software for getting data mining and big data ``done''.
+\url{http://r4stats.files.wordpress.com/2012/04/fig_4_kdnuggets1.png}\\
+
+This is a compelling reason to learn any language: the more people
+speaking a language, the easier it is to get help, the longer it will
+stay around, and more people you can \emph{talk} with. Isn't this the
+purpose of any language?
+
+\includegraphics[width=5in]{fig_8_cran.png}\\
+There's an enormous number of packages offering custom functionality.
+\url{http://r4stats.files.wordpress.com/2012/04/fig_8_cran.png}
+
+\includegraphics[width=4.3in]{bioconductor.png}\\ Bioconductor,
+initiated in 2001 for the analysis of genomics data, has grown from 15
+to (currently) 1024 software packages for omics and life science
+analyses.  \url{http://www.bioconductor.org/}
+
+\includegraphics[width=4.3in]{companies.png}\\
+Used internally by lots of big, profitable companies. \url{http://www.revolutionsanalytics.com/what-is-open-source-r/companies-using-r.php}
+
+\includegraphics[width=4.3in]{NYTimes.png}\\
+Has gained the popular media's attention. \url{http://www.nytimes.com/2009/01/07/technology/business-computing/07program.html?_r=0}
+
+\includegraphics[width=4.3in]{forbes.png}\\
+\href{http://www.forbes.com/sites/smcnally/2010/11/10/names-you-need-to-know-in-2011-r-data-analysis-software/}{Link to reference}
+\newpage Many other statistical and analytical programs have implemented
+connectors to enable running {\tt R} code within them, including
+`competitors' like SPSS, MatLab and SAS. Despite this {\tt R}'s
+popularity continues to grow. In contrast to the `workhorse' languages
+like {\tt C} and Python which are used to build many programs, {\tt R}
+is first and foremost a statistics focused language. Despite this,
+it's close to being in the top 10 of the most popular computing
+languages.
+
+\includegraphics[width=5.5in]{TIOBE_popularity_index.png}\\
+\href{http://www.tiobe.com/index.php/content/paperinfo/tpci/index.html}{Link to current Tiobe index}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
+\newpage\section{What \emph{is} {\tt R} and how do we use it}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Definition(s)}
+
+\begin{itemize}
+\item \textbf{Wikipedia}: `R is a free software programming language and
+  software environment for statistical computing and graphics... is an
+  implementation of the S programming language combined with lexical
+  scoping semantics inspired by Scheme.'
+  \url{http://en.wikipedia.org/wiki/R_(programming_language)}
+
+\item  \textbf{Comprehensive {\tt R} Archive Network (CRAN):} `R is ``GNU S'', a
+  freely available language and environment for statistical computing
+  and graphics which provides a wide variety of statistical and
+  graphical techniques: linear and nonlinear modelling, statistical
+  tests, time series analysis, classification, clustering, etc.'
+  \url{http://cran.xl-mirror.nl/}
+
+\item  \textbf{My definition:} A command based, object oriented, functional
+  language; in contrast to excel which is a cell centric, spreadsheet
+  managing graphical user interface (GUI).
+
+<<eval=FALSE>>=
+newObject <- function(oldObject)
+@
+\begin{tabbing}
+  \hspace*{4cm}\= \kill
+  object(s):  \> {\tt oldObject}, {\tt newObject}, and {\tt function()}\\
+  assignment: \> {\tt <-}\\
+  expression: \> {\tt function(oldObject)}\\
+\end{tabbing}
+\end{itemize}
+
+\subsection{How does {\tt R} work?}
+You type commands, also known as ``expressions,'' into a text editor or
+terminal and send them to {\tt R} for evaluation. {\tt R} evaluates the command, prints the command (by default), then the result of the evaluated command, if any.
+  
+%% \subsection{Core of {\tt R}}
+In short you apply functions to objects, or ``call'' a function on an object, e.g.:
+<<>>=
+x <- c(1, 3, 5) #create an object
+mean(x)         #calculate the arithmetic mean of the values in x
+@
+
+\subsection{How we interact with {\tt R}} 
+Not surprisingly everything about {\tt R} is built on the principle of
+KISS, i.e., keep it simple stupid. 
+  \begin{itemize}
+    \item We get things done in {\tt R} by
+    typing commands and asking {\tt R} to execute them with the {\tt
+      enter} key. Assuming you know the commands, it couldn't be any
+    simpler. 
+    \item The ``front end'' of {\tt R}, the part that receives your
+    commands, is the {\it terminal}. You can type your commands directly
+    into the terminal and hit {\tt enter} to do your work. But if you need
+    thousands of commands for a specific task, or want to share your
+    method, this approach gets tiring fast. 
+    \item Since the commands are just text, it's easy to write a series of commands using any program built for working with text, i.e., text editors and word
+    processors, to create {\it code} or a {\it script}, to get something
+    done.
+    %% {\tt R} is described as a \emph{statistical environment}. We use a
+    %% keyboard to type functions and then send them to {\tt R}. This may be
+    %% directly in the R terminal, or by sourcing a previously prepared
+    %% script from the terminal. 
+    \item The easiest, most efficient way to write
+    {\tt R} code is using a text editor or \emph{integrated development
+      environment}, like RStudio or Emacs/ESS as mentioned earlier.
+  \end{itemize}
+
+\subsubsection{RStudio: the easiest way to work with {\tt R}} 
+For most users, especially those new to {\tt R}, RStudio is probably the
+best IDE to use. Like everything about {\tt R}, you're free to choose
+whatever editor you like. For Windows platforms, you could just use
+the basic editor that's bundled with the downloadable
+installer. 
+%Regarding Emacs which i love for its flexibility and
+%keyboard shortcuts for \emph{everything}: whilst it has a dedicated
+%user base for coding in many languages besides {\tt R}, out of the box
+%it's initially more difficult to use then RStudio. 
+Let's have a look at an RStudio ``session''.
+
+\includegraphics[width=\textwidth]{RStudio.png}
+\newpage
+There are four panes. 
+  \begin{itemize}
+    \item The top left is the source pane. \textbf{Do your
+      typing in this pane}. 
+    \item The bottom left is your console. This is a
+    window looking into what {\tt R} is actually doing.  \textbf{Even
+      though it's fine to type your commands in this pane at the {\tt R
+        `>'} prompt, avoid this}: your commands are less conveniently
+    stored and rerun than your source code in the editor pane.
+    \item Top right: environment pane
+    \item Bottom left: files pane
+  \end{itemize}
+\emph{Type your commands in the source pane and send them to {\tt R}
+  using the keyboard short-cut {\tt Ctrl + Enter}.} This will send the
+line of code your cursor is on to {\tt R} if no code is selected; or if
+there is code selected, then only the selected code is sent. Open
+RStudio on your PC and try it now.
+
+A few other things about RStudio:
+  
+  \begin{itemize}
+    \item move the focus between panes using the key board shortcuts {\tt
+      Ctrl + 1} and {\tt Ctrl + 2} for the source and console panes
+      respectively
+    \item little asterisk next your source code file name indicates
+      unsaved code
+    \item \textbf{save your source code!}
+  \end{itemize}
+  
+%% \noindent Typically we import or `read' data into {\tt R}.
+%% <<eval=FALSE>>=
+%% read.table(file = "a_separated_ saved_excel.csv",
+%%            sep = ",", header = TRUE, stringsAsFactors = FALSE)
+%% @
+
+%% Note the argument {\tt stringsAsFactors = FALSE} and also see the
+%% function {\tt read.csv()}. For a tab delimited text {\tt .txt} file
+%% use: \begin{verbatim} sep = "\t" \end{verbatim}
+
+\subsection{Backslashes}
+One more thing I want to mention is how {\tt R} interprets backslashes and
+forwardslashes, i.e. \verb|\| and {\tt /} respectively, as relates to
+defining the locations of files on your PC. James McDonald does a
+better job of clarifying this than I otherwise would
+\url{http://cran.r-project.org/doc/contrib/Lemon-kickstart/kr_scrpt.html}:
+  
+ ``Let's pause to note a little historical bifurcation that has caused
+ almost as much strife as the question of exactly what the <Delete>
+ key should do. The convention that the slash (/) character is used as
+ a separator in the notation for a filesystem path is not
+ universal. PC-DOS, for example, used the backslash (\verb|\|). Like Fords vs
+ Chevrolets, French vs English, and whether you crack the egg at the
+ big or small end, it doesn't really matter a rat's behind which one
+ you use as long as it works. To make it work in R, however, where the
+ *NIX convention of using the backslash as an escape character is
+ respected, you will have to double backslashes in paths for them to
+ be read properly. Thus if the filename above was:
+
+\verb|C:\JIM\PSYCH\ADOLDRUG\PARTYUSE1.R|
+
+I would have to refer to it as:
+
+\verb|C:\\JIM\\PSYCH\\ADOLDRUG\\PARTYUSE1.R|
+
+in an R script.'' 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Getting Help}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{enumerate}
+\item Online help. The first place to look. Also works when you're actually \emph{offline}:
+<<eval=FALSE, echo=TRUE>>=
+?help
+help(help)
+@
+Broader search:
+<<eval=FALSE>>=
+??help
+apropos("help")              # quotes are needed
+@
+It's fun, try them out!
+
+\item Google. And when you're actually \emph{online}, often the \emph{first}
+  place and \emph{last} place you'll go when you have no idea is
+  \href{https://www.google.com}{Google}.
+
+\item Package Vignette's. Where the online help is devoid of the
+  context often needed to grasp the full potential and logical use of
+  functions, vignette's is the best place to find such information,
+  with extended examples, and often more. For example, see the limma
+  \url{http://www.bioconductor.org/packages/release/bioc/vignettes/limma/inst/doc/usersguide.pdf}
+
+\item Mailing Lists. R-help
+  \url{http://www.r-project.org/mail.html}. Do check first using
+  Google or the R-help searchable archives
+  \url{http://tolstoy.newcastle.edu.au/~rking/R/} first if your
+  question has already been asked and has the answer to solve your
+  issue.
+
+  % Posting \href{http://www.r-project.org/posting-guide.html}{guide}
+  % excerpt: `This guide is intended to help you get the most out of the
+  % R mailing lists, and to avoid embarrassment. Like many responses
+  % posted on the list, it is written in a concise manner. This is not
+  % intended to be unfriendly - it is more a consequence of allocating
+  % the limited available time and space to technical issues rather than
+  % to social niceties.  The list: Remember that R is free software,
+  % constructed and maintained by volunteers. They have various reasons
+  % for contributing software and participating on the mailing lists,
+  % but often have limited time.
+  % 
+  % Good manners: Remember that customs differ. Some people are very
+  % direct. Others surround everything they say with hedges and
+  % apologies. Be tolerant. Rudeness is never warranted, but sometimes
+  % `read the manual' is the appropriate response. Don't waste time
+  % discussing such matters on the list. Ad hominem comments are
+  % absolutely out of place.
+  % 
+  % Questions about statistics: The R mailing lists are primarily
+  % intended for questions and discussion about the R software. However,
+  % questions about statistical methodology are sometimes posted. If the
+  % question is well-asked and of interest to someone on the list, it
+  % may elicit an informative up-to-date answer. See also the Usenet
+  % groups sci.stat.consult (applied statistics and consulting) and
+  % sci.stat.math (mathematical stat and probability).'
+
+\item Other lists: \url{https://stat.ethz.ch/mailman/listinfo}
+
+\item Stack Overflow \url{https://stackoverflow.com}. Probably more
+  questions and answers posted here than on the mailing list. 
+\end{enumerate}
+
+\subsection{Trouble shooting}
+\begin{itemize}
+\item Clean your environment and start again to be sure your messy environment
+  isn't the cause of your issue. In RStudio, click the broom in the Environment tab; in any R session you can also run:
+<<eval=FALSE>>=
+# not run:
+rm(list=ls())                 
+ls()
+@
+
+\item Start {\tt R} without any customisations, i.e., omit loading the {\tt .Rprofile}
+  and {\tt .Renviron} customisation files. From the command line:
+\begin{verbatim}
+R --vanilla
+\end{verbatim}
+
+\item {\tt trace.back()} function: very helpful pinpointing the source
+  of an error, and thus its cause.
+\end{itemize}
+  
+\subsection{Further resources}
+\begin{itemize}
+\item {\tt R} focused search engine: \url{http://www.Rseek.org}
+  
+\item Aggregator of all R blogs: \url{http://www.r-bloggers.com}
+
+\item Quick-R: \url{http://www.statmethods.net/}
+
+\item {\tt R} on Youtube: \url{http://www.youtube.com/watch?v=mL27TAJGlWc}
+
+\item {\tt R} in two minutes: \url{http://www.twotorials.com/}
+
+\item {\it The} list of reference texts: \url{http://www.r-project.org/doc/bib/R-publications.html}
+
+\item And more..\\
+  \url{http://www.ats.ucla.edu/stat/r/}\\
+  \url{http://zoonek2.free.fr/UNIX/48_R/02.html}\\
+  
+\item \emph {A First Course in Statistical Programming with R.} W. John
+  Braun and Duncan J. Murdoch. Cambridge University Press, 2007\\
+  *I love this book, beautifully explores the programming aspects of {\tt R}.
+  
+\end{itemize}
+% 
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% \section{SessionInfo}
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% \label{sec:SessionInfo}
+% 
+% <<sessionInfo>>=
+% toLatex(sessionInfo())
+% @ 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Document License}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\href{https://www.gnu.org/licenses/gpl-3.0.html}{GNU General Public License v2.0 or higher (GPL$>=$v2)}
+
+\end{document}

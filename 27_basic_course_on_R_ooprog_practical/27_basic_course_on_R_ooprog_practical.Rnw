@@ -1,0 +1,136 @@
+\documentclass [12pt]{article}
+
+\usepackage{graphics,latexsym,geometry,amsmath,bibunits,makeidx,fancyhdr,graphicx}
+\usepackage{hyperref}
+\usepackage[authoryear,round]{natbib}
+\usepackage{graphicx,color}
+\usepackage{enumerate}
+
+\newcommand{\noin}{\noindent}
+\newcommand{\be}{\begin{equation}}
+\newcommand{\ee}{\end{equation}}
+\newcommand{\bi}{\begin{itemize}}
+\newcommand{\ei}{\end{itemize}}
+\newcommand{\bdm}{\begin{displaymath}}
+\newcommand{\edm}{\end{displaymath}}
+\newcommand{\bea}{\begin{eqnarray}}
+\newcommand{\eea}{\end{eqnarray}}
+\newcommand{\beaa}{\begin{eqnarray*}}
+\newcommand{\eeaa}{\end{eqnarray*}}
+\newtheorem{example}{Example}[section]
+\newcommand{\bex}{\begin{example} \normalfont}
+\newcommand{\eex}{\end{example}}
+\newtheorem{exercise}[example]{Exercise}
+\newcommand{\bexc}{\begin{exercise} \normalfont}
+\newcommand{\eexc}{\end{exercise}}
+\newtheorem{problem}{}
+\newcommand{\bpr}{\begin{problem} \normalfont}
+\newcommand{\epr}{\end{problem}}
+\newcommand{\babc}{\begin{list}{\alph{abc})}{\usecounter{abc}
+  \itemindent=-10pt}}
+\newcommand{\eabc}{\end{list}}
+\newcommand{\ben}{\begin{enumerate}}
+\newcommand{\een}{\end{enumerate}}
+\newcounter{abc}
+
+
+
+
+\textwidth=6.2in
+\textheight=8.5in
+%\parskip=.3cm
+\oddsidemargin=.1in
+\evensidemargin=.1in
+\headheight=-.3in
+
+\newcommand{\scscst}{\scriptscriptstyle}
+\newcommand{\scst}{\scriptstyle}
+\author{Elizabeth Ribble\footnote{emcclel3@msudenver.edu}}
+\date{18-24 May 2017}
+
+\begin{document}
+
+\title{Basic Course on {\tt R}:\\
+  Object-Oriented Programming\\
+  Practical}
+\maketitle
+\tableofcontents
+
+\newpage
+
+  
+\section{Part A: Object Oriented Programming}
+
+%Source:  Similar to Exercises 16.1, and 16.3, pg 311, of Learning R by Richard Cotton.
+
+\begin{enumerate}
+
+\item The {\bf \em geometric mean} can be defined as the $n$th root 
+of the product of $n$ positive numbers $x_1, x_2, \ldots, x_n$, i.e.
+
+\bdm \mbox{gm} \,\, = \,\, \left( x_1 \cdot x_2 \cdots x_n \right)^{\frac{1}{n}} \edm
+
+Write a function \texttt{gm()} that takes a vector argument
+\texttt{x} containing positive numbers and returns their geometric mean.
+Your function should include a \texttt{stop()} statement that returns an
+error message if any of the values in \texttt{x} are nonpositive.  {\bf Hint}: The
+function \texttt{prod()} can be used to compute the product of the values
+in \texttt{x}.
+\vspace{50mm}
+
+\item Determine the class of your output by running the following:
+<<eval=FALSE>>=
+class(gm(1:4))
+@
+\item Modify your geometric mean function, using \texttt{class()}, so that the return value has the 
+class \texttt{"geometric"}.  
+\vspace{40mm}
+
+\item  Verify the new class of your output is correct by running the following
+<<eval=FALSE>>=
+class(gm(1:4))
+@
+\end{enumerate}
+
+\section{Part B: Performance Enhancement:  Speed}
+
+
+%Could try this next exercise using either:
+%1.  Move expressions within loops that are invariant to compute just once and assigned to variable.
+%2.  Avoid concatenating vectors, by pre-allocate and assign to the ith element.
+%i.e. x = c(); for(i in seq(along = y)) x = c(x, g(y[i]))
+
+\begin{enumerate}
+
+\item This problem concerns efficiency and timing code.  \\
+
+
+Using \texttt{system.time(expression)},
+explore how time changes with size of the inputs. Plot time versus input size and see if algorithm
+is linear, polynomial, or exponential.
+
+\begin{itemize}
+
+\item Move expressions within loops that are invariant to compute just once and assigned to a variable.
+
+
+\item Avoid concatenating vectors by pre-allocating and assigning to the ith element.
+i.e. 
+
+<<eval=FALSE>>=
+x <- c(); for(i in seq(along = y)) x = c(x, g(y[i]))
+@
+
+\end{itemize}
+
+What are your conclusions?
+\end{enumerate}
+
+\end{enumerate}
+
+\end{document}
+
+
+  
+  
+  

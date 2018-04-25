@@ -1,0 +1,14 @@
+
+Kennedys <- list(
+    JosephJr = character(0),
+    John = c("Caroline", "JohnJr", "Patrick"),
+    Rosemary = character(0),
+    Kathleen = character(0),
+    Eunice = c("RobertIII", "Maria", "Timothy", "Mark", "Anthony"),
+    Patricia = c("Christopher", "Sydney", "Victoria", "Robin"),
+    Robert = c("Kathleen", "JosephII", "RobertJr", "David", "MaryC", "Michael", 
+          "MaryK", "Christopher", "Matthew", "Douglas", "Rory"),
+    Jean = c("Stephen", "William", "Amanda", "Kym"),
+    Edward = c("Kara", "EdwardJr", "Patrick")
+)
+

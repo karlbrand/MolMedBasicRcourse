@@ -1,0 +1,247 @@
+\documentclass[12pt]{article}
+
+\usepackage{amsmath}
+\usepackage{hyperref}
+\usepackage[authoryear,round]{natbib}
+\usepackage{graphicx}
+\usepackage{enumerate}
+
+\textwidth=6.2in
+\textheight=8.5in
+%\parskip=.3cm
+\oddsidemargin=.1in
+\evensidemargin=.1in
+\headheight=-.3in
+
+\newcommand{\scscst}{\scriptscriptstyle}
+\newcommand{\scst}{\scriptstyle}
+
+\author{Karl Brand\footnote{brandk@gmail.com}\hspace{2mm}  and Elizabeth Ribble\footnote{emcclel3@msudenver.edu}}
+\date{18-24 May 2017}
+
+\begin{document}
+\title{Basic Course on {\tt R}:\\
+Entering and Importing Data}
+\maketitle
+\tableofcontents
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% end preamble %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newpage\section{Entering and Importing Data}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Entering Data}
+In the previous section we created a couple of short vectors, a small
+matrix, a data frame and a list comprised of two data frames. There
+are many ways to create such objects, especially by utilizing a few
+convenient functions, and many combinations of these data types are
+also possible.
+
+\subsubsection{A few functions to get started}
+\noindent The most basic function presented first is one we've seen
+before: the combine function: {\tt c}. This combines into a vector the
+entries passed to it, so long as they are of the same class:
+<<>>=
+c(1, 2, 3, 4)
+a <- c(1:10, 100)
+a
+@
+\noindent If we want to replicate numbers in the vector, we can type
+them out (e.g. {\tt 1, 1, 1, ...}) or use the function {\tt rep}, with
+the number to be replicated followed by the number of times to
+replicate it:
+<<>>=
+b <- rep(x = 1, times = 11)
+b
+@
+\noindent The function {\tt seq} generates a sequence of numbers based on the specified start, end and increment of the sequence:
+<<>>=
+c <- seq(from = 1, to = 110, by = 10)
+c
+@
+\noindent To bind two or more vectors (or data frames) together, we can use {\tt cbind} (to combine columns) or {\tt rbind} (to combine rows):
+<<>>=
+abcc <- cbind(a, b, c)
+abcc
+abcr <- rbind(a, b, c)
+abcr
+@
+\noindent We can use {\tt View} to look at the data - it displays the data values along with the names of the columns: 
+<<>>=
+View(abcr)
+@
+\noindent or, to just get the dimension of the resulting object, use {\tt dim}, {\tt nrow} or {\tt ncol}:
+<<>>=
+dim(abcr)
+nrow(abcr)
+ncol(abcr)
+@
+\newpage\noindent And remember {\tt str()} will display the data structure and {\tt class()} the class:
+<<>>=
+str(abcr)
+class(abcr)
+@
+
+\subsubsection{Merging data frames}
+Suppose we want to add some new samples to {\tt mygenes}:
+<<>>=
+mygenes <- data.frame(samp1 = c(33, 22, 12), 
+                      samp2 = c(44, 111, 13), 
+                      samp3 = c(33, 53, 65))
+row.names(mygenes) <- c("CRP", "BRCA1", "HOXA")
+@
+but we happen to have the rows (here, genes) in a different order
+than before, and in fact we have an extra gene as well:
+<<>>=
+newsamp <- data.frame(samp4 = c(56, 13, 106, 10), 
+                      samp5 = c(45, 15, 99, 13))
+row.names(newsamp) <- c("CRP", "HOXA", "BRCA1", "GAPDH")
+newsamp
+@
+\noindent We can't use e.g. {\tt cbind}: not only are the dimensions
+different, but the row order differs also. The {\tt merge} function
+solves this problem: it concatenates based on matching attributes. Use
+the argument {\tt by} to specify what columns to merge by, i.e., the
+name(s) of a column(s), or the row names:
+<<>>=
+mygenes2 <- merge(x=mygenes, y=newsamp, by="row.names")
+mygenes2
+@
+\noindent The default setting however is to not include anything that
+doesn't match, so above we lost our new gene, GAPDH. We can force the
+function to keep all rows of the first and/or second argument with the
+arguments {\tt all}, {\tt all.x}, or {\tt all.y}:
+<<>>=
+mygenes2 <- merge(x=mygenes, y=newsamp, by="row.names", all.y=TRUE)
+mygenes2
+@
+\noindent To be conservative and keep everything, use {\tt
+  all=TRUE}. Note that for every column of the first argument that
+didn't have a value for GAPDH we now have an {\tt NA}. Also note that
+the row names are no longer the row names, but instead have been put
+in a new column. We can leave it as it is, and perhaps change the
+name, or use our indexing and naming skills to create another data
+frame with the row names back where they were:
+<<>>=
+names(mygenes2)[1] <- "gene"
+## or 
+mygenes3 <- mygenes2[,-1]
+row.names(mygenes3) <- mygenes2[,1]
+mygenes3
+@
+
+
+\subsubsection{Concatenating strings}
+\noindent The function {\tt paste} is great for (re)naming, writing,
+and creating data. For example, in the last section we created the
+data frame {\tt mygenes} by entering the name of each data frame
+element as follows:
+<<>>=
+mygenes <- data.frame(samp1 = c(33, 22, 12), 
+                      samp2 = c(44, 111, 13), 
+                      samp3 = c(33, 53, 65))
+@
+\noindent but with a naming convention where the same text is repeated
+several times (``samp'') it is handy to be able to type it in only
+once:
+<<>>=
+mygenes <- data.frame(c(33, 22, 12), 
+                      c(44, 111, 13), 
+                      c(33, 53, 65))
+names(mygenes) <- paste("samp", 1:3, sep = "")
+row.names(mygenes) <- c("CRP", "BRCA1", "HOXA")
+mygenes
+@
+\noindent Note the {\tt sep} argument specifies how to separate the
+strings we are pasting together. We can use any character we want for
+this parameter:
+<<>>==
+paste("The", "Club", sep=" Mickey Mouse ")
+@
+\noindent By default \verb|sep = " "|. That is, omitting {\tt sep} in the
+          {\tt paste} function will insert spaces:
+<<>>==
+paste("The", "Mickey", "Mouse", "Club")
+@
+\noindent In the next subsection we'll see how paste can be helpful
+for reading and writing files.
+
+
+\subsection{Importing from a Dataset or File}
+\subsubsection{Importing from a built-in dataset}
+Many {\tt R} packages come with built-in datasets. Extracting these data are
+straightforward using {\tt data()}. Invoking this will output a list
+of all available datasets in a new window:
+<<>>=
+data()
+@
+\noindent If we introduce the name of the dataset, then the function
+loads that dataset into the workspace:
+<<>>=
+HairEyeColor
+@
+
+\subsubsection{Importing from a file}
+\noindent Suppose we have collected some data that we want to analyze
+in {\tt R} and the data are in matrix format in e.g. a .txt or .csv file. Then
+we can read this in with a function like {\tt read.table} and assign
+the output to an object:
+<<>>=
+data <- read.table(file = "Rcourse_data.txt", 
+                   header = TRUE, row.names = 1)
+data
+@
+\noindent In the arguments we can specify things like: 
+
+\begin{itemize}
+\item the separator e.g., {\tt sep = "\textbackslash t"} for tab separated (.txt) or {\tt sep = ","} for comma separated (.csv) files;
+\item the header (as above);
+\item which column contains the row names (as above);
+\item whether to skip any columns or fill in blank lines with {\tt NA};
+\end{itemize}
+and so on. The function {\tt read.csv} is the same as {\tt read.table} but uses the default {\tt sep = ","} for reading in .csv files (note that {\tt read.csv2} has default {\tt sep = ";"}).
+\\
+
+\noindent Also be aware of R's default behaviour of converting columns
+of text strings in a dataframe into the class {\tt factor}. You may
+not want your column of text strings to be factors, if so, set the
+argument {\tt stringsAsFactors = FALSE} in the {\tt read.table()}
+function.
+\\
+
+\noindent Now suppose the file we want isn't in our working directory (displayed by calling {\tt getwd()}). Then we can type in the path in the name of the file: 
+<<eval=FALSE>>=
+data <- read.table(file = "C:/temp/Rcourse_data.txt", 
+                   header = TRUE, 
+                   row.names = 1)
+data
+@
+\noindent But let's say we have a lot of files to read in from places other than our working directory and don't want to keep typing in the same parts of a path every time. Then we can {\tt paste}:
+<<eval=FALSE>>=
+mydir <- "C:/temp"
+newfile <- paste(mydir, "Rcourse_data.txt", sep = "/")
+data <- read.table(file = newfile, 
+                   header = TRUE, 
+                   row.names = 1)
+@
+\noindent See also {\tt ?file.path} which is built
+specifically for this purpose, whereas {\tt paste} has more general
+utility.
+
+\subsection{Writing to a File}
+Now suppose we've done some analysis and want to store our results outside of R. The functions {\tt write.table} and {\tt write.csv} do this: 
+<<eval=FALSE>>=
+write.table(x = data, file = "C:/temp/results.txt", sep = "\t")
+## or
+write.csv(x = data, file = "C:/temp/results.csv")
+@
+\noindent We specified the separator in {\tt write.table} (default is a space), but the default in {\tt write.csv} is a comma. If you do not want to write the row names to the file, set the argument {\tt row.names = FALSE}. \\
+
+\noindent Note we can change the location of our working directory using {\tt setwd()} so that we don't have to worry about specifying a path over and over when reading/writing files, e.g.:
+<<eval=FALSE>>=
+# not run
+setwd("C:/Users/Documents/RSTUFF")
+@
+
+
+
+\end{document}

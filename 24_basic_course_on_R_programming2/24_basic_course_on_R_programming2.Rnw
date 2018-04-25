@@ -1,0 +1,575 @@
+\documentclass [12pt]{article}
+
+\usepackage{graphics,latexsym,geometry,amsmath,bibunits,makeidx,fancyhdr,graphicx}
+\usepackage{hyperref}
+\usepackage[authoryear,round]{natbib}
+\usepackage{graphicx,color}
+\usepackage{enumerate}
+
+\newcommand{\noin}{\noindent}
+\newcommand{\be}{\begin{equation}}
+\newcommand{\ee}{\end{equation}}
+\newcommand{\bi}{\begin{itemize}}
+\newcommand{\ei}{\end{itemize}}
+\newcommand{\bdm}{\begin{displaymath}}
+\newcommand{\edm}{\end{displaymath}}
+\newcommand{\bea}{\begin{eqnarray}}
+\newcommand{\eea}{\end{eqnarray}}
+\newcommand{\beaa}{\begin{eqnarray*}}
+\newcommand{\eeaa}{\end{eqnarray*}}
+\newtheorem{example}{Example}[section]
+\newcommand{\bex}{\begin{example} \normalfont}
+\newcommand{\eex}{\end{example}}
+\newtheorem{exercise}[example]{Exercise}
+\newcommand{\bexc}{\begin{exercise} \normalfont}
+\newcommand{\eexc}{\end{exercise}}
+\newtheorem{problem}{}
+\newcommand{\bpr}{\begin{problem} \normalfont}
+\newcommand{\epr}{\end{problem}}
+\newcommand{\babc}{\begin{list}{\alph{abc})}{\usecounter{abc}
+\itemindent=-10pt}}
+\newcommand{\eabc}{\end{list}}
+\newcommand{\ben}{\begin{enumerate}}
+\newcommand{\een}{\end{enumerate}}
+\newcounter{abc}
+
+
+
+
+\textwidth=6.2in
+\textheight=8.5in
+%\parskip=.3cm
+\oddsidemargin=.1in
+\evensidemargin=.1in
+\headheight=-.3in
+
+\newcommand{\scscst}{\scriptscriptstyle}
+\newcommand{\scst}{\scriptstyle}
+\author{Elizabeth Ribble\footnote{emcclel3@msudenver.edu}}
+\date{18-24 May 2017}
+
+\begin{document}
+
+\title{Basic Course on {\tt R}:\\
+       Programming Structures 2}
+\maketitle
+\tableofcontents
+
+\newpage
+
+
+
+
+\section{Environment and Scope Issues}
+
+\bi
+
+\item Each function, whether built-in or user-defined, has an associated {\bf \em environment}, which
+can be thought of as a container that holds all of the objects present at the time the function is created.
+
+%, plus any objects passed to the function as arguments.
+
+%\item The objects in a function's environment are directly accessible by name from within the function.
+
+\ei
+
+\subsection{The Top-Level (or Global) Environment}
+
+\bi
+
+\item When a function is created on the command line, it's environment is the so-called {\bf \em Global Environment} 
+(or {\bf \em Workspace}):
+
+<<echo = F>>=
+rm(list = ls())
+@
+
+<<>>=
+w <- 2
+@
+
+<<>>=
+f <- function(y) {
+  d <- 3
+  return(d * (w + y))
+}
+@
+
+<<>>=
+environment(f)
+@
+
+\item The function \texttt{objects()} (or \texttt{ls()}), when called from the command line, lists the objects in 
+the Global Environment:
+
+<<>>=
+objects()
+@
+
+
+
+\ei
+
+
+\subsection{Global and Local Variables}
+
+\bi
+
+\item In the function \texttt{f()} defined above, the variable \texttt{w} is said to be 
+{\bf \em global} to \texttt{f()} and the variable \texttt{d}, because it's created 
+{\em within} \texttt{f()}, is said to be {\bf \em local}.
+
+\item Global variables (like \texttt{w}) are visible from within a function, but local variables 
+(like \texttt{d}) aren't visible
+from outside the function.  In fact, local variables are {\em temporary}, and disappear 
+when the function call is completed:
+
+<<>>=
+f(y = 1)
+d
+@
+
+\item When a global and local variable share the same name, the local variable is used:
+
+<<>>=
+w <- 2
+d <- 4
+f <- function(y) {
+  d <- 3
+  return(d * (w + y))
+}
+f(y = 1)
+@
+
+
+\item Note also that when an assignment takes place within a function,
+and the local variable shares its name with an existing global variable, only the 
+local variable is affected:
+
+<<>>=
+w <- 2
+d <- 4                  # This value of d will remain unchanged.
+f <- function(y) {
+  d <- 3                # This doesn't affect the value of d in the  
+  return(d * (w + y))   # global environment (Workspace)
+}
+f(y = 1)
+d
+@
+
+\ei
+
+\subsection{Nested Functions and the Scope Hierarchy}
+
+\bi
+
+\item  For user-defined functions created on the command line, the global variables 
+for that function are those in the Workspace, or {\bf \em global environment}.  They're listed by
+typing \texttt{ls()} (or \texttt{objects()}) on the command line.
+
+\item When a function is {\em created inside another function},
+its global variables are the local variables of the outer function {\em plus} the 
+outer function's global variables.
+
+\item Regardless of whether a function is created on the command line or inside
+another function, its local variables are the variables created inside of it
+{\em plus} its formal arguments to which values have been passed.
+
+\item For example: \\
+
+<<>>=
+w <- 2           # w is global to f() and therefore also to h()
+f <- function(y) {
+  d <- 3 
+  h <- function() {
+    b <- 5              # b is local to h()
+    return(d * (w + y))
+    }
+  return(h())
+}
+@
+
+Above, 
+
+\bi
+
+\item \texttt{w} is global to \texttt{f()} and therefore also to \texttt{h()}.
+
+\item \texttt{y} and \texttt{d} are local to \texttt{f()}, but global to \texttt{h()}.
+
+\item \texttt{b} is local to \texttt{h()}.
+
+\ei
+
+\item This {\bf \em scope hierarchy} continues when multiple function
+definitions are 
+{\bf \em nested} inside of each other.
+
+\newpage
+\item We can use a \texttt{print(ls())} statement to see which objects are local to \texttt{f()}:
+
+<<>>=
+w <- 2                # w is global to f() and therefore also to h()
+f <- function(y) {
+  d <- 3              # y and d are local to f() but global to h()
+  h <- function() {
+    b <- 5            # b is local to h()
+    return(d * (w + y))
+    }
+  print(ls())  
+  return(h())
+}
+f(y = 2)
+@
+
+\item Likewise we can use a \texttt{print(environment(h))} statement to view
+the environment of \texttt{h()}:
+
+<<>>=
+w <- 2                # w is global to f() and therefore also to h()
+f <- function(y) {
+  d <- 3              # y and d are local to f() but global to h()
+  h <- function() {
+    b <- 5            # b is local to h()
+    return(d * (w + y))
+    }
+  print(environment(h)) 
+  return(h())
+}
+f(y = 2)
+@
+
+In the output above, the environment of \texttt{h()} is referred to by its memory location.
+The {\em environment} of \texttt{h()} is the ``container'' that contains \texttt{h()} as well as the objects
+\texttt{d} and \texttt{y}.
+
+
+\ei
+
+
+
+  
+\subsection{Writing ``Upstairs'' in the Scope Hierarchy}
+
+\bi
+
+\item Sometimes we need to assign a value to a variable in 
+the global environment from within a function.  We can do so
+using either of the following:
+
+<<eval=FALSE, background="lightgrey">>=
+<<-        # Assign a value to a variable in the global environment 
+           # (Workspace).
+assign()   # Assign a value to a variable in the global environment 
+           # (Workspace).
+@
+
+\item Here's an example using the so-called {\bf \em superassignment operator} 
+\texttt{<{}<-}:
+
+<<>>=
+w <- 2
+d <- 4                # This value of d will be replaced by 3.
+f <- function(y) {
+  d <<- 3             # This replaces the value 4 of d in the global 
+  return(d * (w + y)) # environment (Workspace) by 3.
+}
+f(y = 2)
+d
+@
+
+Above, the assignment of \texttt{3} to \texttt{d} is done in the global
+environment, or Workspace, overwriting the previous value (\texttt{4}).
+
+\item Here's how to accomplish the same thing using \texttt{assign()}:
+
+<<>>=
+w <- 2
+d <- 4                # This value of d will be replaced by 3.
+f <- function(y) {
+  assign("d", 3, envir = .GlobalEnv)
+  return(d * (w + y))
+}
+f(y = 2)
+d
+@
+
+(Note that when \texttt{assign()} is used, \texttt{d} is
+written as a character string (i.e.\ in quotes as \texttt{"d"}) and 
+the global environment is written as \texttt{.GlobalEnv}.)
+
+\item Be aware that assignment to the variable \texttt{d} using \texttt{<{}<-} actually
+results in a search up the environment hierarchy, stopping at the first level
+at which the name \texttt{d} is encountered.  If it's not encountered, then assignment is done
+in the global environment.  For example:
+
+<<>>=
+w <- 2
+d <- 4                      # This value of d will remain unchanged.
+f <- function(y) {
+    d <- 5                  # This value of d will be replaced by 3.            
+    h <- function() {
+        d <<- 3             # This replaces the value 5 of d in 
+        return(d * (w + y)) # h()'s environment by 3.
+    }
+    return(h())
+}
+f(y = 2)
+d
+@
+
+
+\ei
+
+
+
+\subsection{When Should You Use Global Variables?}
+
+\bi
+
+\item Here are suggestions about using global variables.  They're especially important when your code will be shared with other R users:
+
+\bi
+
+\item Assignment to the global environment using \texttt{<{}<-} or
+\texttt{assign()} should be used very sparingly (i.e.\ only when necessary) because it can accidentally overwrite existing variables.
+
+\item The use of a global variable can be justified when that variable needs to be accessed by several different functions (that aren't nested).
+
+\item It's generally preferable to pass variables as arguments to functions rather than accessing them from the global environment.
+
+\ei
+
+\ei
+
+
+\section{Printing a Warning Message or Terminating a Function Call Using \texttt{warning()}, \texttt{return()}, or \texttt{stop()}}
+
+\bi
+ 
+\item The following functions are useful for terminating a function call or just printing a warning message:
+
+<<eval=FALSE, background="lightgrey">>=
+return()     # Terminate a function call and return a value.
+stop()       # Terminate a function call and print an error message.
+warning()    # Print a warning message (without terminating the 
+             # function call).
+@
+
+\ei
+
+
+
+\subsection{Terminating a Function Call Using \texttt{if()} and \texttt{return()}}
+
+\bi
+
+\item One way to terminate a function call is with \texttt{return()}
+which, when encountered, immediately terminates the call and returns a value.  For example:
+
+<<>>=
+mySign <- function(x) {
+  if(x < 0) return("Negative")
+  if(x > 0) return("Positive")
+  return("Zero")
+}
+@ 
+
+\noin Passing \texttt{my.sign()} the value \texttt{x = 13} produces the following:
+
+<<>>=
+mySign(x = 13)
+@
+
+(Note that the last line, \texttt{return("Zero")}, was never encountered during the call to \texttt{my.sign()}.)
+
+\ei
+
+
+
+\subsection{Terminating a Function Call and Printing an Error Message Using \texttt{if()} and \texttt{stop()}}
+
+\bi
+
+\item Another way to terminate a function call is with \texttt{stop()},
+which then prints an error message without returning a value.  Here's an example:
+
+<<>>=
+myRatio <- function(x, y) {
+  if(y == 0) stop("Cannot divide by 0")
+  return(x/y)
+}
+@
+
+\noin An attempt to pass the value \texttt{0} for \texttt{y} now results in the following:
+
+<<>>=
+myRatio(x = 3, y = 0)
+@
+
+(Note that the last line, \texttt{return(x/y)}, was never encountered during the call to \texttt{myRatio()}.)
+
+
+\ei
+
+
+
+\subsection{Printing a Warning Message Using \texttt{if()} and \texttt{warning()}}
+
+\bi
+
+\item \texttt{warning()} just
+prints a warning message to the screen without terminating the function
+call.  Here's an example:
+
+<<>>=
+myRatio <- function(x, y) {
+  if(y == 0) warning("Attempt made to divide by 0")
+  return(x/y)
+}
+@
+
+\noin Now when we pass the value \texttt{0} for \texttt{y} the function call isn't terminated (the value \texttt{Inf} is returned), but we get the warning message:
+
+<<>>=
+myRatio(x = 3, y = 0)
+@
+\ei
+
+
+
+\newpage\section{Recursion}
+
+\bi
+
+\item {\bf \em Recursion} is a programming technique in which a function
+calls itself.
+
+\item Here's an example in which the function \texttt{f()}
+takes a non-negative integer \texttt{x} and returns the factorial
+of \texttt{x}, denoted $x!$ and defined as 
+
+\bdm x! \,\, = \,\, \left\{ \begin{array}{ll} 
+        1 & \mbox{if $x = 0$} \\
+        x (x -1) (x - 2) \cdots (2)(1) & \mbox{if $x > 0$} 
+        \end{array} \right.
+\edm
+
+\item Notice that we can write 
+
+\bdm x! \,\, = \,\, \left\{ \begin{array}{ll} 
+        1 & \mbox{if $x = 0$} \\
+        x (x -1)! & \mbox{if $x > 0$} 
+        \end{array} \right.
+\edm
+
+
+<<>>=
+f <- function(x) {
+  if(x == 0) {
+    return(1)
+    } else {
+      return(x * f(x - 1))
+      }
+}
+f(0)
+f(1)
+f(5)
+@
+  
+
+\item In general, to solve a problem of type $X$ by writing a recursive function \texttt{f()}:
+
+\ben
+
+\item Break the original problem of type $X$ into one or more smaller problems of type $X$.
+
+\item Within \texttt{f()}, call \texttt{f()} on each of the smaller problems.
+
+\item Within \texttt{f()}, piece together the results of Step 2 to solve the original problem.
+
+\een
+
+
+\ei
+
+
+
+
+\section{Replacement Functions}
+
+\bi
+
+\item Some of R's built-in functions can be used both to {\em return} a value and to {\em replace} a value. For example using the data frame:
+
+
+<<>>=
+var1 <- c(1, 2, 3)
+var2 <- c(19, 20, 16)
+var3 <- c("small", "medium", "large")
+x <- data.frame(var1, var2, var3)
+x
+@
+
+
+\texttt{names()} will both return the names of the variables in \texttt{x}:
+
+<<>>=
+names(x)
+@
+
+and replace them:
+
+<<>>=
+names(x) <- c("IDNumber", "Weight", "Size")
+names(x)
+@
+
+\item Such functions are called {\bf \em replacement functions}.
+
+\item It's possible to create user-defined replacement functions. 
+
+\ei
+
+% 
+% \subsection{Tools for Composing Function Code}
+% 
+% \subsubsection{The \texttt{source()} Function}
+% 
+% \bi
+% 
+% \item There is a function {\tt edit()} that allows you to edit functions, but we are not going to use it since RStudio has such a nice editor. 
+% 
+% \item {\tt source()} is a nice function for reading in big chunks of R code, e.g. a set of functions that you want to use every time you start a new R session. 
+% 
+% <<eval=FALSE, background="lightgrey">>=
+% source()       # Read R commands from a text file.
+% @
+% 
+% \item For example, suppose we have the following commands saved in a text file `{\bf C:$\backslash$myRcode.txt}': \\
+% 
+% myFun $<-$ function(message) \{ \\
+%  {\color{white} .} $\,\,\,\,\,\,$   print(message) \\
+% \}  \\ 
+% 
+% myFun(``Hello World'') \\
+%  
+% We can execute those commands using \texttt{source()} by typing:
+% 
+% <<eval=FALSE>>=
+% source("C:/myRcode.txt")
+% @
+% 
+% <<echo = F>>=
+% source('C:/Users/emcclel3/Dropbox/MSU/MTH2520/NelsMTH2520_stuff/class_notes_mth2520/myRcode.txt')
+% @
+% 
+% \ei
+% 
+
+
+
+
+\end{document}
+
+

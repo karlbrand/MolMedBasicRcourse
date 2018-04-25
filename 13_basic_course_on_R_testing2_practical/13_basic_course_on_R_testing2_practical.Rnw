@@ -1,0 +1,141 @@
+\documentclass[12pt]{article}
+
+\usepackage{amsmath}
+\usepackage{hyperref}
+\usepackage[authoryear,round]{natbib}
+\usepackage{graphicx,color}
+\usepackage{enumerate}
+
+\textwidth=6.2in
+\textheight=8.5in
+%\parskip=.3cm
+\oddsidemargin=.1in
+\evensidemargin=.1in
+\headheight=-.3in
+
+\newcommand{\scscst}{\scriptscriptstyle}
+\newcommand{\scst}{\scriptstyle}
+\author{Elizabeth Ribble\footnote{emcclel3@msudenver.edu}}
+\date{18-24 May 2017}
+\begin{document}
+
+\title{Basic Course on {\tt R}:\\
+       Hypothesis Testing and Confidence Intervals 2\\
+       Practical}
+\maketitle
+\tableofcontents
+
+\newpage\section{Baby Data}
+\begin{enumerate}[{1.}]
+  \item Read in the data ``R\_data\_January2015.csv'' with a header and row names from the first column. Assign it to the object {\tt babydata} and allow strings be converted to factors. Attach the data to the environment.
+% {\color{red}
+% <<>>=
+% babydata <- read.csv("R_data_January2015.csv",header=T,row.names=1)
+% attach(babydata)
+% @
+% }
+  \vspace{10 mm}
+  \item Answer the following questions pertaining to the variables {\tt vitaminB12} and {\tt homocysteine}:
+    \begin{enumerate}
+      \item What are the Pearson and Spearman correlations between {\tt vitaminB12} and {\tt homocysteine}? Are they similar? Formulate a hypothesis, do a test, and make a decision as to whether either the Pearson or Spearman correlation is statistically significantly. Include a scatterplot of {\tt homocysteine} versus {\tt vitaminB12} to support your findings.\\ 
+% {\color{red}
+% \begin{center}
+% <<fig=TRUE>>=
+% cor(vitaminB12, homocysteine)
+% cor(vitaminB12, homocysteine, method="spearman")
+% cor.test(vitaminB12, homocysteine)
+% cor.test(vitaminB12, homocysteine, method="spearman")
+% plot(vitaminB12,homocysteine)
+% @
+% \end{center}
+% There does appear to be a linear association between the two variables. Our null hypothesis is that there is no association between the two measures, and our alternative hypothesis is that there is an association. The tests in both cases are statistically significant ($p$-value < 0.05 and CI doesn't contain 0) indicating there is an association between the two variables. 
+% }
+      \vspace{30 mm}
+      \item Plot a histogram of each variable to decide whether the Pearson correlation is appropriate to use. Is it? 
+% {\color{red}
+% \begin{center}
+% <<fig=TRUE>>=
+% par(mfrow=c(1,2))
+% hist(vitaminB12)
+% hist(homocysteine)
+% @
+% \end{center}
+% The distributions are not normal but skewed, so it is more appropriate to use the Spearman correlation. 
+% }
+\vspace{10 mm}
+      \item Does the correlation improve after a log transformation of both variables? Make plots and do a test on the appropriate (Spearman or Pearson - depends on distribution!) correlation to answer this question.
+% {\color{red}
+% \begin{center}
+% <<fig=TRUE>>=
+% logB12 <- log(vitaminB12)
+% loghc <- log(homocysteine)
+% par(mfrow=c(2,2))
+% hist(logB12)
+% hist(loghc)
+% plot(logB12, loghc)
+% cor(logB12, loghc)
+% @
+% \end{center}
+% The log-transformed variables are normally distributed, and the relationship looks linear, so we can use the Pearson correlation. Our null hypothesis is that there is no association between the two log-transformed measures, and our alternative hypothesis is that there is an association. Note that the correlation didn't change much from the unlogged data. 
+% <<>>=
+% cor.test(logB12, loghc)
+% @
+% The test is statistically significant ($p$-value < 0.05 and CI doesn't contain 0) indicating there is an association between the two log-transformed variables.
+% }
+      \vspace{30 mm}
+      \item Let's see what happens when we ``categorize'' a continuous variable. Cut {\tt vitaminB12} into 4 groups, where the breaks are the 5 quantile points of {\tt vitaminB12}. Make sure you include the lowest breakpoint by specifying ``{\tt incl=TRUE}''. Assign the output to {\tt catB12}. What are the levels of this new variable? 
+% {\color{red}
+% <<>>=
+% catB12 <- cut(vitaminB12, breaks=quantile(vitaminB12), incl=TRUE)
+% levels(catB12)
+% @
+% }
+      \vspace{30 mm}
+\item Using the log-transformed variable from part (c), assess how the log of {\tt homocysteine} and {\tt catB12} relate. Make a boxplot of log-{\tt homocysteine} for each level of {\tt catB12}.
+% {\color{red}
+% \begin{center}
+% <<fig=TRUE>>=
+% boxplot(homocysteine~catB12)
+% @
+% \end{center}
+% There appears to be a trend: the higher levels of {\tt B12} correspond to lower levels of {\tt homocysteine}.
+% }
+      \vspace{30 mm}
+      \item Are the means of log-{\tt homocysteine} equal across all levels of {\tt catB12}? Formulate a hypothesis, test it, and make a decision for statistical significance.\\
+% {\color{red}
+% Our null hypothesis is that the mean {\tt homocysteine} level of all categories of {\tt catB12} are equal. The alternative is that at least one of the group means differs from the other 3. 
+% <<>>=
+% summary(aov(homocysteine~catB12))
+% @
+% The $p$-value from an ANOVA test is less than 0.05, so we conclude that there is a statistically significant difference between the means of at least one of the groups and the others. 
+% }
+      \vspace{30 mm}
+      \item Now let's see if log-{\tt homocysteine} varies on both {\tt smoking} and {\tt catB12} levels. Make a boxplot of log-{\tt homocysteine} for all combinations of the 2 categories. Then formulate a hypothesis, test it, and make a decision for statistical significance on both categorical variables.
+% {\color{red}
+% \begin{center}
+% <<fig=TRUE>>=
+% boxplot(homocysteine ~ catB12 + smoking)
+% @
+% \end{center}
+% Our null hypothesis is that the mean {\tt homocysteine} level of all combinations of categories of {\tt catB12} and {\tt smoking} are equal. The alternative is that at least one of the group means differs from the others. 
+% <<>>=
+% summary(aov(homocysteine~catB12 * smoking))
+% @
+% The $p$-value of homocysteine from a 2-way ANOVA test is less than 0.05, so we conclude that there is a statistically significant difference between the means of at least one of the {\tt catB12} groups and the others. {\tt smoking} is not significant, so there is no difference in the means of {\tt homocysteine} in smokers and non-smokers. Additionally there is no statistically significant interaction between {\tt catB12} and {\tt smoking}.
+% }
+    \end{enumerate}
+  \vspace{30 mm}
+  \item We suspect that people who drink alcohol ({\tt alcohol} is yes) might also be smokers ({\tt smoking} is yes). Formulate a hypothesis, test it using the appropriate test, and make a decision about statistical significance. [Hint: use {\tt table}.]\\
+%{\color{red}
+%The null hypothesis is that alcohol and smoking are independent; the alternative is that they are %dependent.
+%<<>>=
+%tas <- table(alcohol, smoking)
+%chisq.test(tas)
+%@
+%The $p$-value is less than 0.05 so we conclude that there is a statistically significantly relations%hip between smoking and drinking.
+%}
+
+
+\end{enumerate}
+
+\end{document}
