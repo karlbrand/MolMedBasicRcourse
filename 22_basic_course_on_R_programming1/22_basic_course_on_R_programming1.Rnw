@@ -1,3 +1,13 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Program: 22_basic_course_on_R_programming.rnw                           %
+% Purpose: Provide an introduction to R for the MGC R Basic R course      %
+% Prerequisite(s): none                                                   %
+% Author: Elizazbeth Ribble / Karl Brand                                  %
+% Created: c. april 2013                                                  %
+% Last update: 2018-05-03                                                 %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% begin preamble %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \documentclass [12pt]{article}
 
 \usepackage{graphics,latexsym,geometry,amsmath,bibunits,makeidx,fancyhdr,graphicx}
@@ -33,9 +43,6 @@
 \newcommand{\een}{\end{enumerate}}
 \newcounter{abc}
 
-
-
-
 \textwidth=6.2in
 \textheight=8.5in
 %\parskip=.3cm
@@ -45,15 +52,18 @@
 
 \newcommand{\scscst}{\scriptscriptstyle}
 \newcommand{\scst}{\scriptstyle}
-\author{Elizabeth Ribble\footnote{emcclel3@msudenver.edu}}
-\date{18-24 May 2017}
 
+
+\author{Karl Brand\footnote{brandk@gmail.com}\hspace{1mm} and 
+  Elizabeth Ribble\footnote{emcclel3@msudenver.edu}}
+\date{14-18 May 2018}
 \begin{document}
 
 \title{Basic Course on {\tt R}:\\
        Programming Structures 1}
 \maketitle
 \tableofcontents
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% end preamble %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \newpage
 
@@ -917,11 +927,15 @@ source("C:/myRcode.txt")
 @
 
 <<echo = F>>=
-source('C:/Users/emcclel3/Dropbox/MSU/MTH2520/NelsMTH2520_stuff/class_notes_mth2520/myRcode.txt')
+source(file.path(getwd(), "myRcode.txt"))
 @
 
 \ei
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Document License}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\href{https://www.gnu.org/licenses/gpl-3.0.html}{GNU General Public License v2.0 or higher (GPL$>=$v2)}
 
 \end{document}
 
