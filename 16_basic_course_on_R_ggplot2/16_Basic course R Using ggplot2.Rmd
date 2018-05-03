@@ -33,7 +33,7 @@ ggplot2 is a very extensive package, so it is impossible to show all the possibi
 
 ##Grammar of graphics
 
-The grammar of graphics consists of a number of "layers", which generate a ggplot when correctly put together. These five basic layers will be discussed here:
+The grammar of graphics consists of a number of "layers", which generate a ggplot, when correctly put together. These five basic layers will be discussed here:
 
 - Data
 - Aesthetics
@@ -49,7 +49,7 @@ The basis of each plot is the data. To plot data with ggplot the data needs to b
 ?Indometh
 ```
 
-The "Indometh"" dataset describes the pharmacokinetics of indomethacin after intravenous injection of indomethacin in six subjects. The data.frame has three columns one containing the subject number, one containing the time of sampling in hours, and one containing the indomethacin concentration ug/ml. This dataset is easily plotted with ggplot because it is a data.frame and there is a good separation of variables in the columns. 
+The "Indometh"" dataset describes the pharmacokinetics of indomethacin after intravenous injection of indomethacin in six subjects. The data.frame has three columns one containing the subject number, one containing the time of sampling in hours, and one containing the indomethacin concentration ug/ml. This dataset is easily plotted with ggplot because it is a data.frame and every column contains a separate variable. 
 
 ```{r, echo=F}
 head(Indometh)
@@ -61,13 +61,19 @@ An example of a badly formatted dataset for visualization with ggplot is a datas
 ?ldeaths
 ```
 
-This dataset contains three separate datasets for female, male and both male and female deaths (ldeaths, fdeaths, and mdeaths). The columns contain values per month and the rows indicate the year. (also they are not data.frames)
+This dataset contains three separate datasets for female, male and both male and female deaths (ldeaths, fdeaths, and mdeaths). The columns contain values per month and the rows indicate the year.
 
 ```{r, echo=F}
 ldeaths
 ```
 
-Since there are two separate datasets, there is no column indicating the sex. There is also no column indicating the year and no column indicating the month. This means that we cannot use these variables in ggplot to visualize, for instance, the difference between the number of deaths in men and women in a certain year. We can use some more advanced R data reshaping to get these datasets in the right shape.
+This dataset cannot be easily plotted using ggplot for three reasons:
+
+* The dataset is not of the class data.frame
+* The male and female datasets are separated in two objects
+* The columns do not represent distinct variable values
+
+We can use some more advanced R data reshaping to get these datasets in the right shape.
 
 ```{r, echo=F}
 deaths <- c(fdeaths,mdeaths)
@@ -84,13 +90,13 @@ head(data)
 ggplot(data, aes(x=Month, y=Deaths, color=Sex)) + geom_point()
 ```
 
-However, it is much more easy to keep in mind that any variable that you want to use as a part of your ggplot should get its own column when you are designing your dataset (in Excel). With the data in the right class and the right format we can easily call the ggplot function, and add a scatter plot layer to it. 
+However, it is much more easy to keep in mind that **any variable that you want to use as a part of your ggplot should get its own column** when you are designing your dataset (in Excel). With the data in the right class and the right format we can easily call the ggplot function, and add a scatter plot layer to it. 
 
 \pagebreak
 
 ##Aesthetics
 
-After figuring out what data to plot it is nescessary to indicate how to plot it. Aesthetics are used to indicate how to plot what. As we saw in the plot of the ldeaths data we start with indicating what data.frame to plot and use aes() to indicate what to plot on the x axis, the y axis and what to use as color. We do not have to indicate what to plot where and which color to give to which category. We simply map a column of our data.frame to an aesthetic. Depending on the geom we use there are a number of aesthetics that can be mapped to a variable:
+After figuring out what data to plot, it is nescessary to indicate how to plot it. Aesthetics are used to indicate how to plot what. As we saw in the plot of the ldeaths data we start with indicating what data.frame to plot and use aes() to indicate what to plot on the x axis, the y axis and what to use as color. We do not have to indicate what to plot where and which color to give to which category. We simply map a column of our data.frame to an aesthetic. Depending on the geom we use there are a number of aesthetics that can be mapped to a variable:
 
 - x
 - y
@@ -117,7 +123,7 @@ ggplot(data, aes(x=Month, y=Deaths, color=Sex)) + geom_point(size=3)
 
 ##Geometries
 
-For the previous ggplots we have used the geom_point function which generates a scatter plot layer that can be added to the ggplot. "point" is one of the many geomertry layers available in the ggplot library. There are over thirty different geoms in ggplot which can be found at <http://docs.ggplot2.org/>. We will have a look at the plot types that we have already encountered using the basic R plotting functions and replace them with their ggplot counterparts.
+For the previous ggplots we have used the geom_point function which generates a scatter plot layer that can be added to the ggplot. "point" is one of the many geomertry layers available in the ggplot library. There are over thirty different geoms in ggplot which can be found at <http://ggplot2.tidyverse.org/reference/index.html>. We will have a look at the plot types that we have already encountered using the basic R plotting functions and replace them with their ggplot counterparts.
 
 ###Scatter plots
 
@@ -282,7 +288,7 @@ ggplot(ToothGrowth, aes(x=len)) +
 
 ##Scales
 
-When mapping a variable to one of the aesthetics of a ggplot, ggplot uses the default scales. It is however possible to adjust the scales of the plot and their color using the scales functions. The scales that are generally used the most are those for the x, y, color and fill of the plot. The type of function to adjust the scale of one of the aesthetics depends on the aesthetic and the type of variable (continuous or discrete). Some of the possible scale adjustments, such as limits, transformation, breaks, labels, and color, are exemplified by the plot below.
+When mapping a variable to one of the aesthetics of a ggplot, ggplot uses the default scales. It is however possible to adjust the scales of the plot and their color using the scales functions. The scales that are generally used the most are those for the x, y, color and fill of the plot. The name of the scale depends on which scale you would like to adjust. So "scale_x_..." changes the x scale and "scale_fill_.." changes the scale of the "fill" aesthetic. The type of function to adjust the scale of one of the aesthetics depends on the aesthetic and the type of variable (continuous or discrete). Some of the possible scale adjustments, such as limits, transformation, breaks, labels, and color, are exemplified by the plot below.
 
 ```{r, fig.align="center"}
 ggplot(ToothGrowth, aes(x=index, y=as.factor(dose), color=len)) + 
@@ -363,161 +369,4 @@ p <- ggplot(ToothGrowth)
 myplot <- p + geom_point(aes(x = index, y = len, color = supp, size = dose))
 
 ggsave("my_plot.pdf",myplot)
-```
-
-\pagebreak
-
-#Using ggplot: Practicals
-1. **Load the ggplot2 library (install it if you have to) and the diamonds dataset using data()**
-
-2. **Explore the dataset using dim(), str() and help(), which variables are continuous, which variables are discrete? Is this dataset ready for plotting with ggplot?**
-
-3. **Use ggplot to plot a scatterplot of the relationship between the diamonds' carat and their price**
-
-4. **Make all dots darkblue and set the alpha value to 0.1**
-
-5. **Visualize the influence of the color of a diamond on its price by mapping the diamond color to the color aesthetic**
-
-6. **Use a ggplot barplot to visualize diamond clarity depending on color, map diamond color to x and diamond clarity to fill**
-
-7. **Create a boxplot of the carat of a diamond based on its clarity and add whiskers using stat_boxplot**
-
-8. **Add a geom_point layer to the previous plot mapping the diamonds price to the color**
-
-9. **Create a histogram of the price of the diamonds and separate the histograms into facets using diamond color, choose a good binwith or number of bins**
-
-10. **Create a grid of facets of the same histogram by comparing both color and cut**
-
-11. **Use 'aggregate(diamonds, by = list(cut = diamonds\$cut, color = diamonds\$color), mean)' to calculate the mean of all variables by cut and color. Create a heatmap of the mean prices by cut and color using geom_tile**
-
-12. **Change the title of the heatmap to "Average prices"**
-
-13. **Change the gradient of the fill scale using 'scale_fill_gradient2'. Have it go from darkblue to white to darkred, set the midpoint to 4500**
-
-14. **Choose and add a theme to the heatmap, or create a theme yourself using the options listed at <http://ggplot2.tidyverse.org/reference/theme.html>**
-
-\pagebreak
-
-#Using ggplot: Answers
-1. **Load the ggplot2 library (install it if you have to) and the diamonds dataset using data()**
-```{r, eval=F}
-# if needed install.packages("ggplot2")
-library(ggplot2)
-data("diamonds")
-```
-
-2. **Explore the dataset using dim(), str() and help(), which variables are continuous, which variables are discrete? Is this dataset ready for plotting with ggplot?**
-
-```{r, eval=F}
-dim(diamonds)
-str(diamonds)
-help(diamonds)
-```
-
-Cut, color, and clarity are factors, and therefore discrete. The others are numeric continuous variables.
-
-3. **Use ggplot to plot a scatterplot of the relationship between the diamonds' carat and their price**
-
-```{r, eval=F}
-ggplot() + geom_point(data=diamonds, aes(x=carat, y=price))
-
-#or
-
-ggplot(diamonds) + geom_point(aes(x=carat, y=price))
-
-#or
-
-ggplot(diamonds, aes(x=carat, y=price)) + geom_point()
-```
-
-4. **Make all dots darkblue and set the alpha value to 0.1**
-
-```{r, eval=F}
-ggplot(diamonds, aes(x=carat, y=price)) + geom_point(color="darkblue", alpha=0.1)
-```
-
-5. **Visualize the influence of the color of a diamond on its price by mapping the diamond color to the color aesthetic**
-
-```{r, eval=F}
-#The color of the dots will be overwritten if we specify it statically  
-#in the geom_point function itself
-ggplot(diamonds, aes(x=carat, y=price, color=color)) + geom_point(alpha=0.1)
-```
-
-6. **Use a ggplot barplot to visualize diamond clarity depending on color, map diamond color to x and diamond clarity to fill**
-
-```{r, eval=F}
-ggplot(diamonds, aes(x=color, fill=clarity)) + geom_bar()
-```
-
-7. **Create a boxplot of the carat of a diamond based on its clarity and add whiskers using stat_boxplot**
-
-```{r, eval=F}
-ggplot(diamonds, aes(x=clarity, y=carat)) + 
-	stat_boxplot(geom="errorbar", width=0.5) + 
-	geom_boxplot()
-```
-
-8. **Add a geom_point layer to the previous plot mapping the diamonds price to the color**
-
-```{r, eval=F}
-ggplot(diamonds, aes(x=clarity, y=carat)) + 
-	stat_boxplot(geom="errorbar", width=0.5) + 
-	geom_boxplot() + 
-	geom_point(aes(color=price))
-```
-
-9. **Create a histogram of the price of the diamonds and separate the histograms into facets using diamond color, choose a good binwith or number of bins**
-
-```{r, eval=F}
-ggplot(diamonds, aes(x=price)) + 
-	geom_histogram(binwidth = 100) + 
-	facet_grid(color ~ .)
-```
-
-10. **Create a grid of facets of the same histogram by comparing both color and cut**
-
-```{r, eval=F}
-ggplot(diamonds, aes(x=price)) + 
-	geom_histogram(binwidth = 100) + 
-	facet_grid(color ~ cut)
-```
-
-11. **Use 'aggregate(diamonds, by = list(cut = diamonds\$cut, color = diamonds\$color), mean)' to calculate the mean of all variables by cut and color. Create a heatmap of the mean prices by cut and color using geom_tile**
-
-```{r, eval=F}
-#Aggregate uses a function (in this case mean) to aggregate all variables 
-#in a given data.frame by a list of variables given in "by"
-mean.price <- aggregate(diamonds, 
-	by = list(cut = diamonds$cut, color = diamonds$color), 
-	mean)
-ggplot(mean.price, aes(x=cut, y=color, fill=price)) + 
-	geom_tile()
-```
-
-12. **Change the title of the heatmap to "Average prices"**
-
-```{r, eval=F}
-ggplot(mean.price, aes(x=cut, y=color, fill=price)) + 
-	geom_tile() + 
-	labs(title="Average prices")
-```
-
-13. **Change the gradient of the fill scale using 'scale_fill_gradient2'. Have it go from darkblue to white to darkred, set the midpoint to 4500**
-
-```{r, eval=F}
-ggplot(mean.price, aes(x=cut, y=color, fill=price)) + 
-	geom_tile() + 
-	labs(title="Average prices") + 
-	scale_fill_gradient2(low="darkblue", mid="white", high="darkred", midpoint = 4500)
-```
-
-14. **Choose and add a theme to the heatmap, or create a theme yourself using the options listed at <http://ggplot2.tidyverse.org/reference/theme.html>**
-
-```{r, eval=F}
-ggplot(mean.price, aes(x=cut, y=color, fill=price)) + 
-	geom_tile() + 
-	labs(title="Average prices") + 
-	scale_fill_gradient2(low="darkblue", mid="white", high="darkred", midpoint = 4500) + 
-	theme_minimal()
 ```
