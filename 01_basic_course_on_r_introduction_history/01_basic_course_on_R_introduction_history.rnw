@@ -1,6 +1,5 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
 % Program: 01_KB_basic_course_on_R_introduction_history.rnw               %
-% Path: ~/Dropbox/Cardioformatics/CTMM_management/projects/R_course_2013  %
 % Purpose: Provide an introduction to R for the MGC R Basic R course      %
 % Prerequisite(s): none                                                   %
 % Author: Karl Brand                                                      %
@@ -31,7 +30,7 @@
 \newcommand{\scscst}{\scriptscriptstyle}
 \newcommand{\scst}{\scriptstyle}
 
-\author{Karl Brand\footnote{karl.brand@bayer.com}\hspace{1mm} and Elizabeth Ribble\footnote{emcclel3@msudenver.edu}}
+\author{Karl Brand\footnote{brandk@gmauil.com}\hspace{1mm} and Elizabeth Ribble\footnote{emcclel3@msudenver.edu}}
 \date{14-18 May 2018}
 
 \begin{document}
@@ -55,8 +54,8 @@ Introduction and History}
 In the first part of the course we are introduced to the {\tt R}
 software package, or \emph{environment}, and learn about {\tt R}, how
 to interact with it and it's basic programming elements. In the second
-part of the course we'll learn how to use {\tt R} for it's initial
-intended function: doing statistics quickly and effectively.
+part of the course we'll learn how to use {\tt R} for it's intended
+function: doing statistics quickly and effectively.
 
 We will cover essential topics including how to use {\tt R} and
 why we use it; objects, classes and functions; and creating,
@@ -120,7 +119,7 @@ Auckland, New Zealand begin coding (1991) the {\tt S} clone, {\tt R},
 as an open source alternative for academic use. Together with the `R
 core group' they released version 1 under the GNU Public License (GPL)
 v2 and v3 in 2000. The name, {\tt R}, probably derives from the first
-letter of creator's
+letter of the creator's
 names. \url{http://cran.r-project.org/doc/FAQ/R-FAQ.html#Why-is-R-named-R_003f}
 
 % I installed {\tt R} in 2006 to analyse Affymetrix microarray data with
@@ -155,73 +154,75 @@ multi-threaded architecture of current computing technology.
  {\tt R} application. Of course you'll need to download the version
  for your operating system and architecture first.
  
-\begin{figure}
-  \begin{center}
-    \includegraphics[width=6in]{cran.png}
-  \end{center}
-  \caption{Get R: \url{http://www.r-project.org/}\url{http://www.illumina.com/technology/beadarray_technology.ilmn}}
-\end{figure}
+%% \begin{figure}
+%%   \begin{center}
+%%     \includegraphics[width=6in]{cran.png}
+%%   \end{center}
+%%   \caption{Get R: \url{http://www.r-project.org/}}
+%% \end{figure}
 
-For Linux: \url{http://cran.r-project.org/bin/linux/}
+For Linux: \url{https://cran.r-project.org/bin/linux/}
   
-For Mac: \url{http://cran.r-project.org/bin/macosx/}
+For Mac: \url{https://cran.r-project.org/bin/macosx/}
 
-For Windows: \url{http://cran.r-project.org/bin/windows/base/}
+For Windows: \url{https://cran.r-project.org/bin/windows/}
 
 Although {\tt R} for Windows (and Mac?) ships with a basic text
 editor, and it's possible to execute code from the terminal under
 linux, a fully featured editor increases convenience and
 productivity. Grab an awesome text editor:
 
-RStudio: \url{http://www.rstudio.com/ide/download/}
+RStudio: \url{https://www.rstudio.com/products/rstudio/}
 
-EMACS/ESS: \url{http://ess.r-project.org/index.php?Section=download/}
+Emacs/ESS: \url{http://ess.r-project.org/index.php?Section=download}
 
 Here's a full list available editors:
-\url{https://en.wikipedia.org/wiki/R_(programming_language)#Graphical_user_interfaces}
+\url{https://en.wikipedia.org/wiki/R_(programming_language)#Interfaces}
 
 \subsection{Not convinced?}
-\href{http://r4stats.com/articles/popularity/}{r4stats.com} has a
-nice evaluation of {\tt R}'s value `in the field'.
-More and more people are discussing R:\\
-\includegraphics[width=5.5in]{fig_1a_listserv11.png}\\
-\url{http://r4stats.files.wordpress.com/2012/04/fig_1a_listserv11.png}\\
+r4stats.com has a nice evaluation of {\tt R}'s value `in the
+field'. \url{http://r4stats.com/articles/popularity/}
+
+%% More and more people are discussing R:\\
+\includegraphics[width=5.5in]{Fig-1a-IndeedJobs-2017.png}\\
+\url{https://i0.wp.com/r4stats.com/wp-content/uploads/2017/02/Fig-1a-IndeedJobs-2017.png}\\
 
 %\includegraphics[width=4in]{fig_3_rexersurvey.png}\\
 %\url{http://r4stats.files.wordpress.com/2012/04/fig_3_rexersurvey.png}\\
 
-\includegraphics[width=4in]{fig_4_kdnuggets1.png}\\
+\includegraphics[width=4in]{fig_6a_rexersurveyprimarytool20151.png}\\
 {\tt R} is the most used software for getting data mining and big data ``done''.
-\url{http://r4stats.files.wordpress.com/2012/04/fig_4_kdnuggets1.png}\\
+\url{https://i1.wp.com/datasciencepopularity.com/wp-content/uploads/2015/10/fig_6a_rexersurveyprimarytool20151.png}\\
 
-This is a compelling reason to learn any language: the more people
-speaking a language, the easier it is to get help, the longer it will
-stay around, and more people you can \emph{talk} with. Isn't this the
-purpose of any language?
+%% This is a compelling reason to learn any language: the more people
+%% speaking a language, the easier it is to get help, the longer it will
+%% stay around, and more people you can \emph{talk} with. Isn't this the
+%% purpose of any language?
 
 \includegraphics[width=5in]{fig_8_cran.png}\\
 There's an enormous number of packages offering custom functionality.
-\url{http://r4stats.files.wordpress.com/2012/04/fig_8_cran.png}
+\url{https://www.listendata.com/2016/12/companies-using-r.html}
 
 \includegraphics[width=4.3in]{bioconductor.png}\\ Bioconductor,
 initiated in 2001 for the analysis of genomics data, has grown from 15
-to (currently) 1024 software packages for omics and life science
+to (currently) 1560 software packages for omics and life science
 analyses.  \url{http://www.bioconductor.org/}
 
 \includegraphics[width=4.3in]{companies.png}\\
-Used internally by lots of big, profitable companies. \url{http://www.revolutionsanalytics.com/what-is-open-source-r/companies-using-r.php}
+Used internally by lots of big, profitable companies. \url{https://www.datasciencecentral.com/profiles/blogs/list-of-companies-using-r}
 
 \includegraphics[width=4.3in]{NYTimes.png}\\
 Has gained the popular media's attention. \url{http://www.nytimes.com/2009/01/07/technology/business-computing/07program.html?_r=0}
 
 \includegraphics[width=4.3in]{forbes.png}\\
 \href{http://www.forbes.com/sites/smcnally/2010/11/10/names-you-need-to-know-in-2011-r-data-analysis-software/}{Link to reference}
-\newpage Many other statistical and analytical programs have implemented
+
+Many other statistical and analytical programs have implemented
 connectors to enable running {\tt R} code within them, including
 `competitors' like SPSS, MatLab and SAS. Despite this {\tt R}'s
 popularity continues to grow. In contrast to the `workhorse' languages
 like {\tt C} and Python which are used to build many programs, {\tt R}
-is first and foremost a statistics focused language. Despite this,
+is first and foremost a statistics focussed language. Despite this,
 it's close to being in the top 10 of the most popular computing
 languages.
 
@@ -234,20 +235,22 @@ languages.
 \subsection{Definition(s)}
 
 \begin{itemize}
-\item \textbf{Wikipedia}: `R is a free software programming language and
-  software environment for statistical computing and graphics... is an
-  implementation of the S programming language combined with lexical
-  scoping semantics inspired by Scheme.'
+  
+\item \textbf{Wikipedia}: `R is a programming language and free
+  software environment for statistical computing and graphics that is
+  supported by the R Foundation for Statistical Computing.  The R
+  language is widely used among statisticians and data miners for
+  developing statistical software and data analysis.'
   \url{http://en.wikipedia.org/wiki/R_(programming_language)}
 
-\item  \textbf{Comprehensive {\tt R} Archive Network (CRAN):} `R is ``GNU S'', a
-  freely available language and environment for statistical computing
-  and graphics which provides a wide variety of statistical and
-  graphical techniques: linear and nonlinear modelling, statistical
-  tests, time series analysis, classification, clustering, etc.'
-  \url{http://cran.xl-mirror.nl/}
+\item \textbf{Comprehensive {\tt R} Archive Network (CRAN):} `R is
+  ``GNU S'', a freely available language and environment for
+  statistical computing and graphics which provides a wide variety of
+  statistical and graphical techniques: linear and nonlinear
+  modelling, statistical tests, time series analysis, classification,
+  clustering, etc.' \url{https://cloud.r-project.org/}.
 
-\item  \textbf{My definition:} A command based, object oriented, functional
+\item  \textbf{My definition:} A command based, object oriented and functional
   language; in contrast to excel which is a cell centric, spreadsheet
   managing graphical user interface (GUI).
 
@@ -286,16 +289,17 @@ KISS, i.e., keep it simple stupid.
     into the terminal and hit {\tt enter} to do your work. But if you need
     thousands of commands for a specific task, or want to share your
     method, this approach gets tiring fast. 
-    \item Since the commands are just text, it's easy to write a series of commands using any program built for working with text, i.e., text editors and word
-    processors, to create {\it code} or a {\it script}, to get something
-    done.
+    \item Since the commands are just text, it's easy to write a
+    series of commands using any program built for working with
+    text, i.e., text editors and word processors, to create {\it
+    code} or a {\it script}, to get something done.
     %% {\tt R} is described as a \emph{statistical environment}. We use a
     %% keyboard to type functions and then send them to {\tt R}. This may be
     %% directly in the R terminal, or by sourcing a previously prepared
     %% script from the terminal. 
-    \item The easiest, most efficient way to write
-    {\tt R} code is using a text editor or \emph{integrated development
-      environment}, like RStudio or Emacs/ESS as mentioned earlier.
+    \item The easiest, most efficient way to write {\tt R} code is
+    using a text editor or \emph{integrated development
+    environment}, like RStudio or Emacs/ESS as mentioned earlier.
   \end{itemize}
 
 \subsubsection{RStudio: the easiest way to work with {\tt R}} 
@@ -311,7 +315,7 @@ installer.
 Let's have a look at an RStudio ``session''.
 
 \includegraphics[width=\textwidth]{RStudio.png}
-\newpage
+
 There are four panes. 
   \begin{itemize}
     \item The top left is the source pane. \textbf{Do your
@@ -336,7 +340,7 @@ A few other things about RStudio:
     \item move the focus between panes using the key board shortcuts {\tt
       Ctrl + 1} and {\tt Ctrl + 2} for the source and console panes
       respectively
-    \item little asterisk next your source code file name indicates
+    \item the little asterisk next your source code file name indicates
       unsaved code
     \item \textbf{save your source code!}
   \end{itemize}
@@ -445,8 +449,11 @@ It's fun, try them out!
 
 \subsection{Trouble shooting}
 \begin{itemize}
-\item Clean your environment and start again to be sure your messy environment
-  isn't the cause of your issue. In RStudio, click the broom in the Environment tab; in any R session you can also run:
+
+\item Clean your environment and start again to be sure your messy
+  environment isn't the cause of your issue. In RStudio, click the
+  broom in the Environment tab; in any R session you can also run:
+  
 <<eval=FALSE>>=
 # not run:
 rm(list=ls())                 
