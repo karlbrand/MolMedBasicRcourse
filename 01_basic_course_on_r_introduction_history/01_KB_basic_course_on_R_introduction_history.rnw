@@ -31,8 +31,8 @@
 \newcommand{\scscst}{\scriptscriptstyle}
 \newcommand{\scst}{\scriptstyle}
 
-\author{Karl Brand\footnote{brandk@gmail.com}\hspace{2mm}  and Elizabeth Ribble\footnote{emcclel3@msudenver.edu}}
-\date{18-24 May 2017}
+\author{Karl Brand\footnote{karl.brand@bayer.com} and Elizabeth Ribble\footnote{emcclel3@msudenver.edu}}
+\date{14-18 May 2018}
 
 \begin{document}
 
