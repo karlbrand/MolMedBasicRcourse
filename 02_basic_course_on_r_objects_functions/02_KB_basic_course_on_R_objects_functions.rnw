@@ -1,11 +1,10 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Program: 02_KB_basic_course_on_R_objects_functions.rnw                  %
-% Path: ~/Dropbox/Cardioformatics/CTMM_management/projects/R_course_2013  %
 % Purpose: Provide an introduction to R for the MGC R Basic R course      %
 % Prerequisite(s): none                                                   %
 % Author: Karl Brand   / Elizazbeth Ribble                                %
 % Created: c. april 2013                                                  %
-% Last update: 2017-05-04                                                 %
+% Last update: 2018-05-03                                                 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% begin preamble %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -29,12 +28,10 @@
 
 \newcommand{\scscst}{\scriptscriptstyle}
 \newcommand{\scst}{\scriptstyle}
-\author{Karl Brand\footnote{brandk@gmail.com}\hspace{2mm}  and Elizabeth Ribble\footnote{emcclel3@msudenver.edu}}
-\date{18-24 May 2017}
+\author{Karl Brand\footnote{brandk@gmail.com}\hspace{1mm}  and Elizabeth Ribble\footnote{emcclel3@msudenver.edu}}
+\date{14-18 May 2018}
 \begin{document}
 
-%% Bring figures to the top
-%% https://tex.stackexchange.com/questions/28556/how-to-place-a-float-at-the-top-of-a-floats-only-page?lq=1
 \makeatletter
 \setlength{\@fptop}{0pt}
 \setlength{\@fpbot}{0pt plus 1fil} %% usually redundant
@@ -91,7 +88,7 @@ class(numeric_again)
 
 \newpage
 \subsection{Text}
-The \emph{veggies}.
+The \emph{vegies}.
 <<>>=
 class("a")
 mode("a")
@@ -113,7 +110,7 @@ mode(TRUE)
 @
 
 \subsection{Functions}
-An object that does something to the fruits and veggies, a \emph{frying pan!} Remember the function we defined?
+An object that does something to the fruits and vegies, a \emph{frying pan!} Remember the function we defined?
 <<echo=FALSE>>=
 myFunc <- function(object = TRUE) {
   if (object) {
@@ -186,7 +183,7 @@ mode(an_array)
 Similar to vectors, lists have a specific order or sequence. Unlike
 vectors however, each element of a list can be of any {\tt class} or
 {\tt mode}. Think of them like a \emph{shopping list} of: a string
-of fruit, a tray veggies, another sublist of items
+of fruit, a tray vegies, another sublist of items
 <<>>=
 a_list <- list(a_vector, a_matrix, letters_mat)
 a_list
@@ -232,7 +229,9 @@ str(aDF[, 1])
 @
 
 It's important to understand that the things we work with in {\tt R} have a
-`mode' (mutually exclusive classification of basic structure) and a `class' (property used to determine how functions operate with object). Pay attention to your modes and classes.
+`mode' and a 'class'. The mode is a mutually exclusive classification of 
+an object's basic structure and the class is a property used to determine 
+how functions operate with object. Pay attention to your modes and classes.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Functions are things you can do}
@@ -428,7 +427,7 @@ x != y
 @
 
 \subsection{Functions you need to get work done with {\tt R}}
-\item R has an extensive set of built-in {\bf \em functions}, a few of which are listed below:
+R has an extensive set of built-in {\bf \em functions}, a few of which are listed below:
 
 Print structure of an object:
 <<eval=FALSE>>=
@@ -450,9 +449,9 @@ List all objects and functions held in your global environment:
 <<eval=FALSE>>=
 ls()                       
 @ 
-Generate a sequence of values:
+Generate a sequence:
 <<eval=FALSE>>=
-seq()
+seq(from = 1, to = 10, by = 2)
 @
 Or, use the {\tt :} operator:
 <<>>=
@@ -495,9 +494,7 @@ some of which are optional.
 
 One way to see what arguments a function takes and which ones are optional is to use the function:
 
-\begin{Sinput}
-args()                   # View a function's formal arguments
-\end{Sinput}
+{\tt args()}
 
 Another way to view a function's arguments is to look at its help file (e.g. \texttt{?sqrt}).
 
@@ -543,7 +540,7 @@ irrelevant.  For example, we get the same result by typing:
 round(digits = 2, x = 4.679)
 @
 
-\item The two types of argument specification (positional and named argument
+The two types of argument specification (positional and named argument
 matching) can be be mixed in the same function call.
 
 \subsection{Formal Arguments and Actual Arguments}
@@ -725,7 +722,7 @@ the working directory in a file called {\tt .Rhistory}:
 <<eval=FALSE>>=
 savehistory()
 @
-%Such a file may be hidden by default in some file browsers, including linux.
+Such a file may be hidden by default in some file browsers, including linux.
 
 Note that this typically occurs (console dependent) by default when you
 quit your {\tt R} session. If an {\tt .Rhistory} file already exists from a previous
