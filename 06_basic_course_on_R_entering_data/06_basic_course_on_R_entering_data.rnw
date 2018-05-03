@@ -1,3 +1,13 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Program: 06_basic_course_on_R_entering_data.rnw                         %
+% Purpose: Provide an introduction to R for the MGC R Basic R course      %
+% Prerequisite(s): none                                                   %
+% Author: Elizazbeth Ribble / Karl Brand                                  %
+% Created: c. april 2013                                                  %
+% Last update: 2018-05-03                                                 %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% begin preamble %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \documentclass[12pt]{article}
 
 \usepackage{amsmath}
@@ -16,8 +26,8 @@
 \newcommand{\scscst}{\scriptscriptstyle}
 \newcommand{\scst}{\scriptstyle}
 
-\author{Karl Brand\footnote{brandk@gmail.com}\hspace{2mm}  and Elizabeth Ribble\footnote{emcclel3@msudenver.edu}}
-\date{18-24 May 2017}
+\author{Karl Brand\footnote{brandk@gmail.com}\hspace{1mm}  and Elizabeth Ribble\footnote{emcclel3@msudenver.edu}}
+\date{14-18 May 2018}
 
 \begin{document}
 \title{Basic Course on {\tt R}:\\
@@ -193,12 +203,15 @@ data
 \noindent In the arguments we can specify things like: 
 
 \begin{itemize}
-\item the separator e.g., {\tt sep = "\textbackslash t"} for tab separated (.txt) or {\tt sep = ","} for comma separated (.csv) files;
+\item the separator e.g., {\tt sep = "\textbackslash t"} for tab separated (.txt) 
+or {\tt sep = ","} for comma separated (.csv) files;
 \item the header (as above);
 \item which column contains the row names (as above);
 \item whether to skip any columns or fill in blank lines with {\tt NA};
 \end{itemize}
-and so on. The function {\tt read.csv} is the same as {\tt read.table} but uses the default {\tt sep = ","} for reading in .csv files (note that {\tt read.csv2} has default {\tt sep = ";"}).
+and so on. The function {\tt read.csv} is the same as {\tt read.table} but uses 
+the default {\tt sep = ","} for reading in .csv files (note that {\tt read.csv2} 
+has default {\tt sep = ";"} and {\tt dec = ","}).
 \\
 
 \noindent Also be aware of R's default behaviour of converting columns
@@ -242,6 +255,10 @@ write.csv(x = data, file = "C:/temp/results.csv")
 setwd("C:/Users/Documents/RSTUFF")
 @
 
-
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Document License}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\href{https://www.gnu.org/licenses/gpl-3.0.html}{GNU General Public License 
+v2.0 or higher (GPL$>=$v2)}
 
 \end{document}

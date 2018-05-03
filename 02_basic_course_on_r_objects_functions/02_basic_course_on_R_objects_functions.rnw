@@ -1,5 +1,5 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Program: 02_KB_basic_course_on_R_objects_functions.rnw                  %
+% Program: 02_basic_course_on_R_objects_functions.rnw                     %
 % Purpose: Provide an introduction to R for the MGC R Basic R course      %
 % Prerequisite(s): none                                                   %
 % Author: Karl Brand   / Elizazbeth Ribble                                %
