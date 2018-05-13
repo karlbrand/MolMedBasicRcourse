@@ -17,7 +17,7 @@
 \newcommand{\scst}{\scriptstyle}
 
 \author{Karl Brand\footnote{brandk@gmail.com}\hspace{2mm}  and Elizabeth Ribble\footnote{emcclel3@msudenver.edu}}
-\date{18-24 May 2017}
+\date{14-18 May 2018}
 
 \begin{document}
 
@@ -92,9 +92,9 @@ plot(ToothGrowth$dose, ToothGrowth$len, xlab = "Dose",
 <<out.width="3.2in">>=
 plot(ToothGrowth$dose, ToothGrowth$len, xlab = "Dose", 
      ylab = "Tooth Length", main = "Guinea Pig Tooth Growth by Dosage",
-     col = ToothGrowth$supp, pch = 2)
+     col = ToothGrowth$supp, pch = as.numeric(ToothGrowth$supp))
 legend(1.5, 15, c("OJ", "VC"), col = 1:2, 
-       pch = as.numeric(ToothGrowth$supp))
+       pch = 1:2)
 @
 \end{center}
 
@@ -271,7 +271,7 @@ change the colors, labels and axes:
 <<out.width="3.2in">>=
 boxplot(ToothGrowth$len~ToothGrowth$supp, 
         col = c("darkgreen", "purple"),
-        xlab = "Supplement Type", ylab = "Tooth Length",
+        ylab = "Supplement Type", xlab = "Tooth Length",
         ylim = c(0, 40), horizontal = TRUE)
 @
 \end{center}

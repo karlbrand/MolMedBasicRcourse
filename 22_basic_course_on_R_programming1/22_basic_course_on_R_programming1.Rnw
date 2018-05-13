@@ -758,28 +758,6 @@ if(x < 10 && y < 10) {
 @
 
 \newpage
-\item As a practical example, if we want to test whether a variable \texttt{x} lies {\em between} two numbers, say 60 and 70, we type:
-
-<<eval=FALSE>>=
-x > 60 && x < 70
-@
-and to test whether it lies {\em outside} the range 60 to 70, we type:
-
-<<eval=FALSE>>=
-x < 60 || x > 70
-@
-
-\item Here's an example of using \texttt{\&\&} in an \texttt{if()} statement:
-
-<<>>=
-x <- 3
-y <- 5
-if(x < 10 && y < 10) {
-  print("Both less than 10")
-} else {
-  print("Not both less than 10")
-}
-@
 
 \item The negation operator, \texttt{!}, returns ``the opposite'' of a logical expression:
 
@@ -789,7 +767,6 @@ if(x < 10 && y < 10) {
 !(5 < 6)
 @
 
-\newpage
 \item Pay attention to the operator precedence for \texttt{\&\&}, \texttt{||}, and 
 \texttt{!}.  It can be found by typing:
 
@@ -888,7 +865,7 @@ meanOfAll <- function(...) {
   return(mean(c(...)))
 }
 @
-\newpage
+
 The command
 
 <<eval=FALSE>>=

@@ -16,7 +16,7 @@
 \newcommand{\scscst}{\scriptscriptstyle}
 \newcommand{\scst}{\scriptstyle}
 \author{Elizabeth Ribble\footnote{emcclel3@msudenver.edu}}
-\date{18-24 May 2017}
+\date{14-18 May 2018}
 
 \begin{document}
 
@@ -57,7 +57,7 @@ The dogs are the blocks because they should be more homogeneous within (with res
 boxplot(conc~anesthetic)
 @
 
-Looks like the mean concentration for cyclopropane is higher than the other 2.
+Looks like the median concentration for cyclopropane is higher than the other two.
 }
       \item Perform the appropriate Friedman's test in R. \\
 {\color{red}
@@ -67,7 +67,7 @@ friedman.test(conc, anesthetic, dog)
 }
 \item What do you conclude about the effect of anesthetics on plasma epinephrine concentration (use a significance level of 0.05)?\\
 {\color{red}
-Since the $p$-value (0.2725) is greater than 0.05, the data do not provide sufficient evidence to conclude the 3 anesthetics have differing effects on the plasma epinephrine concentration.
+Since the $p$-value (0.2725) is greater than 0.05, the data do not provide sufficient evidence to conclude the three anesthetics have differing effects on the plasma epinephrine concentration.
 }
   \end{enumerate}
   
@@ -89,7 +89,7 @@ attach(mommies)
 kruskal.test(cortisol~group)
 @
 
-With a $p$-value 0.009894, which is less than 0.05, we are able to reject the null that all the group means are equal and therefore conclude at least two of the mean cortisol levels of the three groups are different. 
+With a $p$-value 0.009894, which is less than 0.05, we are able to reject the null that all the group medians are equal. We therefore conclude at least two of the median cortisol levels of the three groups are different. 
 }      
       \item Make a boxplot of the cortisol level grouped by C-section groups. Use it to explain why we didn't use an $F$ test (regular one-way ANOVA).
 {\color{red}

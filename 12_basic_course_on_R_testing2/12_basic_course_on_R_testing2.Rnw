@@ -16,7 +16,7 @@
 \newcommand{\scscst}{\scriptscriptstyle}
 \newcommand{\scst}{\scriptstyle}
 \author{Elizabeth Ribble\footnote{emcclel3@msudenver.edu}}
-\date{18-24 May 2017}
+\date{14-18 May 2018}
 
 \begin{document}
 
@@ -166,18 +166,18 @@ bwplot(BMI ~ educational_level|iodine_deficiency)
 @
 \end{center}
 
-Here the interatcion is not significant so we take it out and re-run the ANOVA:
+Here the interaction is not significant so we take it out and re-run the ANOVA:
 <<>>=
 baby_aov2 <- aov(BMI ~ educational_level + iodine_deficiency)
 summary(baby_aov2)
 @
 
-It appears that educational level and iodine deficienty may have an effect on BMI.
+It appears that educational level and iodine deficiency may have an effect on BMI.
 
 
 \newpage
 \section{$\chi^2$ Test}
-A $\chi^2$ (read: chi-squared) test of independence tests the null hypothesis that rows and columns are indpedenent in a $c\times r$ contingency table ($r$ is number of rows, $c$ columns); the alternative is that they are not independent. The counts must be independent and sampled randomly. We can calculate a chi-squared statistic as follows: 
+A $\chi^2$ (read: chi-squared) test of independence tests the null hypothesis that rows and columns are independent in a $c\times r$ contingency table ($r$ is number of rows, $c$ columns); the alternative is that they are not independent. The counts must be independent and sampled randomly. We can calculate a chi-squared statistic as follows: 
 \begin{align*}
 \chi^2&=\sum\frac{(O_i-E_i)^2}{E_i}
 \end{align*}

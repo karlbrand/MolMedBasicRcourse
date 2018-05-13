@@ -46,7 +46,7 @@
 \newcommand{\scscst}{\scriptscriptstyle}
 \newcommand{\scst}{\scriptstyle}
 \author{Elizabeth Ribble\footnote{emcclel3@msudenver.edu}}
-\date{18-24 May 2017}
+\date{14-18 May 2018}
 
 \begin{document}
 
@@ -105,7 +105,7 @@ This will return 6 because {\tt w} is reassigned as 4 inside the function and we
 
 
 \item Among the variables \texttt{w}, \texttt{d}, and \texttt{y},  which
-are global to \texttt{h()} and which are local?
+are global to \texttt{f()} and which are local?
 
 %will result in an error message (assuming that 
                                   %the Workspace is clear before each set is executed):
@@ -121,7 +121,7 @@ f <- function(y) {
   }
 @
 {\color{red}
-The object {\tt w} is global to {\tt h()} while {\tt d} and {\tt y} are local to {\tt h()}. 
+The object {\tt w} is global to {\tt f()} while {\tt d} and {\tt y} are local to {\tt f()}. 
 }
 
   \newpage

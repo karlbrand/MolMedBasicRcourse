@@ -46,7 +46,7 @@
 \newcommand{\scscst}{\scriptscriptstyle}
 \newcommand{\scst}{\scriptstyle}
 \author{Elizabeth Ribble\footnote{emcclel3@msudenver.edu}}
-\date{18-24 May 2017}
+\date{14-18 May 2018}
 
 \begin{document}
 
@@ -309,9 +309,9 @@ are:
 {\em bytecode compilation}, and other techniques.
 
 \item Writing the computationally intensive chunks code in C or C$^{++}$ 
-and then calling them from R (see Chapter 15).
+and then calling them from R.
 
-\item Using parallel R computing (see Chapter 16).
+\item Using parallel R computing.
 
 \ei
 
@@ -330,10 +330,10 @@ browsers, word processors, music players, etc.
 
 \item To test the speed of a chunk of R code, we use:
 
-\begin{Sinput}[frame=single, framerule=1mm,  formatcom={\color{black}}]
+<<eval=FALSE, background="lightgrey">>=
 system.time()     # Returns the computation time required to  
                   # execute a chunk of R code (in seconds)
-\end{Sinput}
+@
 
 \item \texttt{system.time()} takes as its argument one or more R commands (enclosed 
 by curly brackets if there are more than one), and returns time spent executing them.  
@@ -444,7 +444,7 @@ of $\sqrt{2}$ from the loop because it doesn't belong there:
 x <- runif(100000)
 system.time(
     for(i in 1:100000) {
-      y <- sqrt(2)    # This statement can be moved outside the loop
+      y <- sqrt(2)    # This can be moved outside the loop
       x[i] <- x[i] + y
     }
 )
@@ -457,7 +457,7 @@ system.time(
 
 <<>>=
 system.time({
-    y <- sqrt(2)           # This statement was pulled from the loop
+    y <- sqrt(2)           # This was pulled from the loop
     for(i in 1:100000) {
         x[i] <- x[i] + y
     }
@@ -499,7 +499,7 @@ don't use preallocation, the third does.
 <<>>=
 x <- runif(100000)
 y <- runif(100000)
-z <- NULL                 # We do not preallocate the elements of z
+z <- NULL                 # do not preallocate the elements of z
 system.time(
     for (i in 1:100000) {
         z <- c(z, x[i] + y[i])  # R has to recreate z entirely 
@@ -714,9 +714,9 @@ package \texttt{compile}, which we can
 use to try to speed up our code.  We'll look at one function from the 
 \texttt{compile} package:
 
-\begin{Sinput}[frame=single, framerule=1mm,  formatcom={\color{black}}]
+<<eval=FALSE, background="lightgrey">>=
 cmpfun() # Translate (compile) a function from R code to bytecode             
-\end{Sinput}
+@
 
 %compile()    # Translate (compile) an R expression or sequence of R 
 %             # commands (in curly brackets) to bytecode   

@@ -16,7 +16,7 @@
 \newcommand{\scscst}{\scriptscriptstyle}
 \newcommand{\scst}{\scriptstyle}
 \author{Elizabeth Ribble\footnote{emcclel3@msudenver.edu}}
-\date{18-24 May 2017}
+\date{14-18 May 2018}
 
 \begin{document}
 \title{Basic Course on {\tt R}:\\
@@ -58,7 +58,7 @@ attach(babydata)
 <<>>=
 levels(Status)
 @
-So we need to first change these factor levels so we treat ``intellectual disability'' as the event. Run the following trick: 
+So we need to first change these factor levels so we treat ``intellectual disability'' as the event and ``normal brain development'' as the baseline. Run the following to change all the 1s to 2s and 2s to 1s: 
 <<>>=
 table(Status)
 newstatus <- factor(3-as.numeric(Status), 

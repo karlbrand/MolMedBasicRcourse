@@ -46,9 +46,9 @@ plot(ToothGrowth$dose, ToothGrowth$len, xlab = "Dose",
 ###################################################
 plot(ToothGrowth$dose, ToothGrowth$len, xlab = "Dose", 
      ylab = "Tooth Length", main = "Guinea Pig Tooth Growth by Dosage",
-     col = ToothGrowth$supp, pch = 2)
+     col = ToothGrowth$supp, pch = as.numeric(ToothGrowth$supp))
 legend(1.5, 15, c("OJ", "VC"), col = 1:2, 
-       pch = as.numeric(ToothGrowth$supp))
+       pch = 1:2)
 
 
 ###################################################
@@ -59,7 +59,7 @@ plot(ToothGrowth$dose, ToothGrowth$len, xlab = "Dose",
      col = ToothGrowth$supp, pch = as.numeric(ToothGrowth$supp), 
      cex = 2)
 legend(1.5, 15, c("OJ", "VC"), col = 1:2, 
-       pch = as.numeric(ToothGrowth$supp), cex=2)
+       pch = 1:2, cex=2)
 
 
 ###################################################
@@ -189,7 +189,7 @@ boxplot(ToothGrowth$len~ToothGrowth$supp)
 ###################################################
 boxplot(ToothGrowth$len~ToothGrowth$supp, 
         col = c("darkgreen", "purple"),
-        xlab = "Supplement Type", ylab = "Tooth Length",
+        ylab = "Supplement Type", xlab = "Tooth Length",
         ylim = c(0, 40), horizontal = TRUE)
 
 

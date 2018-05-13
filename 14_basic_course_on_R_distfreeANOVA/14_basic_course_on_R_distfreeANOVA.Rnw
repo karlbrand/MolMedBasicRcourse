@@ -16,7 +16,7 @@
 \newcommand{\scscst}{\scriptscriptstyle}
 \newcommand{\scst}{\scriptstyle}
 \author{Elizabeth Ribble\footnote{emcclel3@msudenver.edu}}
-\date{18-24 May 2017}
+\date{14-18 May 2018}
 
 \begin{document}
 
@@ -29,11 +29,11 @@ Distribution-Free ANOVA}
 
 \section{Kruskal-Wallis Test}
 
-The single-factor ANOVA model for comparing population or treatment means assumed that for all groups, random samples were drawn from normal populations each having the same variance. This normality assumption is required for a valid $F$ test, but the next procedure for testing the equality of the means only requires that the populations have the same continuous distribution.\\
+The single-factor ANOVA model for comparing population or treatment means assumed that for all groups, random samples were drawn from normal populations each having the same variance. This normality assumption is required for a valid $F$ test, but the next procedure for testing the equality of the centers of the distributions only requires that the populations have the same continuous distribution.\\
 
-\noindent The null hypothesis is that all of the group means are the same and the alternative is that at least one of the group means is different. The Kruskal-Wallis test examines the validity of these hypotheses by working on ranks of the data without assuming the data come from a specific distribution. \\
+\noindent The null hypothesis is that all of the group centers are the same and the alternative is that at least one of the group centers is different. The Kruskal-Wallis test examines the validity of these hypotheses by working on ranks of the data without assuming the data come from a specific distribution. \\
 
-\noindent The procedure starts by ranking all the data together on the assumption of the null, that if the means of the groups are equal, the ranks from all the groups will be intermingled. If the null is false, then some samples will consist mostly of observations having small ranks in the combined sample, whereas others will consist mostly of observations having large ranks. \\
+\noindent The procedure starts by ranking all the data together on the assumption of the null, that if the centers of the groups are equal, the ranks from all the groups will be intermingled. If the null is false, then some samples will consist mostly of observations having small ranks in the combined sample, whereas others will consist mostly of observations having large ranks. \\
 
 \noindent The Kruskal-Wallis test statistic is a measure of the extent to which the sums of the ranks within each group deviate from their common expected value, and the null is rejected if the computed value of the statistic indicates too great a discrepancy between observed and expected rank averages.\\
 
@@ -58,7 +58,7 @@ boxplot(stiffness~lengths)
 
 \newpage
 
-\noindent The output of the Kruskal-Wallis test confirms that the means are indeed different. The $p$-value is quite small, indicating at least two of the group means are different:
+\noindent The output of the Kruskal-Wallis test confirms that the means are indeed different. The $p$-value is quite small, indicating at least two of the group centers are different:
 <<>>==
 kruskal.test(stiffness, lengths)
 @
@@ -86,7 +86,7 @@ boxplot(speed~tension)
 \noindent So we see there are possibly varying mean speeds between the different tensions (and the speeds are not necessarily normal) and we would like to filter out the person-to-person variability.\\
 
 \newpage
-\noindent Friedman's test ranks each observation within the blocks (here, people) and then the average rank is computed for the factor of interest (in this case, racket tension). When the null hypothesis that all of the tension mean speeds are the same, the average ranks should be close to one another, but when the null is false, they will be far from one another. Friedman's test statistic measure the discrepancy between the expected value of each rank average under the null and the observed rank averages. \\
+\noindent Friedman's test ranks each observation within the blocks (here, people) and then the average rank is computed for the factor of interest (in this case, racket tension). When the null hypothesis that all of the tension median speeds are the same, the average ranks should be close to one another, but when the null is false, they will be far from one another. Friedman's test statistic measure the discrepancy between the expected value of each rank average under the null and the observed rank averages. \\
 
 \noindent In R, the function is {\tt friedman.test()} with arguments {\tt y} (response), {\tt groups} (factor of interest), and {\tt blocks} (blocking factor):
 <<>>=

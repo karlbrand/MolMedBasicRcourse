@@ -16,7 +16,7 @@
 \newcommand{\scscst}{\scriptscriptstyle}
 \newcommand{\scst}{\scriptstyle}
 \author{Elizabeth Ribble\footnote{emcclel3@msudenver.edu}}
-\date{18-24 May 2017}
+\date{14-18 May 2018}
 
 \begin{document}
 \title{Basic Course on {\tt R}:\\
@@ -85,7 +85,7 @@ Read in the data ``dogs.csv'' with a header. Assign it to the object {\tt doggie
 % }
 \item Answer the following questions using the mom data:
     \begin{enumerate}
-      \item Test at significance level 0.05 for equality of the three population means (use the Kruskal-Wallis test).
+      \item Test at significance level 0.05 for equality of the three population centers (use the Kruskal-Wallis test).
   \vspace{50mm}
 % {\color{red}
 % <<>>=
