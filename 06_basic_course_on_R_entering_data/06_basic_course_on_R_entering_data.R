@@ -42,18 +42,18 @@ row.names(newsamp) <- c("CRP", "HOXA", "BRCA1", "GAPDH")
 newsamp
 
 ## ------------------------------------------------------------------------
-mygenes2 <- merge(x=mygenes, y=newsamp, by="row.names")
+mygenes2 <- merge(x = mygenes, y = newsamp, by = "row.names")
 mygenes2
 
 ## ------------------------------------------------------------------------
-mygenes2 <- merge(x=mygenes, y=newsamp, by="row.names", all.y=TRUE)
+mygenes2 <- merge(x = mygenes, y = newsamp, by = "row.names", all.y = TRUE)
 mygenes2
 
 ## ------------------------------------------------------------------------
 names(mygenes2)[1] <- "gene"
 ## or 
-mygenes3 <- mygenes2[,-1]
-row.names(mygenes3) <- mygenes2[,1]
+mygenes3 <- mygenes2[, -1]
+row.names(mygenes3) <- mygenes2[, 1]
 mygenes3
 
 ## ------------------------------------------------------------------------
@@ -70,7 +70,7 @@ row.names(mygenes) <- c("CRP", "BRCA1", "HOXA")
 mygenes
 
 ## ------------------------------------------------------------------------
-paste("The", "Club", sep=" Mickey Mouse ")
+paste("The", "Club", sep = " Mickey Mouse ")
 
 ## ------------------------------------------------------------------------
 paste("The", "Mickey", "Mouse", "Club")

@@ -2,9 +2,9 @@
 ## Entering and Importing Data ##
 #################################
 
-######                                                 #######
-## 1.1 Use R to do the following exercises on "mouse" data. ##
-######                                                 #######
+######                                 #######
+## 1.1 Use R to do the following exercises. ##
+######                                 #######
 
 ## 1.1.1 Enter the following into a data structure with the name color: 
     #   purple
@@ -31,19 +31,21 @@
       
 ## 1.1.4 What are the lengths of color and weight? Use a function to answer this. 
   
-## 1.1.5 Join color and weight together in a data structure with 2 columns and 8 rows, and assign it to the object mice. 
+## 1.1.5 Join color and weight together using cbind() and assign it to the object micecbind. 
   
-## 1.1.6 What is the data structure of mice? What are the dimensions? 
+## 1.1.6 What is the data structure of micecbind? What are the dimensions? Are the weights still numbers (num) or were they converted to characters (chr)?
   
-## 1.1.7 Display only the 3rd row of mice.
+## 1.1.7 Now join color and weight together using data.frame() with argument stringsAsFactors = FALSE and assign it to the object micedf.
+
+## 1.1.8 What is the data structure of micedf? What are the dimensions? Are the weights still numbers (num) or were they converted to characters (chr)?
+
+## 1.1.9 Display only the 3rd row of mice.
   
-## 1.1.8 Display only the 2nd column ("weight") of mice. Do so in two different ways.
+## 1.1.10 Display only the 2nd column ("weight") of mice. Do so in two different ways.
   
-## 1.1.9 If the structure of mice is not a data frame, turn it into one and call it micedf. If mice is already a data frame, go ahead and rename it micedf anyway. Make sure that the weights are not factors!
+## 1.1.11 Display the dimensions of micedf. 
   
-## 1.1.10 Display the dimensions of micedf. 
-  
-## 1.1.11 Assign the following strings to the row names of micedf: 
+## 1.1.12 Assign the following strings to the row names of micedf: 
     
     #   mouse1
     #   mouse2
@@ -56,17 +58,15 @@
     
    ##  Hint: try using paste.
   
-## 1.1.12 Create a list containing three elements and assign it to mylist: 
+## 1.1.13 Create a list containing three elements and assign it to mylist: 
     
     #   micedf
     #   A data frame of micedf with a new column called double that is 2 times the second column of micedf (weight). (Did you get an error? Make sure that the second column is numeric and if it isn't, change it!)
     #   The names of micedf.
       
-## 1.1.13 Assign these names to mylist: first, second, third.
+## 1.1.14 Assign these names to mylist: first, second, third.
   
-## 1.1.14 Display mylist. What does it look like? 
-
-## 1.1.15 View mylist. What does it look like? What does it look like (expand the window if necessary)?
+## 1.1.15 Display mylist. What does it look like? 
 
 ## 1.1.16 Display only the second element of mylist. Do so in two different ways. 
   
