@@ -28,7 +28,7 @@
 ## 1.2.13 Display {ab} again. What has changed?
 
 ## 1.2.14 Create this matrix {m}:
-m <- matrix(1:9, nrow=3, byrow=T)
+m <- matrix(1:9, nrow = 3, byrow = T)
 m
 ## Why are the numbers 1, 2, and 3 in the first row and not the first column? 
 
