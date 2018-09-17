@@ -17,7 +17,7 @@
 \newcommand{\scscst}{\scriptscriptstyle}
 \newcommand{\scst}{\scriptstyle}
 \author{Karl Brand\footnote{brandk@gmail.com}\hspace{2mm}  and Elizabeth Ribble\footnote{emcclel3@msudenver.edu}}
-\date{18-24 May 2017}
+\date{17-21 December 2018}
 
 \begin{document}
 
@@ -41,7 +41,7 @@ length(letters)
 %\vspace{9 mm}
 \item What is
 <<quiet=T,eval=F>>=
-length(letters==LETTERS)
+length(letters == LETTERS)
 @
 {\color{red} 26}
 %\vspace{9 mm}
@@ -71,7 +71,7 @@ letters[!LETTERS > "C"]
 %\vspace{9 mm}
 \item What is
 <<quiet=T,eval=F>>=
-seq(1, 20, 3)
+seq(from = 1, to = 20, by = 3)
 @
 {\color{red} 1, 4, 7, 10, 13, 16, 19}
 %\vspace{9 mm}
@@ -87,10 +87,10 @@ x
 x + 4
 x + x
 2 * x
-x/c(2, 3, 4, 5)
-x[, 3] + 2*x[, 2]
+x / c(2, 3, 4, 5)
+x[, 3] + 2 * x[, 2]
 nrow(x)
-x[x[, 3]>10, ]
+x[x[, 3] > 10, ]
 @
 \renewcommand{\labelitemi}{$\cdot$}
 {\color{red} 
@@ -138,7 +138,7 @@ a[2] * a[4]
  \item Assign the integers 3 and 4 to object {\tt b} and use {\tt b} to select elements 3 and 4 of object {\tt a}.
 {\color{red}
 <<>>=
-b <- c(3,4)
+b <- c(3, 4)
 # or
 b <- 3:4
 a[b]
@@ -159,13 +159,13 @@ a[-c(3:4)]
 \item Display only those elements of {\tt a} that are greater than or equal to 6.
 {\color{red} 
 <<>>=
-a[a>=6]
+a[a >= 6]
 @
 }
 \item Display only those elements of {\tt a} that are not equal to 7.
 {\color{red} 
 <<>>=
-a[a!=7]
+a[a != 7]
 @
 }
 \item Use the {\tt list} function to create an object {\tt ab} which is a list of the two objects {\tt a} and {\tt b}.
