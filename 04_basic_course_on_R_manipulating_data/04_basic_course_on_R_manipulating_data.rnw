@@ -47,7 +47,7 @@ wish to select using square brackets which are the `extract' function, i.e.,
 x <- c(11, 10, 12, 15)
 x[2]
 y <- c(13, 17, 21, 18)
-y[c(2,3)]
+y[c(2, 3)]
 m <- matrix(c(x, y), ncol = 2)
 m
 m[, 1]
@@ -170,8 +170,8 @@ mygenes[colnames(mygenes) %in% c("samp1", "samp4")]
 mygenes[c("samp1", "samp3")]
 @
 \noindent But this gives an error:
-<<>>=
-mygenes[c("samp1", "samp30")])
+<<eval = FALSE>>=
+mygenes[c("samp1", "samp30")] ## not run
 @
 \noindent where this does not:
 <<>>=
