@@ -16,7 +16,7 @@
 \newcommand{\scscst}{\scriptscriptstyle}
 \newcommand{\scst}{\scriptstyle}
 \author{Karl Brand\footnote{brandk@gmail.com}\hspace{2mm}  and Elizabeth Ribble\footnote{emcclel3@msudenver.edu}}
-\date{18-24 May 2017}
+\date{17-21 December 2018}
 
 \begin{document}
 \title{Basic Course on {\tt R}: \\
@@ -28,7 +28,7 @@ Entering and Importing Data Practical}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \newpage\section{Entering and Importing Data}
  
-\subsection{Use R to do the following exercises on ``mouse'' data.} 
+\subsection{Use R to do the following exercises.} 
 
 \begin{enumerate}[{1.1}.1]
   \item Enter the following into a data structure with the name {\tt color}: 
@@ -59,15 +59,17 @@ Entering and Importing Data Practical}
   \vspace{5 mm}
   \item What are the lengths of {\tt color} and {\tt weight}? Use a function to answer this. 
   \vspace{5 mm}
-  \item Join {\tt color} and {\tt weight} together in a data structure with 2 columns and 8 rows, and assign it to the object {\tt mice}. 
+  \item Join {\tt color} and {\tt weight} together using {\tt cbind()} and assign it to the object {\tt micecbind}. 
   \vspace{5 mm}
-  \item What is the data structure of {\tt mice}? What are the dimensions? 
+  \item What is the data structure of {\tt micecbind}? What are the dimensions? Are the weights still numbers ({\tt num}) or were they converted to characters ({\tt chr})?
   \vspace{5 mm}
-  \item Display only the 3rd row of {\tt mice}.
+  \item Now join {\tt color} and {\tt weight} together using {\tt data.frame()} with argument {\tt stringsAsFactors = FALSE} and assign it to the object {\tt micedf}.
   \vspace{5 mm}
-  \item Display only the 2nd column (``weight'') of {\tt mice}. Do so in two different ways.
+  \item What is the data structure of {\tt micedf}? What are the dimensions? Are the weights still numbers ({\tt num}) or were they converted to characters ({\tt chr})?
   \vspace{5 mm}
-  \item If the structure of {\tt mice} is not a data frame, turn it into one and call it {\tt micedf}. If {\tt mice} is already a data frame, go ahead and rename it {\tt micedf} anyway. Make sure that the weights are not factors!
+  \item Display only the 3rd row of {\tt micedf}.
+  \vspace{5 mm}
+  \item Display only the 2nd column (``weight'') of {\tt micedf}. Do so in two different ways.
   \vspace{5 mm}
   \item Display the dimensions of {\tt micedf}. 
   \vspace{5 mm}
@@ -88,7 +90,6 @@ Entering and Importing Data Practical}
     \begin{itemize}
       \item {\tt micedf}
       \item A data frame of {\tt micedf} with a new column called {\tt double} that is 2 times the second column of {\tt micedf} ({\tt weight}).
-      (Did you get an error? Make sure that the second column is numeric and if it isn't, change it!)
       \item The names of {\tt micedf}.
     \end{itemize}
   \vspace{10 mm}
@@ -96,10 +97,7 @@ Entering and Importing Data Practical}
   \vspace{5 mm}
   \item Display {\tt mylist}. What does it look like? 
   \vspace{12 mm}
-  \item View {\tt mylist}. What does it look like? What does it look like (expand the window if necessary)?
-  \vspace{12 mm}
-  \item Display only the second element of {\tt mylist}. Do so in two different ways. 
-  \vspace{5 mm}
+  \item Display only the second element of {\tt mylist}. Do so in two different ways.   \vspace{5 mm}
   \item Write {\tt micedf} to a file called ``micedf1.csv''. 
   \vspace{5 mm}
   \item Open ``micedf1.csv'' in Excel and describe what you see. Repeat the step above but do not include row names and call the file ``micedf2.csv''. How is the output different from ``micedf1.csv''?

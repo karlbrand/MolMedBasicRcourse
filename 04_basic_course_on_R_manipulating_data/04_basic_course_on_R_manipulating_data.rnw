@@ -17,7 +17,7 @@
 \newcommand{\scst}{\scriptstyle}
 
 \author{Karl Brand\footnote{brandk@gmail.com}\hspace{2mm}  and Elizabeth Ribble\footnote{emcclel3@msudenver.edu}}
-\date{18-24 May 2017}
+\date{17-21 December 2018}
 
 \begin{document}
 
@@ -47,8 +47,8 @@ wish to select using square brackets which are the `extract' function, i.e.,
 x <- c(11, 10, 12, 15)
 x[2]
 y <- c(13, 17, 21, 18)
-y[c(2,3)]
-m <- matrix(c(x, y), ncol=2)
+y[c(2, 3)]
+m <- matrix(c(x, y), ncol = 2)
 m
 m[, 1]
 m[c(2, 4), 1:2]
@@ -69,7 +69,7 @@ str(x)
 x["b"]
 row.names(m) <- LETTERS[1:4]
 m
-m["A",]
+m["A", ]
 @
 \noindent Note that this is case sensitive and that {\tt LETTERS} is different from {\tt letters}. \\
 
@@ -108,20 +108,20 @@ x
 y
 keep <- c(TRUE, TRUE, FALSE, FALSE, TRUE)
 x[keep]
-x[y>=18]
+x[y >= 18]
 @
 \noindent Why? 
 <<>>=
 y>=18
-which(y>=18)
-x[x<=11 | x==15]
-x[x!=10]
+which(y >= 18)
+x[x <= 11 | x == 15]
+x[x != 10]
 @
 \noindent This works for factors as well:
 <<>>==
 gender <- factor(c("M", "M", "F", "F"))
 gender
-males <- gender[gender=="M"]
+males <- gender[gender == "M"]
 levels(males)
 @
 
@@ -136,7 +136,7 @@ Besides square brackets ({\tt [}, {\tt [[}), other useful functions
 
 \noindent To select e.g. rows that are not duplicated:
 <<>>==
-mm <- matrix(c(x, x, y, y), nrow=4, byrow=T)
+mm <- matrix(c(x, x, y, y), nrow = 4, byrow = T)
 @
 
 <<>>==
@@ -163,19 +163,19 @@ is.data.frame(mygenes)
 \noindent Note that since {\tt mygenes} is a data frame, it is therefore also an array, which means we can select by the name of the elements in the array:
 <<>>=
 mygenes[match(c("samp1", "samp3"), colnames(mygenes))]
-mygenes[colnames(mygenes)%in%c("samp1", "samp4")]
+mygenes[colnames(mygenes) %in% c("samp1", "samp4")]
 @
 \noindent However, in this case we could just use the names...
 <<>>=
 mygenes[c("samp1", "samp3")]
 @
 \noindent But this gives an error:
-<<>>=
-mygenes[c("samp1", "samp30")])
+<<eval = FALSE>>=
+mygenes[c("samp1", "samp30")] ## not run
 @
 \noindent where this does not:
 <<>>=
-mygenes[colnames(mygenes)%in%c("samp1", "samp30")]
+mygenes[colnames(mygenes) %in% c("samp1", "samp30")]
 @
 
 \noindent We can also use functions like {\tt grep} to search for the names we are interested in:

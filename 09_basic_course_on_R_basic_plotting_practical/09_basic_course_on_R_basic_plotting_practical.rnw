@@ -16,7 +16,7 @@
 \newcommand{\scscst}{\scriptscriptstyle}
 \newcommand{\scst}{\scriptstyle}
 \author{Karl Brand\footnote{brandk@gmail.com}\hspace{2mm}  and Elizabeth Ribble\footnote{emcclel3@msudenver.edu}}
-\date{18-24 May 2017}
+\date{17-21 December 2018}
 
 \begin{document}
 
@@ -38,7 +38,7 @@
  \vspace{10 mm}
  \item What are the names of {\tt BOD}? Use a function other than {\tt str}.
  \vspace{10 mm}
- \item Make a line graph of demand versus time, where the line is a pink dot-dashed line [Hint: run {\tt ?par} and look for the parameter {\tt lty} to see the line types]. Add a blue dashed line of 1.1 times the demand and give it a thickness of 2 using the line width parameter {\tt lwd}. Make sure both lines are entirely visible by adjusting the range of y using the parameter {\tt ylim} in the original plot.
+ \item Make a line graph of demand versus time, where the line is a deep pink dot-dashed line [Hint: run {\tt ?par} and look for the parameter {\tt lty} to see the line types]. Add a blue dashed line of 1.1 times the demand and give it a thickness of 2 using the line width parameter {\tt lwd}. Make sure both lines are entirely visible by adjusting the range of y using the parameter {\tt ylim} in the original plot.
  \vspace{10 mm}
 \end{enumerate}
 

@@ -1,0 +1,11 @@
+
+noNegMean <- function(x) {
+    if(all(x < 0)) {
+        stop("All values in x are negative")
+    }
+    if(any(x < 0)) {
+        x[x < 0] <- 0
+        warning("Negative values in x replaced by zero")
+    }
+    return(mean(x))
+}

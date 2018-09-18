@@ -17,7 +17,7 @@
 \newcommand{\scscst}{\scriptscriptstyle}
 \newcommand{\scst}{\scriptstyle}
 \author{Karl Brand\footnote{brandk@gmail.com}\hspace{2mm}  and Elizabeth Ribble\footnote{emcclel3@msudenver.edu}}
-\date{18-24 May 2017}
+\date{17-21 December 2018}
 
 \begin{document}
 
@@ -30,7 +30,7 @@ Entering and Importing Data Practical Answers}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \newpage\section{Entering and Importing Data}
  
-\subsection{Use R to do the following exercises on ``mouse'' data.} 
+\subsection{Use R to do the following exercises.} 
 
 \begin{enumerate}[{1.1}.1]
   \item Enter the following into a data structure with the name {\tt color}: 
@@ -80,59 +80,61 @@ length(color)
 length(weight)
 @
 }
-  \item Join {\tt color} and {\tt weight} together in a data structure with 2 columns and 8 rows, and assign it to the object {\tt mice}. 
+  \item Join {\tt color} and {\tt weight} together using {\tt cbind()} and assign it to the object {\tt micecbind}. 
 {\color{red} 
 <<>>=
-mice <- data.frame(color = color, weight = weight)
+micecbind <- cbind(color = color, weight = weight)
 @
 }
-  \item What is the data structure of {\tt mice}? What are the dimensions? 
+  \item What is the data structure of {\tt micecbind}? What are the dimensions?  Are the weights still numbers ({\tt num}) or were they converted to characters ({\tt chr})?
 {\color{red} 
 <<>>=
-mice
-str(mice)
-dim(mice)
+micecbind
+str(micecbind)
+dim(micecbind)
 @
-Using {\tt str} we see that {\tt mice} is a data frame with dimensions 8 x 2, with variable {\tt color} a factor with 5 levels and {\tt weight} a numeric vector. The function {\tt dim} can also be used to extract only the dimensions. 
+Using {\tt str} we see that {\tt micecbind} is a matrix with dimensions 8 x 2 and the weights were converted to characters, which we don't want! The function {\tt dim} can also be used to extract only the dimensions. 
 }
-  \item Display only the 3rd row of {\tt mice}.
+
+
+  \item Now join {\tt color} and {\tt weight} together using {\tt data.frame()} with argument {\tt stringsAsFactors = FALSE} and assign it to the object {\tt micedf}.
+
+{\color{red} 
+<<>>=
+micedf <- data.frame(color = color, weight = weight, stringsAsFactors = FALSE)
+@
+}
+  \item What is the data structure of {\tt micedf}? What are the dimensions? Are the weights still numbers ({\tt num}) or were they converted to characters ({\tt chr})?
+  
+  {\color{red} 
+<<>>=
+micedf
+str(micedf)
+dim(micedf)
+@
+Using {\tt str} we see that {\tt micedf} is a data frame with dimensions 8 x 2, with variable {\tt color} a character vector and {\tt weight} a numeric vector. The function {\tt dim} can also be used to extract only the dimensions. Thankfully the weights were not converted to characters!
+}
+\newpage
+
+  \item Display only the 3rd row of {\tt micedf}.
 {\color{red}
 <<>>=
-mice[3, ]
+micedf[3, ]
 @
 }
-  \item Display only the 2nd column (``weight'') of {\tt mice}. Do so in two different ways.
+  \item Display only the 2nd column (``weight'') of {\tt micedf}. Do so in two different ways.
   
 {\color{red}
 \noindent Any two of the following are satisfactory:
 <<eval=FALSE>>=
-mice[, 2] 
-mice[, -1] 
-mice[, "weight"] 
-@
-\noindent and if {\tt mice} is a data frame:
-<<eval=FALSE>>=
-mice[[2]] 
-mice$weight 
-mice["weight"] 
+micedf[, 2] 
+micedf[, -1] 
+micedf[, "weight"] 
+micedf[[2]] 
+micedf$weight 
+micedf["weight"] 
 @
 }
-\item If the structure of {\tt mice} is not a data frame, turn it into one and call it {\tt micedf}. If {\tt mice} is already a data frame, go ahead and rename it {\tt micedf} anyway. Make sure that the weights are not factors!
-
-{\color{red}
-<<>>=
-micedf <- mice
-@
-\noindent If you created a matrix, e.g. 
-<<>>=
-mice <- cbind(color, weight)
-@
-\noindent then do the following:
-<<>>=
-micedf <- data.frame(color, weight)
-@
-}
-\newpage
 \item Display the dimensions of {\tt micedf}. 
 {\color{red}
 <<>>=
@@ -153,7 +155,7 @@ dim(micedf)
     Hint: try using {\tt paste}.
 {\color{red}
 <<>>=
-row.names(micedf) <- paste("mouse", 1:8, sep="")
+row.names(micedf) <- paste("mouse", 1:8, sep = "")
 @
 }
   \item Create a list containing three elements and assign it to {\tt
@@ -180,7 +182,7 @@ mylist <- list(micedf,
 names(mylist) <- c("first", "second", "third")
 @
 }
-\newpage
+
   \item Display {\tt mylist}. What does it look like? 
 {\color{red}
 <<>>=
@@ -189,15 +191,6 @@ mylist
 \noindent A list with three items with the given names preceded by
           {\tt \$}. The first two entries are data frames and have row
           names, but the third does not (it is a character vector).  }
-  \item View {\tt mylist}. What does it look like (expand the window
-    if necessary)?  
-    {\color{red}
-<<>>=
-View(mylist)
-@ 
-A matrix with each column representing a column from the columns of
-the two data frames, plus a final column where the two entries from
-the third element are repeated to fill up the rows of the matrix. Hence, {\tt View} is not extremely useful for looking at lists.}
 
 \item Display only the second element of {\tt mylist}. Do so
   in two different ways.
@@ -208,7 +201,7 @@ the third element are repeated to fill up the rows of the matrix. Hence, {\tt Vi
 mylist[[2]] ## extract
 mylist$second ## extract
 mylist[2] ## subset
-mylist[-c(1,3)] ## subset
+mylist[-c(1, 3)] ## subset
 mylist["second"] ## subset
 @
 }
@@ -317,11 +310,11 @@ levels(Puromycin$state)
   \item Display the rate for all concentrations less than 0.10 in the treated group.
 {\color{red}
 <<>>=
-Puromycin[Puromycin$conc < .10 & Puromycin$state=="treated", "rate"]
+Puromycin[Puromycin$conc < .10 & Puromycin$state == "treated", "rate"]
 ## or 
-Puromycin$rate[Puromycin$conc < .10 & Puromycin$state=="treated"]
+Puromycin$rate[Puromycin$conc < .10 & Puromycin$state == "treated"]
 ## or 
-Puromycin[["rate"]][Puromycin$conc < .10 & Puromycin$state=="treated"]
+Puromycin[["rate"]][Puromycin$conc < .10 & Puromycin$state == "treated"]
 @
 }
   \item What are the row indices for the concentrations of 0.22? 

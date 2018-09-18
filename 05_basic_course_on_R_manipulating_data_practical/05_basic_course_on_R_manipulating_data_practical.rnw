@@ -16,7 +16,7 @@
 \newcommand{\scscst}{\scriptscriptstyle}
 \newcommand{\scst}{\scriptstyle}
 \author{Karl Brand\footnote{brandk@gmail.com}\hspace{2mm}  and Elizabeth Ribble\footnote{emcclel3@msudenver.edu}}
-\date{18-24 May 2017}
+\date{17-21 December 2018}
 
 \begin{document}
 
@@ -39,7 +39,7 @@ length(letters)
 \vspace{10 mm}
 \item What is
 <<quiet=T,eval=F>>=
-length(letters==LETTERS)
+length(letters == LETTERS)
 @
 \vspace{10 mm}
 \item What is
@@ -79,10 +79,10 @@ x
 x + 4
 x + x
 2 * x
-x/c(2, 3, 4, 5)
-x[, 3] + 2*x[, 2]
+x / c(2, 3, 4, 5)
+x[, 3] + 2 * x[, 2]
 nrow(x)
-x[x[, 3]>10, ]
+x[x[, 3] > 10, ]
 @
 \vspace{20 mm}
 \end{enumerate}
@@ -120,7 +120,7 @@ x[x[, 3]>10, ]
  \vspace{15 mm}
  \newpage\item Create this matrix {\tt m}:
 <<>>=
-m <- matrix(1:9, nrow=3, byrow=T)
+m <- matrix(1:9, nrow = 3, byrow = T)
 m
 @
  Why are the numbers 1, 2, and 3 in the first row and not the first column? 

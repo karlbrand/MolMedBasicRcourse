@@ -27,7 +27,7 @@
 \newcommand{\scst}{\scriptstyle}
 
 \author{Karl Brand\footnote{brandk@gmail.com}\hspace{1mm}  and Elizabeth Ribble\footnote{emcclel3@msudenver.edu}}
-\date{14-18 May 2018}
+\date{17-21 December 2018}
 
 \begin{document}
 \title{Basic Course on {\tt R}:\\
@@ -41,7 +41,7 @@ Entering and Importing Data}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Entering Data}
 In the previous section we created a couple of short vectors, a small
-matrix, a data frame and a list comprised of two data frames. There
+matrix, a data frame, and a list. There
 are many ways to create such objects, especially by utilizing a few
 convenient functions, and many combinations of these data types are
 also possible.
@@ -65,30 +65,30 @@ b
 @
 \noindent The function {\tt seq} generates a sequence of numbers based on the specified start, end and increment of the sequence:
 <<>>=
-c <- seq(from = 1, to = 110, by = 10)
-c
+d <- seq(from = 1, to = 110, by = 10)
+d
 @
 \noindent To bind two or more vectors (or data frames) together, we can use {\tt cbind} (to combine columns) or {\tt rbind} (to combine rows):
 <<>>=
-abcc <- cbind(a, b, c)
-abcc
-abcr <- rbind(a, b, c)
-abcr
+abdc <- cbind(a, b, d)
+abdc
+abdr <- rbind(a, b, d)
+abdr
 @
 \noindent We can use {\tt View} to look at the data - it displays the data values along with the names of the columns: 
 <<>>=
-View(abcr)
+View(abdr)
 @
 \noindent or, to just get the dimension of the resulting object, use {\tt dim}, {\tt nrow} or {\tt ncol}:
 <<>>=
-dim(abcr)
-nrow(abcr)
-ncol(abcr)
+dim(abdr)
+nrow(abdr)
+ncol(abdr)
 @
 \newpage\noindent And remember {\tt str()} will display the data structure and {\tt class()} the class:
 <<>>=
-str(abcr)
-class(abcr)
+str(abdr)
+class(abdr)
 @
 
 \subsubsection{Merging data frames}
@@ -107,13 +107,13 @@ newsamp <- data.frame(samp4 = c(56, 13, 106, 10),
 row.names(newsamp) <- c("CRP", "HOXA", "BRCA1", "GAPDH")
 newsamp
 @
-\noindent We can't use e.g. {\tt cbind}: not only are the dimensions
-different, but the row order differs also. The {\tt merge} function
+\noindent We can't use e.g. {\tt cbind} because not only are the dimensions
+different, but the row order differs. The {\tt merge} function
 solves this problem: it concatenates based on matching attributes. Use
 the argument {\tt by} to specify what columns to merge by, i.e., the
 name(s) of a column(s), or the row names:
 <<>>=
-mygenes2 <- merge(x=mygenes, y=newsamp, by="row.names")
+mygenes2 <- merge(x = mygenes, y = newsamp, by = "row.names")
 mygenes2
 @
 \noindent The default setting however is to not include anything that
@@ -121,21 +121,21 @@ doesn't match, so above we lost our new gene, GAPDH. We can force the
 function to keep all rows of the first and/or second argument with the
 arguments {\tt all}, {\tt all.x}, or {\tt all.y}:
 <<>>=
-mygenes2 <- merge(x=mygenes, y=newsamp, by="row.names", all.y=TRUE)
+mygenes2 <- merge(x = mygenes, y = newsamp, by = "row.names", all.y = TRUE)
 mygenes2
 @
 \noindent To be conservative and keep everything, use {\tt
-  all=TRUE}. Note that for every column of the first argument that
+  all = TRUE}. Note that for every column of the first argument that
 didn't have a value for GAPDH we now have an {\tt NA}. Also note that
 the row names are no longer the row names, but instead have been put
 in a new column. We can leave it as it is, and perhaps change the
-name, or use our indexing and naming skills to create another data
+name (as shown in the first line of code below), or use our indexing and naming skills to create another data
 frame with the row names back where they were:
 <<>>=
 names(mygenes2)[1] <- "gene"
 ## or 
-mygenes3 <- mygenes2[,-1]
-row.names(mygenes3) <- mygenes2[,1]
+mygenes3 <- mygenes2[, -1]
+row.names(mygenes3) <- mygenes2[, 1]
 mygenes3
 @
 
@@ -165,7 +165,7 @@ mygenes
 strings we are pasting together. We can use any character we want for
 this parameter:
 <<>>==
-paste("The", "Club", sep=" Mickey Mouse ")
+paste("The", "Club", sep = " Mickey Mouse ")
 @
 \noindent By default \verb|sep = " "|. That is, omitting {\tt sep} in the
           {\tt paste} function will insert spaces:

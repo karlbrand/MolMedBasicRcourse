@@ -12,7 +12,7 @@
  
 ## 1.1.3 What are the names of BOD? Use a function other than str.
  
-## 1.1.4 Make a line graph of demand versus time, where the line is a pink dot-dashed line. Add a blue dashed line of 1.1 times the demand and give it a thickness of 2. Make sure both lines are entirely visible by adjusting the range of y.
+## 1.1.4 Make a line graph of demand versus time, where the line is a deep pink dot-dashed line. Add a blue dashed line of 1.1 times the demand and give it a thickness of 2. Make sure both lines are entirely visible by adjusting the range of y.
  
 ######                                                       ######
 ## 1.2 Use R to do the following exercises on the chickwts data. ##
