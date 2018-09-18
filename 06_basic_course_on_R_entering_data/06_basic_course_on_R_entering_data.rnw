@@ -65,30 +65,30 @@ b
 @
 \noindent The function {\tt seq} generates a sequence of numbers based on the specified start, end and increment of the sequence:
 <<>>=
-c <- seq(from = 1, to = 110, by = 10)
-c
+d <- seq(from = 1, to = 110, by = 10)
+d
 @
 \noindent To bind two or more vectors (or data frames) together, we can use {\tt cbind} (to combine columns) or {\tt rbind} (to combine rows):
 <<>>=
-abcc <- cbind(a, b, c)
-abcc
-abcr <- rbind(a, b, c)
-abcr
+abdc <- cbind(a, b, d)
+abdc
+abdr <- rbind(a, b, d)
+abdr
 @
 \noindent We can use {\tt View} to look at the data - it displays the data values along with the names of the columns: 
 <<>>=
-View(abcr)
+View(abdr)
 @
 \noindent or, to just get the dimension of the resulting object, use {\tt dim}, {\tt nrow} or {\tt ncol}:
 <<>>=
-dim(abcr)
-nrow(abcr)
-ncol(abcr)
+dim(abdr)
+nrow(abdr)
+ncol(abdr)
 @
 \newpage\noindent And remember {\tt str()} will display the data structure and {\tt class()} the class:
 <<>>=
-str(abcr)
-class(abcr)
+str(abdr)
+class(abdr)
 @
 
 \subsubsection{Merging data frames}
