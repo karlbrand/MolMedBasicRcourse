@@ -2,7 +2,7 @@
 % Program: 02_basic_course_on_R_objects_functions.rnw                     %
 % Purpose: Provide an introduction to R for the MGC R Basic R course      %
 % Prerequisite(s): none                                                   %
-% Author: Karl Brand   / Elizazbeth Ribble                                %
+% Author: Karl Brand   / Elizabeth Ribble                                 %
 % Created: c. april 2013                                                  %
 % Last update: 2018-05-03                                                 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -89,7 +89,7 @@ class(numeric_again)
 
 \newpage
 \subsection{Text}
-The \emph{vegies}.
+The \emph{veggies}.
 <<>>=
 class("a")
 mode("a")
@@ -111,19 +111,7 @@ mode(TRUE)
 @
 
 \subsection{Functions}
-An object that does something to the fruits and vegies, a \emph{frying pan!} Remember the function we defined?
-<<echo=FALSE>>=
-myFunc <- function(object = TRUE) {
-  if (object) {
-    print("hello world")
-  }
-}
-@ 
-<<>>=
-myFunc
-class(myFunc)
-mode(myFunc)
-@
+An object that does something to the fruits and veggies, a \emph{frying pan!} 
 
 \section{Containers: more object classes and modes}
 Besides the basic types of things, there are different \emph{containers}
@@ -184,7 +172,7 @@ mode(an_array)
 Similar to vectors, lists have a specific order or sequence. Unlike
 vectors however, each element of a list can be of any {\tt class} or
 {\tt mode}. Think of them like a \emph{shopping list} of: a string
-of fruit, a tray vegies, another sublist of items
+of fruit, a tray of veggies, another sublist of items
 <<>>=
 a_list <- list(a_vector, a_matrix, letters_mat)
 a_list
@@ -230,7 +218,7 @@ str(aDF[, 1])
 @
 
 It's important to understand that the things we work with in {\tt R} have a
-`mode' and a 'class'. The mode is a mutually exclusive classification of 
+`mode' and a `class'. The mode is a mutually exclusive classification of 
 an object's basic structure and the class is a property used to determine 
 how functions operate with object. Pay attention to your modes and classes.
 
@@ -542,7 +530,7 @@ round(digits = 2, x = 4.679)
 @
 
 The two types of argument specification (positional and named argument
-matching) can be be mixed in the same function call.
+matching) can be mixed in the same function call.
 
 \subsection{Formal Arguments and Actual Arguments}
 
