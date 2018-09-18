@@ -1,0 +1,11 @@
+patientID	cohort	age
+1001	disease	34
+1002	control	38
+1003	disease	22
+1004	disease	50
+1005	control	46
+1006	control	27
+1007	disease	44
+1008	control	49
+1009	control	33
+1010	disease	30
