@@ -335,7 +335,6 @@ there is code selected, then only the selected code is sent. Open
 RStudio on your PC and try it now.
 
 A few other things about RStudio:
-  
   \begin{itemize}
     \item move the focus between panes using the key board shortcuts {\tt
       Ctrl + 1} and {\tt Ctrl + 2} for the source and console panes
@@ -345,16 +344,6 @@ A few other things about RStudio:
     \item \textbf{save your source code!}
   \end{itemize}
   
-%% \noindent Typically we import or `read' data into {\tt R}.
-%% <<eval=FALSE>>=
-%% read.table(file = "a_separated_ saved_excel.csv",
-%%            sep = ",", header = TRUE, stringsAsFactors = FALSE)
-%% @
-
-%% Note the argument {\tt stringsAsFactors = FALSE} and also see the
-%% function {\tt read.csv()}. For a tab delimited text {\tt .txt} file
-%% use: \begin{verbatim} sep = "\t" \end{verbatim}
-
 \subsection{Backslashes}
 One more thing I want to mention is how {\tt R} interprets backslashes and
 forwardslashes, i.e. \verb|\| and {\tt /} respectively, as relates to
@@ -363,23 +352,20 @@ better job of clarifying this than I otherwise would
 \url{http://cran.r-project.org/doc/contrib/Lemon-kickstart/kr_scrpt.html}:
   
  ``Let's pause to note a little historical bifurcation that has caused
- almost as much strife as the question of exactly what the <Delete>
- key should do. The convention that the slash (/) character is used as
- a separator in the notation for a filesystem path is not
- universal. PC-DOS, for example, used the backslash (\verb|\|). Like Fords vs
- Chevrolets, French vs English, and whether you crack the egg at the
- big or small end, it doesn't really matter a rat's behind which one
- you use as long as it works. To make it work in R, however, where the
- *NIX convention of using the backslash as an escape character is
- respected, you will have to double backslashes in paths for them to
- be read properly. Thus if the filename above was:
-
+almost as much strife as the question of exactly what the
+\verb|<Delete>| key should do. The convention that the slash (/)
+character is used as a separator in the notation for a filesystem path
+is not universal. PC-DOS, for example, used the backslash
+(\verb|\|). Like Fords vs Chevrolets, French vs English, and whether
+you crack the egg at the big or small end, it doesn't really matter a
+rat's behind which one you use as long as it works. To make it work in
+R, however, where the *NIX convention of using the backslash as an
+escape character is respected, you will have to double backslashes in
+paths for them to be read properly. Thus if the filename above was:
 \verb|C:\JIM\PSYCH\ADOLDRUG\PARTYUSE1.R|
 
 I would have to refer to it as:
-
 \verb|C:\\JIM\\PSYCH\\ADOLDRUG\\PARTYUSE1.R|
-
 in an R script.'' 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

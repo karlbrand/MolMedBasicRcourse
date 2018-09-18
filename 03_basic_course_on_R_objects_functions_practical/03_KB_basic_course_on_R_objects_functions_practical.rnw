@@ -78,6 +78,7 @@
 %numbersmat
 %@     
 
+  #ACTION# DROP this question
 \item A vector of class {\tt factor} called {\tt pets}, that looks
   approximately like this when printed:
   \begin{tabbing}
