@@ -124,12 +124,11 @@ Since {\tt smoking} is binary, $e^{b_1}=e^{1.37}=4$ is the odds ratio. Thus we c
 {\color{red}
 <<>>=
 lrs2 <- glm(Status ~ smoking, family = binomial(logit))
-exp(summary(lrs1)$coef[2,1])
+exp(summary(lrs2)$coef[2,1])
 @
 Switching the event to the non-event inverses the odds ratio: 
 <<>>=
 1/exp(summary(lrs1)$coef[2,1])
-1/exp(summary(lrs2)$coef[2,1])
 @
 So we could have just not changed the levels of {\tt Status} and concluded that non-smoking women have  0.25 times smaller odds of having a baby with an intellectual disability compared to smoking women. But wasn't this more fun? 
 }
