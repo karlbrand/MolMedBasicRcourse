@@ -82,7 +82,7 @@ There is a slight fan pattern in the residuals, but it's not too strong. The tai
 summary(lmbh)
 lmbh
 @
-{\tt vitaminB12} is statistically significant ($p$-value less than 0.05). It explains about 8.8 percent of the variability in {\tt loghc}. The model with the estimates is
+{\tt vitaminB12} is statistically significant ($p$-value less than 0.05). It explains about 9.3 percent of the variability in {\tt loghc}. The model with the estimates is
 \begin{center}
 $\mbox{{\tt loghc}} \sim 3.04 - 0.0005*\mbox{{\tt vitaminB12}}$.
 \end{center}
