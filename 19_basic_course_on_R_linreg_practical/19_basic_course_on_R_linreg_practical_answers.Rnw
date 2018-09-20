@@ -90,9 +90,9 @@ $\mbox{{\tt loghc}} \sim 3.04 - 0.0005*\mbox{{\tt vitaminB12}}$.
     \item What is the predicted {\tt loghc} level for a person with {\tt vitaminB12} equal to 650? What is this value when unlogged (exponentiated)? Does it fall within the original range of values of {\tt homocysteine} (can you guess what the name of the function is to find the range of a vector?)?\\
 {\color{red}
 <<>>=
-predict(lmbh, newdata=data.frame(vitaminB12=650))
+p650 <- predict(lmbh, newdata=data.frame(vitaminB12=650))
 ## or 
-p650 <- 3.04 - 0.0005*650 
+3.04 - 0.0005*650 
 p650
 exp(p650)
 range(homocysteine)
