@@ -4,7 +4,7 @@
 % Prerequisite(s): none                                                   %
 % Author: Karl Brand                                                      %
 % Created: c. april 2013                                                  %
-% Last update: 2017-05-01                                                 %
+% Last update: 2018-09-21                                                 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% begin preamble %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -31,7 +31,7 @@
 \newcommand{\scst}{\scriptstyle}
 
 \author{Karl Brand\footnote{brandk@gmauil.com}\hspace{1mm} and Elizabeth Ribble\footnote{emcclel3@msudenver.edu}}
-\date{14-18 May 2018}
+\date{17-21 December 2018}
 
 \begin{document}
 
@@ -80,15 +80,15 @@ matter).
 \begin{itemize}
 \item Entering, importing \& manipulating data  with {\tt c(), cbind(), rbind(), dim()}; importing from a file; working directory
 \item Basic plotting of boxplots, bargraphs, scatterplots \& line graphs
-\item Hypothesis testing \& confidence intervals part 1: summary
-  statistics, $t$-test, Mann-Whitney $U$ test
+\item Plotting with ggplot2
 \end{itemize}
 
 \textbf{Day 3}
 \begin{itemize}
+\item Hypothesis testing \& confidence intervals part 1: summary
+  statistics, $t$-test, Mann-Whitney $U$ test
 \item Hypothesis testing \& confidence intervals part 2: correlations, ANOVA, chi-squared test
 \item Distribution-free ANOVA
-\item Plotting with ggplot2 
 \end{itemize}
   
 \textbf{Day 4}

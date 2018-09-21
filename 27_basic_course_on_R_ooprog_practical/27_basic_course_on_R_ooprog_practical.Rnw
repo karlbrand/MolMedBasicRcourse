@@ -46,7 +46,7 @@
 \newcommand{\scscst}{\scriptscriptstyle}
 \newcommand{\scst}{\scriptstyle}
 \author{Elizabeth Ribble\footnote{emcclel3@msudenver.edu}}
-\date{18-24 May 2017}
+\date{17-21 December 2018}
 
 \begin{document}
 
@@ -106,7 +106,7 @@ class(gm(1:4))
 
 
 Using \texttt{system.time(expression)},
-explore how time changes with size of the inputs. Plot time versus input size and see if algorithm
+explore how time changes with size of the inputs (e.g. use sizes 1, 10, 100, 1000, 10000, and 100000). Plot time versus input size and see if algorithm
 is linear, polynomial, or exponential.
 
 \begin{itemize}

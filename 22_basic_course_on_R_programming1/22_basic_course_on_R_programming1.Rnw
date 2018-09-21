@@ -4,13 +4,13 @@
 % Prerequisite(s): none                                                   %
 % Author: Elizazbeth Ribble / Karl Brand                                  %
 % Created: c. april 2013                                                  %
-% Last update: 2018-05-03                                                 %
+% Last update: 2018-09-21                                                 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% begin preamble %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \documentclass [12pt]{article}
 
-\usepackage{graphics,latexsym,geometry,amsmath,bibunits,makeidx,fancyhdr,graphicx}
+\usepackage{graphics,latexsym,geometry,amsmath,makeidx,graphicx}
 \usepackage{hyperref}
 \usepackage[authoryear,round]{natbib}
 \usepackage{graphicx,color}
@@ -56,7 +56,7 @@
 
 \author{Karl Brand\footnote{brandk@gmail.com}\hspace{1mm} and 
   Elizabeth Ribble\footnote{emcclel3@msudenver.edu}}
-\date{14-18 May 2018}
+\date{17-21 December 2018}
 \begin{document}
 
 \title{Basic Course on {\tt R}:\\
@@ -577,69 +577,69 @@ select {\bf Terminate R...} in RStudio's {\bf Session} pulldown menu.
 
 
 
-
-\subsection{Nested Loops}
-
-\bi
-
-\item Loops can be {\em nested}, with one inside the other.  
-
-\item One use of this is to loop over 
-rows and columns of a matrix (or over the dimensions of a higher-dimensional array).  
-
-\item Suppose, for example, we want to create the matrix \texttt{X} with 0's 
-below the main diagonal and the row number completing each row:
-
-<<echo = F>>=
-X <- matrix(0, nrow = 6, ncol = 6)
-for(i in 1:6) {
-    for(j in i:6) {
-        X[i, j] <- i
-    }
-}
-X
-@
-
-\newpage
-\item We can construct this matrix using nested \texttt{for()} loops:
-
-<<>>=
-# First create a 6 by 6 matrix of all 0's
-X <- matrix(0, nrow = 6, ncol = 6)   
-# Next fill in the upper right part using nested loops.
-for(i in 1:6) {      # i is the row number, ranging from 1 to 6
-    for(j in i:6) {  # j is the column number, ranging from i to 6
-        X[i, j] <- i
-    }
-}
-@
-
-Above, 
-
-\bi
-
-\item During the first iteration of the outer loop, \texttt{i} is fixed at 1
-and the inner loop is iterated with \texttt{j} ranging over the values $1, 2, \ldots, 6$,
-during which time \texttt{X[1,1]},  \texttt{X[1,2]}, ... \texttt{X[1,6]} 
-are replaced by 1's.  
-
-\item Then in the second iteration of the outer loop, \texttt{i} is 
-fixed at 2 and and the inner loop is iterated with \texttt{j} ranging over the values 
-$2, 3, \ldots, 6$, during which time \texttt{X[2,2]},  \texttt{X[2,3]}, ... \texttt{X[2,6]}
-are replaced by 2's.  
-
-\item This continues until \texttt{i} reaches 6 and \texttt{j} "ranges" from 6 to 6, 
-during which time \texttt{X[6, 6]} is replaced by the value 6.
-
-\ei
-
-%\item For example, if we want to create an "addition table" of the numbers
-%numbers 1 through 12, i.e. a table in which the first row consists of the
-%values $1 + 1, 1 + 2, \ldots, 1 + 12$, the second row consists of 
-%$2 + 1, 2 + 2, \ldots, 2 + 12$, we could use:
-
-
-\ei
+% 
+% \subsection{Nested Loops}
+% 
+% \bi
+% 
+% \item Loops can be {\em nested}, with one inside the other.  
+% 
+% \item One use of this is to loop over 
+% rows and columns of a matrix (or over the dimensions of a higher-dimensional array).  
+% 
+% \item Suppose, for example, we want to create the matrix \texttt{X} with 0's 
+% below the main diagonal and the row number completing each row:
+% 
+% <<echo = F>>=
+% X <- matrix(0, nrow = 6, ncol = 6)
+% for(i in 1:6) {
+%     for(j in i:6) {
+%         X[i, j] <- i
+%     }
+% }
+% X
+% @
+% 
+% \newpage
+% \item We can construct this matrix using nested \texttt{for()} loops:
+% 
+% <<>>=
+% # First create a 6 by 6 matrix of all 0's
+% X <- matrix(0, nrow = 6, ncol = 6)   
+% # Next fill in the upper right part using nested loops.
+% for(i in 1:6) {      # i is the row number, ranging from 1 to 6
+%     for(j in i:6) {  # j is the column number, ranging from i to 6
+%         X[i, j] <- i
+%     }
+% }
+% @
+% 
+% Above, 
+% 
+% \bi
+% 
+% \item During the first iteration of the outer loop, \texttt{i} is fixed at 1
+% and the inner loop is iterated with \texttt{j} ranging over the values $1, 2, \ldots, 6$,
+% during which time \texttt{X[1,1]},  \texttt{X[1,2]}, ... \texttt{X[1,6]} 
+% are replaced by 1's.  
+% 
+% \item Then in the second iteration of the outer loop, \texttt{i} is 
+% fixed at 2 and and the inner loop is iterated with \texttt{j} ranging over the values 
+% $2, 3, \ldots, 6$, during which time \texttt{X[2,2]},  \texttt{X[2,3]}, ... \texttt{X[2,6]}
+% are replaced by 2's.  
+% 
+% \item This continues until \texttt{i} reaches 6 and \texttt{j} "ranges" from 6 to 6, 
+% during which time \texttt{X[6, 6]} is replaced by the value 6.
+% 
+% \ei
+% 
+% %\item For example, if we want to create an "addition table" of the numbers
+% %numbers 1 through 12, i.e. a table in which the first row consists of the
+% %values $1 + 1, 1 + 2, \ldots, 1 + 12$, the second row consists of 
+% %$2 + 1, 2 + 2, \ldots, 2 + 12$, we could use:
+% 
+% 
+% \ei
 
 
 
@@ -736,12 +736,13 @@ FALSE || FALSE
 \item As a practical example, if we want to test whether a variable \texttt{x} lies 
 {\em between} two numbers, say 60 and 70, we type:
 
-<<eval=FALSE>>=
+<<>>=
+x <- 75
 x > 60 && x < 70
 @
 and to test whether it lies {\em outside} the range 60 to 70, we type:
 
-<<eval=FALSE>>=
+<<>>=
 x < 60 || x > 70
 @
 
@@ -846,19 +847,75 @@ detach(bpData)
 
 \ei
 
-
-
-
-\section{Variable Number of Arguments Using ``\texttt{...}''}
-
-%This is taken from pg 154 of The New S Language by Becker, Chambers, and Wilks.
+\section{Writing A Function}
 
 \bi
 
-\item Functions can be written to take a variable number of arguments.  The argument
-name ``\texttt{...}'' in the function definition will match any number of arguments.
+\item To write your own function, you need to use the function {\tt function()}, specify argument(s) that will be used in the function (with our without defaults), and in curly brackets specify what the function should do (referring to the argument(s)), including whether something is returned. The general form is:
 
-\item For example, here's a function that returns the mean of all the values in an arbitrary number of vectors:
+
+<<eval=FALSE>>=
+myFun <- function(arg1, arg2, ...) {
+  ## expressions that use the arguments
+  ## the last command is what you want the function to return
+}
+@
+
+Each line inside the function is an object assignment, a function call, a subsetting, a conditional statement, an if/else statement, a for loop, etc. - basically anything you have now learned how to do in R that you want the function to do! If you do specify arguments, you should use them. 
+
+To have the function output something, you must return the object (either the last command is just the object name or you can use {\tt return()}). If you have multiple objects to return, I recommend returning everything as a list e.g. put this in the last line: {\tt return(list(object1, object2))}.
+
+\item Here are a few examples of functions with no default arguments; note the different outputs:
+
+<<>>=
+do1 <- function(x, y){
+  z <- x + y
+  x
+  z
+}
+do1(x = 1, y = 3) ## note that x is not returned
+
+do2 <- function(x, y){
+  z <- x + y
+  return(x)
+  z
+}
+do2(x = 1, y = 3) ## note that z is returned
+
+do3 <- function(x, y){
+  z <- x + y
+  return(list(x, z))
+}
+do3(x = 1, y = 3) ## x and z are returned as a single list
+@
+
+
+\item Here is an example of a function with default arguments that returns a vector:
+
+<<>>=
+do4 <- function(x, y = 2){
+  z1 <- x + y
+  z2 <- x * y
+  c(z1, z2)
+}
+do4(x = 1) ## uses y = 2
+do4(x = 1, y = 3) ## overwrites default value of y
+@
+
+\item Here is an example of a function that takes no arguments: 
+
+<<>>=
+do5 <- function(){
+  sum(2, 4, 6)
+  print("Hello World!")
+  return(mean(1, 3, 5))
+}
+do5()
+@
+
+
+
+\item Recall that you can create functions with variable arguments using {\tt ...}. For example, here's a function that returns the mean of all the values in an arbitrary number of vectors:
 
 <<>>=
 meanOfAll <- function(...) {
@@ -872,11 +929,8 @@ The command
 meanOfAll(usSales, europeSales, otherSales)
 @
 
-would combine the three vectors and take the mean of all the data.  The effect of \texttt{c(...)} is as if \texttt{c()} were called with the same three arguments passed to \texttt{meanOfAll()}.
-
-\item Many of R's built-in functions take a variable number of arguments.  For example look at the help files for \texttt{list()} and \texttt{c()}.
+would combine the three vectors and take the mean of all the data. 
 \ei
-
 
 \section{The \texttt{source()} Function}
 \bi
@@ -897,10 +951,10 @@ myFun $<-$ function(message) \{ \\
 
 myFun(``Hello World'') \\
  
-We can execute those commands using \texttt{source()} by typing:
+We can execute those commands using \texttt{source()} by running:
 
 <<eval=FALSE>>=
-source("C:/myRcode.txt")
+source("myRcode.txt")
 @
 
 <<echo = F>>=
@@ -908,7 +962,6 @@ source(file.path(getwd(), "myRcode.txt"))
 @
 
 \ei
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Document License}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

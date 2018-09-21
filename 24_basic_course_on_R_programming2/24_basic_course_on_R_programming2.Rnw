@@ -46,7 +46,7 @@
 \newcommand{\scscst}{\scriptscriptstyle}
 \newcommand{\scst}{\scriptstyle}
 \author{Elizabeth Ribble\footnote{emcclel3@msudenver.edu}}
-\date{18-24 May 2017}
+\date{17-21 December 2018}
 
 \begin{document}
 
@@ -309,8 +309,8 @@ d <- 4                      # This value of d will remain unchanged.
 f <- function(y) {
     d <- 5                  # This value of d will be replaced by 3.            
     h <- function() {
-        d <<- 3             # This replaces the value 5 of d in 
-        return(d * (w + y)) # h()'s environment by 3.
+        d <<- 3             # This replaces the value 5 of d in the
+        return(d * (w + y)) # h() and f() environments by 3.
     }
     return(h())
 }

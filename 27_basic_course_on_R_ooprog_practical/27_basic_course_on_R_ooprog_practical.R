@@ -26,7 +26,7 @@
 # 1. This problem concerns efficiency and timing code.
 # 
 # Using system.time(expression),
-# explore how time changes with size of the inputs. Plot time versus input size and see if algorithm
+# explore how time changes with size of the inputs (e.g. use sizes 1, 10, 100, 1000, 10000, and 100000). Plot time versus input size and see if algorithm
 # is linear, polynomial, or exponential.
 # 
 # Move expressions within loops that are invariant to compute just once and assigned to a variable.
