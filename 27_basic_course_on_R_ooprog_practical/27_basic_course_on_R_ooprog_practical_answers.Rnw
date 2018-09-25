@@ -46,7 +46,7 @@
 \newcommand{\scscst}{\scriptscriptstyle}
 \newcommand{\scst}{\scriptstyle}
 \author{Elizabeth Ribble\footnote{emcclel3@msudenver.edu}}
-\date{18-24 May 2017}
+\date{17-21 December 2018}
 
 \begin{document}
 
@@ -143,8 +143,7 @@ class(gm(1:4))
 
 
 Using \texttt{system.time(expression)},
-explore how time changes with size of the inputs. Plot time versus input size and see if algorithm
-is linear, polynomial, or exponential.
+explore how time changes with size of the inputs (e.g. use sizes 100, 1000, 10000, 100000, 1000000, 10000000). Plot time versus input size and see if algorithm is linear, polynomial, or exponential.
 
 \begin{itemize}
 
@@ -154,9 +153,9 @@ is linear, polynomial, or exponential.
 \item Avoid concatenating vectors by pre-allocating and assigning to the ith element.
 i.e. 
 
-\begin{Sinput}
-> x <- c(); for(i in seq(along = y)) x = c(x, g(y[i]))
-\end{Sinput}
+<<eval = FALSE>>=
+x <- c(); for(i in seq(along = y)) x = c(x, g(y[i]))
+@
 
 \end{itemize}
 
@@ -189,7 +188,7 @@ plot(x = inputs, y = timeV, main = "Number of Inputs vs System Time",
      type = "b")
 @
 
-The scatterplot of computation time versus size of inputs is linear. 
+The scatterplot of computation time versus size of inputs is somewhat linear. 
 }
 \end{enumerate}
 
