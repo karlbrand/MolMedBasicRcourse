@@ -1,23 +1,23 @@
-## ---- eval=FALSE---------------------------------------------------------
-## install.packages("ggplot2")
-## library(ggplot2)
+### Code chunk number 1
+#Run this only if you cannot load the ggplot2 with "library()":
+#install.packages("ggplot2")
 
-## ---- echo=FALSE---------------------------------------------------------
+### Code chunk number 2
 library(ggplot2)
 
-## ---- eval=FALSE---------------------------------------------------------
-## ?Indometh
+### Code chunk number 3
+?Indometh
 
-## ---- echo=F-------------------------------------------------------------
+### Code chunk number 4
 head(Indometh)
 
-## ---- eval=FALSE---------------------------------------------------------
-## ?ldeaths
+### Code chunk number 5
+?ldeaths
 
-## ---- echo=F-------------------------------------------------------------
+### Code chunk number 6
 ldeaths
 
-## ---- echo=F-------------------------------------------------------------
+### Code chunk number 7
 deaths <- c(fdeaths,mdeaths)
 sex <- rep(c("female","male"),each=72)
 years <- rep(c("1974","1975","1976","1977","1978","1979"),each=12)
@@ -25,77 +25,73 @@ months <- rep(c("Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov
 data <- data.frame("Deaths"=deaths,"Year"=years,"Month"=months,"Sex"=sex)
 head(data)
 
-## ---- fig.align="center"-------------------------------------------------
+### Code chunk number 8
 ggplot(data, aes(x=Month, y=Deaths, color=Sex)) + geom_point()
 
-## ---- fig.align="center", eval=F-----------------------------------------
-## ggplot(data) + geom_point(aes(x=Month, y=Deaths, color=Sex))
+### Code chunk number 9
+ggplot(data) + geom_point(aes(x=Month, y=Deaths, color=Sex))
 
-## ---- fig.align="center"-------------------------------------------------
+### Code chunk number 10
 ggplot(data, aes(x=Month, y=Deaths, color=Sex)) + geom_point(size=3)
 
-## ---- fig.align="center"-------------------------------------------------
-#Basic graphics:
+### Code chunk number 11
 plot(ToothGrowth$len)
 
-## ---- fig.align="center"-------------------------------------------------
+### Code chunk number 12
 p <- ggplot(ToothGrowth)
 p + geom_point(aes(x=as.numeric(rownames(ToothGrowth)), y=len), size=2)
 
-## ------------------------------------------------------------------------
+### Code chunk number 13
 ToothGrowth$index <- as.numeric(rownames(ToothGrowth))
 
-## ---- fig.align="center"-------------------------------------------------
+### Code chunk number 14
 p <- ggplot(ToothGrowth)
 
-## ---- fig.align="center"-------------------------------------------------
-#Basic graphics:
+### Code chunk number 15
 plot(ToothGrowth$len, type = "l")
 
 p + geom_line(aes(x=index, y=len))
 
-## ---- fig.align="center"-------------------------------------------------
-#Basic graphics:
+### Code chunk number 16
 barplot(table(ToothGrowth$dose))
 
 p + geom_bar(aes(x=dose))
 
-## ---- fig.align="center"-------------------------------------------------
+### Code chunk number 17
 p + geom_bar(aes(x=as.factor(dose)))
 
-## ---- fig.align="center"-------------------------------------------------
-#Basic graphics:
+### Code chunk number 18
 hist(ToothGrowth$len,breaks = 50)
 p + geom_histogram(aes(x=len), binwidth = 0.5)
 
-## ---- fig.align="center"-------------------------------------------------
-#Basic graphics:
+### Code chunk number 19
 boxplot(ToothGrowth$len~ToothGrowth$supp)
 
-## ---- fig.align="center"-------------------------------------------------
+### Code chunk number 20
 p + geom_boxplot(aes(x=supp,y=len))
 
-## ---- eval=F-------------------------------------------------------------
-## p + geom_errorbar(aes(x=supp, ymin=..., ymax=...),width=0.5)
+### Code chunk number 21
+#!This does not work:
+p + geom_errorbar(aes(x=supp, ymin=..., ymax=...),width=0.5)
 
-## ---- echo=F, fig.align="center"-----------------------------------------
+### Code chunk number 22
 p + stat_boxplot(aes(x=supp,y=len), geom="errorbar", width=0.5)
 
-## ---- fig.align="center"-------------------------------------------------
+### Code chunk number 23
 p + stat_boxplot(aes(x=supp,y=len), geom="errorbar", width=0.5) + 
 	geom_boxplot(aes(x=supp,y=len))
 
-## ---- eval=F-------------------------------------------------------------
-## p <- ggplot(ToothGrowth, aes(x=supp,y=len))
-## p + stat_boxplot(geom="errorbar", width=0.5) + geom_boxplot()
+### Code chunk number 24
+p <- ggplot(ToothGrowth, aes(x=supp,y=len))
+p + stat_boxplot(geom="errorbar", width=0.5) + geom_boxplot()
 
-## ---- fig.align="center"-------------------------------------------------
+### Code chunk number 25
 p <- ggplot(ToothGrowth)
 
 p + geom_tile(aes(x = supp, y = as.factor(dose), fill = len), color="black")
 
 
-## ---- fig.align="center"-------------------------------------------------
+### Code chunk number 26
 par(mfrow = c(1, 3))
 
 low <- ToothGrowth[which(ToothGrowth$dose==0.5),]
@@ -106,18 +102,18 @@ boxplot(low$len~low$supp, main = "Low dose", xlab = "Supplement Type")
 boxplot(med$len~med$supp, main = "Medium dose", xlab = "Supplement Type")
 boxplot(high$len~high$supp, main = "High dose", xlab = "Supplement Type")
 
-## ---- fig.align="center"-------------------------------------------------
+### Code chunk number 27
 ggplot(ToothGrowth, aes(x=supp,y=len)) + 
 	stat_boxplot(geom="errorbar", width=0.5) + 
 	geom_boxplot() + geom_point(color="red") + 
 	facet_grid(. ~ as.factor(dose))
 
-## ---- fig.align="center"-------------------------------------------------
+### Code chunk number 28
 ggplot(ToothGrowth, aes(x=len)) + 
 	geom_histogram(bins = 5) + 
 	facet_grid(dose ~ as.factor(supp))
 
-## ---- fig.align="center"-------------------------------------------------
+### Code chunk number 29
 ggplot(ToothGrowth, aes(x=index, y=as.factor(dose), color=len)) + 
 	geom_point() + 
 	scale_x_continuous(limits=c(1,100), trans = "log2", 
@@ -127,11 +123,11 @@ ggplot(ToothGrowth, aes(x=index, y=as.factor(dose), color=len)) +
 	scale_color_gradient2(limits=c(0,40), low = "green", mid = "black", high = "red", 
 		midpoint = 20)
 
-## ---- fig.align="center"-------------------------------------------------
+### Code chunk number 30
 p <- ggplot(ToothGrowth)
 p + geom_point(aes(x = index, y = len, color = supp, size = dose)) + theme_light()
 
-## ---- fig.align="center"-------------------------------------------------
+### Code chunk number 31
 p <- ggplot(ToothGrowth)
 p + geom_point(aes(x = index, y = len, color = supp, size = dose)) + 
 	theme(text = element_text(family = "Bookman", colour = "#6f898e"), 
@@ -156,10 +152,9 @@ p + geom_point(aes(x = index, y = len, color = supp, size = dose)) +
 	scale_color_manual(label=c("Orange juice","Vitamin C"), 
 		values = c("VC"="green","OJ"="orange"))
 
-## ---- eval=F-------------------------------------------------------------
-## p <- ggplot(ToothGrowth)
-## 
-## myplot <- p + geom_point(aes(x = index, y = len, color = supp, size = dose))
-## 
-## ggsave("my_plot.pdf",myplot)
+### Code chunk number 32
+p <- ggplot(ToothGrowth)
 
+myplot <- p + geom_point(aes(x = index, y = len, color = supp, size = dose))
+
+ggsave("my_plot.pdf",myplot)
