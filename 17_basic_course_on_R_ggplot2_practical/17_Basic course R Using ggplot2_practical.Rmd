@@ -1,3 +1,9 @@
+---
+output:
+  pdf_document: default
+  html_document: default
+  word_document: default
+---
 #Using ggplot: Practical
 
 1. **Load the ggplot2 library (install it if you have to) and the diamonds dataset using data()**

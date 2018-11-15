@@ -1,0 +1,255 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Program: 03_KB_basic_course_on_R_objects_functions_practical_answers.rnw%
+% Path: ~/Dropbox/Cardioformatics/CTMM_management/projects/R_course_2013  %
+% Purpose: Provide an introduction to R for the MGC R Basic R course      %
+% Prerequisite(s): none                                                   %
+% Author: Karl Brand                                                      %
+% Created: c. april 2013                                                  %
+% Last update: 2018-15-11                                                 %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% begin preamble %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\documentclass[12pt]{article}
+
+\usepackage{amsmath}
+\usepackage{hyperref}
+\usepackage[authoryear,round]{natbib}
+\usepackage{graphicx}
+\usepackage{enumerate}
+\usepackage{graphicx} % Compile only with pdfLaTeX
+\usepackage{xcolor}   % so we can color the answer's red
+% \usepackage{url,verbatim,a4wide,Sweave}
+\usepackage{parskip}
+
+\textwidth      = 6.2in
+\textheight     = 8.5in
+%% \parskip        = 0.3cm
+\oddsidemargin  = 0.1in
+\evensidemargin = 0.1in
+\headheight     = -0.3in
+
+\newcommand{\scscst}{\scriptscriptstyle}
+\newcommand{\scst}{\scriptstyle}
+\author{Karl Brand\footnote{brandk@gmail.com}\hspace{2mm}  and Elizabeth Ribble\footnote{emcclel3@msudenver.edu}}
+\date{17-21 December 2018}
+\begin{document}
+
+%% Bring figures to the top
+%% https://tex.stackexchange.com/questions/28556/how-to-place-a-float-at-the-top-of-a-floats-only-page?lq=1
+\makeatletter
+\setlength{\@fptop}{0pt}
+\setlength{\@fpbot}{0pt plus 1fil} %% usually redundant
+\makeatother
+
+\title{Basic Course on {\tt R}:\\
+  Objects and Functions Practical Answers}
+\maketitle
+\tableofcontents
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% end preamble %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newpage\section{Objects and Functions}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Function Arguments}
+\begin{enumerate}[(a)]
+
+  \item Look at the help file for the function {\tt mean()}. How many arguments does function have? What types of vectors are accepted? What is the default setting for dealing with NA values? 
+  
+  
+  \color{red}
+Three arguments (plus further arguments). Numerical and logical vectors are accepted. The default setting is to NOT remove NA (missing) values. 
+\color{black}
+  \item Use the function {\tt mean()} to calculate the mean of the following values (note the NA and use named arugment matching):
+    \begin{tabbing}
+      1 \=  2 \= NA  \= 6\\
+    \end{tabbing} 
+\color{red}
+<<>>=
+mean(x = c(1, 2, NA, 6), na.rm = TRUE)
+@
+\color{black}
+  \item Do (b) again but rearrange the arguments. 
+\color{red}
+<<>>=
+mean(na.rm = TRUE, x = c(1, 2, NA, 6))
+@
+\color{black}
+  \item Do (b) again using positional matching. 
+\color{red}
+<<>>=
+mean(c(1, 2, NA, 6), 0, TRUE)
+@
+\color{black}
+  \item Determine the class of {\tt mean()} using {\tt class()}. 
+\color{red}
+<<>>=
+class(mean)
+@
+The class is ``function''. 
+\color{black}
+  \item Determine the class of {\tt mean()} using {\tt str()}. 
+\color{red}
+<<>>=
+str(mean)
+@
+The class is ``function''. 
+\newpage
+\color{black}
+  \item Determine the class of the value output in part (d) using {\tt class()}.
+\color{red}
+<<>>=
+class(mean(c(1, 2, NA, 6), 0, TRUE))
+@
+The class is ``numeric''.
+\color{black}
+  \item Determine the class of the value output in part (d) using {\tt str()}.
+\color{red}
+<<>>=
+str(mean(c(1, 2, NA, 6), 0, TRUE))
+@
+The ``num'' means the class is ``numeric''.
+\color{black}
+  
+  
+\end{enumerate}
+
+\subsection{Use R as a calculator to calculate the following values:}
+
+\begin{center}
+$17 ^4$, \,\,\,\,\, $45 - 2 \cdot 3$, \,\,\,\,\, $(45 - 2) \cdot 3$
+\end{center}
+
+\color{red}
+<<>>=
+17^4
+45 - 2 * 3
+(45 - 2) * 3
+@
+\color{black}
+
+\subsection{Use the operators \texttt{\%\%} and \texttt{\%/\%} to do the following:}
+
+\begin{enumerate}[(a)]
+  \item Calculate the remainder after dividing 29,079 into 184,277,809.
+  
+\color{red}
+<<>>=
+184277809 %% 29079
+@
+\color{black}
+
+\item How many times does 29,079 go into 184,277,809 (i.e.\ what's the ``integer divide'' value)?
+
+\color{red}
+<<>>=
+184277809 %/% 29079
+@
+\color{black}
+\end{enumerate}
+
+\subsection{Do the last calculation from Q1.4 in another way, like this:}
+
+<<eval=FALSE>>=
+a <- 45
+b <- 2
+c <- 3
+d <- (a - b) * c 
+@
+
+Now check what \texttt{a}, \texttt{b}, \texttt{c}, and \texttt{d} are. You can just type the variable name (e.g.\ \texttt{a}) and hit `Control' then `Return' or use the command \texttt{print(a)}.
+\color{red}
+<<>>=
+a <- 45
+b <- 2
+c <- 3
+d <- (a - b) * c 
+a
+b
+c
+d
+@
+\color{black}
+
+\subsection{Do the following to practice saving and opening files in R.}
+
+\begin{enumerate}
+\item[(a)] Look at the variables (or other objects) that are stored in your Workspace by typing either \texttt{objects()} or \texttt{ls()}.}
+\color{red}
+
+Answers will vary. 
+
+\color{black}
+\item[(b)] Check your working directory by typing {\tt getwd()}. Now change it to a different directory - preferably your own flash drive - by using the function {\tt setwd()}, for example: 
+
+<<eval=FALSE>>=
+setwd("C:/Users/Elizabeth/My Documents/R Course")
+@
+
+\color{red}
+Answers will vary. 
+
+\color{black}
+
+\item[(c)] Use the function ``save.image()'' to save your R session to a file called \\
+{\tt YourLastName\_practical1.RData} (replace YourLastName with your last name). Note that this will save a .RData file that contains only those objects you see when you run {\tt ls()}. It does not save any code you typed into the console or into the source pane.
+
+\color{red}
+<<eval=FALSE>>=
+save.image(file = "Ribble_practical1.RData")
+@
+
+\color{black}
+\item[(d)] Use the RStudio ``File'' drop-down menu to save your R source code to a file called {\tt YourLastName\_practical1.R} (replace YourLastName with your last name). Note that this will only save the text you've typed into the source pane. It does not save any objects or anything typed into or ran through the console.
+\color{red}
+<<eval=FALSE>>=
+savehistory(file = "Ribble_practical1.Rhistory")
+@
+
+You may get this error: {\tt `Error in savehistory(file) : no history
+available to save'} This means no commands have been directly in
+entered into your \emph{console}, but only from your text editor,
+which is of course it's own permanent record, assuming you save it!
+\color{black}
+
+
+\item[(e)] Use the function ``save()'' to save only the objects {\tt myFirstList} and {\tt pets} to a file called {\tt YourLastName\_objects.RData} (replace YourLastName with your last name).
+\color{red}
+<<eval=FALSE>>=
+save(myFirstList, pets, file = "Ribble_objects.RData")
+@
+\color{black}
+
+\item[(f)] Now close out RStudio entirely, select ``Save'' or ``Yes'' in any dialog boxes that pop up, and then reopen RStudio. Is your source code still there? 
+\color{red}
+
+It should be; the default in RStudio is to keep source code open!
+\color{black}
+
+\item[(g)] Run {\tt ls()}; are your objects still there? 
+\color{red}
+
+The objects available in your previous session are still available and RStudio re-loads them for the new session. 
+\color{black}
+
+\item[(h)] You can change these kinds of options by going to ``Tools - Global Options''. Go there and deselect ``Restore .RData into workspace at startup''. Then close RStudio and choose to save the .RData file.  
+
+\item[(i)] Reopen RStudio; your environment should be empty. Load your objects back in using {\tt load()} (e.g. {\tt load("Ribble\_practical1.RData")}) and then run ls() again. Do you see your objects now? 
+\color{red}
+
+They should appear after you've loaded in the file that contained your previously created objects.
+\color{black}
+
+\item[(j)] Check what the working directory is by again running {\tt getwd()} - has it been reset? 
+
+\color{red}
+It should have been reset to the default RStudio working directory. This means everytime you open RStudio you should specify your desired working directory!
+\color{black}
+\end{itemize}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Document License}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\href{https://www.gnu.org/licenses/gpl-3.0.html}{GNU General Public License v2.0 or higher (GPL$>=$v2)}
+
+\end{document}

@@ -1,3 +1,8 @@
+---
+output:
+  pdf_document: default
+  html_document: default
+---
 #Using ggplot: Answers
 1. **Load the ggplot2 library (install it if you have to) and the diamonds dataset using data()**
 ```{r, eval=F}
@@ -87,11 +92,13 @@ ggplot(diamonds, aes(x=price)) +
 
 ```{r, eval=F}
 #Aggregate uses a function (in this case mean) to aggregate all variables 
-#in a given data.frame by a list of variables given in "by"
-mean.price <- aggregate(diamonds, 
-	by = list(cut = diamonds$cut, color = diamonds$color), 
+#in a given data.frame by a list of variables given in "by".
+#Note: excluding columns 2,3,4 since they are factors 
+#and therefore don't have means
+mean.price <- aggregate(diamonds[, -c(2,3,4)], 
+	by = list(cutAgg = diamonds$cut, colorAgg = diamonds$color), 
 	mean)
-ggplot(mean.price, aes(x=cut, y=color, fill=price)) + 
+ggplot(mean.price, aes(x=cutAgg, y=colorAgg, fill=price)) + 
 	geom_tile()
 ```
 
