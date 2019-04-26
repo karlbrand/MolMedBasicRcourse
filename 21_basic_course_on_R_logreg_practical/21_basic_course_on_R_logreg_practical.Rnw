@@ -16,7 +16,7 @@
 \newcommand{\scscst}{\scriptscriptstyle}
 \newcommand{\scst}{\scriptstyle}
 \author{Elizabeth Ribble\footnote{emcclel3@msudenver.edu}}
-\date{14-18 May 2018}
+\date{20-24 May 2019}
 
 \begin{document}
 \title{Basic Course on {\tt R}:\\

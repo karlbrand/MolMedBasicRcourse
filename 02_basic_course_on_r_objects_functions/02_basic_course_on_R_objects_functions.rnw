@@ -30,7 +30,7 @@
 \newcommand{\scst}{\scriptstyle}
 \author{Karl Brand\footnote{brandk@gmail.com}\hspace{1mm} and 
   Elizabeth Ribble\footnote{emcclel3@msudenver.edu}}
-\date{14-18 May 2018}
+\date{20-24 May 2019}
 \begin{document}
 
 \makeatletter

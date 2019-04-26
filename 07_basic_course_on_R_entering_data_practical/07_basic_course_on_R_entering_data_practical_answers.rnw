@@ -17,7 +17,7 @@
 \newcommand{\scscst}{\scriptscriptstyle}
 \newcommand{\scst}{\scriptstyle}
 \author{Karl Brand\footnote{brandk@gmail.com}\hspace{2mm}  and Elizabeth Ribble\footnote{emcclel3@msudenver.edu}}
-\date{17-21 December 2018}
+\date{20-24 May 2019}
 
 \begin{document}
 
