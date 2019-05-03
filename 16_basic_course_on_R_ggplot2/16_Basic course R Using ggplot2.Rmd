@@ -3,14 +3,14 @@ title: 'Basic Course on **R**: Using ggplot2'
 author: "David Nieuwenhuijse"
 date: "May 18^th^ - 24^th^, 2017"
 output:
+  html_document:
+    toc: yes
+    toc_depth: '3'
   pdf_document:
     number_sections: yes
     toc: yes
     toc_depth: 3
     fig_height: 4
-  html_document:
-    toc: yes
-    toc_depth: '3'
 ---
 
 \pagebreak
@@ -334,7 +334,7 @@ Custom themes can be made from scratch using the "theme()" function. To have a l
 ```{r, fig.align="center"}
 p <- ggplot(ToothGrowth)
 p + geom_point(aes(x = index, y = len, color = supp, size = dose)) + 
-	theme(text = element_text(family = "Bookman", colour = "#6f898e"), 
+	theme(text = element_text(colour = "#6f898e"), 
 	  line = element_line(color = "#163f47"), 
 	  rect = element_rect(fill = "#163f47", color = "#163f47"),
 		axis.text.x = element_text(color="black"), 
@@ -370,3 +370,30 @@ myplot <- p + geom_point(aes(x = index, y = len, color = supp, size = dose))
 
 ggsave("my_plot.pdf",myplot)
 ```
+
+##ggplot extensions
+
+Basic ggplot functions are enough to create a rich variety of plots. However, depending on the field of research, specific plots are popular to visualize specific types of data. Sometimes these plots cannot be made directly from "basic" ggplot. Since ggplot is an opensource package, several people have extended it fullfill the custom needs of users. Many of these ggplot extention packages can be found online with a quick google. The ggplot2 extensions gallery shows some nice examples of add-ons <http://www.ggplot2-exts.org/gallery/>. Below are a handfull of examples, which we will not explain in detail, but should serve as a source of inspiration.
+
+###ggridges <https://cran.r-project.org/web/packages/ggridges/>
+Ridges 1             |  Ridges 2
+:-------------------------:|:-------------------------:
+![](ridges.png)  | ![](ridges2.png)
+
+###ggbeeswarm <https://github.com/eclarke/ggbeeswarm>
+![](ggplot2-beeswarm-1.png)
+
+###ggROC <https://cran.r-project.org/web/packages/ggridges/>
+Single ROC curve             |  Compare multiple ROC curves
+:-------------------------:|:-------------------------:
+![](ggROC.png) | ![](ggROC2.png)
+
+###survminer <https://rpkgs.datanovia.com/survminer/index.html>
+Simple Kaplan-Meier             |  Fancy formatting
+:-------------------------:|:-------------------------:
+![](ggSurv1.png) | ![](ggSurv2.png)
+
+###gganatogram <https://jespermaag.github.io/blog/2018/gganatogram/>
+Nervous system             |  Adding data
+:-------------------------:|:-------------------------:
+![](gganatogram1.svg) | ![](gganatogram2.svg)
