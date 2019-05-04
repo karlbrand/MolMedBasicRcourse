@@ -4,7 +4,7 @@
 % Prerequisite(s): none                                                   %
 % Author: Karl Brand   / Elizabeth Ribble                                 %
 % Created: c. april 2013                                                  %
-% Last update: 2018-05-03                                                 %
+% Last update: 2019-05-05                                                 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% begin preamble %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -557,14 +557,16 @@ args(signif)
 
 \subsection{Variable Number of Arguments Using ``\texttt{...}''}
 
-%This is taken from pg 154 of The New S Language by Becker, Chambers, and Wilks.
+%% This is taken from pg 154 of The New S Language by Becker,
+%% Chambers, and Wilks.
 
-\bi
+\begin{itemize}
+\item Functions can be written to take a variable number of arguments.
+  The argument name ``\texttt{...}'' in the function definition will
+  match any number of arguments.
 
-\item Functions can be written to take a variable number of arguments.  The argument
-name ``\texttt{...}'' in the function definition will match any number of arguments.
-
-\item For example, here's a function that returns the mean of all the values in an arbitrary number of vectors:
+\item For example, here's a function that returns the mean of all the
+  values in an arbitrary number of vectors:
 
 <<>>=
 meanOfAll <- function(...) {
@@ -581,10 +583,7 @@ meanOfAll(usSales, europeSales, otherSales)
 would combine the three vectors and take the mean of all the data.  The effect of \texttt{c(...)} is as if \texttt{c()} were called with the same three arguments passed to \texttt{meanOfAll()}.
 
 \item Many of R's built-in functions take a variable number of arguments.  For example look at the help files for \texttt{list()} and \texttt{c()}.
-\ei
-
-
-
+\end{itemize}
 
 %' 
 %' \subsection{Define your own functions}

@@ -5,7 +5,7 @@
 % Prerequisite(s): none                                                   %
 % Author: Karl Brand                                                      %
 % Created: c. april 2013                                                  %
-% Last update: 2018-15-11                                                 %
+% Last update: 2019-05-05                                                 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% begin preamble %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -330,7 +330,7 @@ Now check what \texttt{a}, \texttt{b}, \texttt{c}, and \texttt{d} are. You can j
 \subsection{Do the following to practice saving and opening files in R.}
 
 \begin{enumerate}
-\item[(a)] Look at the variables (or other objects) that are stored in your Workspace by typing either \texttt{objects()} or \texttt{ls()}.}
+\item[(a)] Look at the variables (or other objects) that are stored in your Workspace by typing either \texttt{objects()} or \texttt{ls()}.
 \vspace{5mm}
 
 \item[(b)] Check your working directory by typing {\tt getwd()}. Now change it to a different directory - preferably your own flash drive - by using the function {\tt setwd()}, for example: 
@@ -391,7 +391,7 @@ setwd("C:/Users/Elizabeth/My Documents/R Course")
 \item[(j)] Check what the working directory is by again running {\tt getwd()} - has it been reset? 
 \vspace{5mm}
 
-\end{itemize}
+\end{enumerate}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
  \section{Document License}

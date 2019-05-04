@@ -5,7 +5,7 @@
 % Prerequisite(s): none                                                   %
 % Author: Karl Brand                                                      %
 % Created: c. april 2013                                                  %
-% Last update: 2018-15-11                                                 %
+% Last update: 2019-05-05                                                 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% begin preamble %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -173,7 +173,7 @@ d
 \subsection{Do the following to practice saving and opening files in R.}
 
 \begin{enumerate}
-\item[(a)] Look at the variables (or other objects) that are stored in your Workspace by typing either \texttt{objects()} or \texttt{ls()}.}
+\item[(a)] Look at the variables (or other objects) that are stored in your Workspace by typing either \texttt{objects()} or \texttt{ls()}.
 \color{red}
 
 Answers will vary. 
@@ -244,7 +244,7 @@ They should appear after you've loaded in the file that contained your previousl
 \color{red}
 It should have been reset to the default RStudio working directory. This means everytime you open RStudio you should specify your desired working directory!
 \color{black}
-\end{itemize}
+\end{enumerate}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
