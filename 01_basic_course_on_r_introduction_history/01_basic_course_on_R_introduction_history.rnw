@@ -4,7 +4,7 @@
 % Prerequisite(s): none                                                   %
 % Author: Karl Brand                                                      %
 % Created: c. april 2013                                                  %
-% Last update: 2018-09-21                                                 %
+% Last update: 2019-05-03                                                 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% begin preamble %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -30,7 +30,7 @@
 \newcommand{\scscst}{\scriptscriptstyle}
 \newcommand{\scst}{\scriptstyle}
 
-\author{Karl Brand\footnote{brandk@gmauil.com}\hspace{1mm} and Elizabeth Ribble\footnote{emcclel3@msudenver.edu}}
+\author{Karl Brand\footnote{brandk@gmail.com}\hspace{1mm} and Elizabeth Ribble\footnote{emcclel3@msudenver.edu}}
 \date{20-24 May 2019}
 
 \begin{document}
@@ -122,30 +122,31 @@ v2 and v3 in 2000. The name, {\tt R}, probably derives from the first
 letter of the creator's
 names. \url{http://cran.r-project.org/doc/FAQ/R-FAQ.html#Why-is-R-named-R_003f}
 
-% I installed {\tt R} in 2006 to analyse Affymetrix microarray data with
-% various BioConductor packages: customised normalisation methods I
-% wanted to try were best performed with BioConductor. Complex
-% statistical methods were \emph{only} practically possible using {\tt
-%   R}. I also learned to use a plethora of other programs and apps
-% including TM4, BRB-Arraytools, EASE/DAVID, Ingenuity Pathway Analysis,
-% Partek, Spotfire, etc. But it quickly became obvious that
-% bioinformaticians developed and published their work most often as an
-% {\tt R} package or script. Since 2010 most of my work was
-% bioinformatics. I eschewed Excel and other programs on Windows in
-% favour of {\tt R} on Linux and have steadily increased my productivity
-% since. Although many books and online resources exist to learn {\tt
-%   R}/BioConductor, there remains a lack of educational support in The
-% Netherlands and in many parts of the world.
+I installed {\tt R} in 2006 to analyse Affymetrix microarray data with
+various BioConductor packages: customised normalisation methods I
+wanted to try were best performed with BioConductor. Complex
+statistical methods were \emph{only} practically possible using {\tt
+  R}. I also learned to use a plethora of other programs and apps
+including TM4, BRB-Arraytools, EASE/DAVID, Ingenuity Pathway Analysis,
+Partek, Spotfire, etc. But it quickly became obvious that
+bioinformaticians developed and published their work most often as an
+{\tt R} package or script. Since 2010 most of my work was
+bioinformatics. I eschewed Excel and other programs on Windows in
+favour of {\tt R} on Linux and have steadily increased my productivity
+since. Although many books and online resources exist to learn {\tt
+  R}/BioConductor, there remains a lack of educational support in The
+Netherlands and in many parts of the world.
 
 \subsection{Strengths and weaknesses}
-I attribute much of {\tt R}'s success to its GPL v2 license: created
-\underline{by users for users} to run well on Linux, Apple and
-Windows. These licenses give everyone the freedom to use, the freedom
-to distribute and the freedom to contribute their own intellectual
-input to the project. The result is that performance and fitness of
-purpose is and always will be the primary focus. I attribute {\tt
-  R}'s limited general use to its steep learning curve for
-non-programmers. Base {\tt R} is also yet to take advantage of the
+
+I attribute much of {\tt R}'s success to its open source, GNU GPL v2
+license: created \underline{by users for users} to run well on Linux,
+Apple and Windows. These licenses give everyone the freedom to use,
+the freedom to distribute and the freedom to contribute their own
+intellectual input to the project. The result is that performance and
+fitness of purpose is and always will be the primary focus. I
+attribute {\tt R}'s limited general use to its steep learning curve
+for non-programmers. Base {\tt R} is also yet to take advantage of the
 multi-threaded architecture of current computing technology.
 
 \subsection{Get it}
@@ -199,23 +200,28 @@ field'. \url{http://r4stats.com/articles/popularity/}
 %% stay around, and more people you can \emph{talk} with. Isn't this the
 %% purpose of any language?
 
-\includegraphics[width=5in]{fig_8_cran.png}\\
+\includegraphics[width=5in]{revAnalyticsCranPkgsVSTime.png}\\
 There's an enormous number of packages offering custom functionality.
-\url{https://www.listendata.com/2016/12/companies-using-r.html}
+\url{https://revolution-computing.typepad.com/.a/6a010534b1db25970b01b8d2594d25970c-pi}
 
-\includegraphics[width=4.3in]{bioconductor.png}\\ Bioconductor,
+\includegraphics[width=5in]{shiny_cran_downloads.png}\\
+Which people are downloading rabidly! \url{https://gallery.shinyapps.io/087-crandash/}
+
+\includegraphics[width=5in]{bioconductor.png}\\ Bioconductor,
 initiated in 2001 for the analysis of genomics data, has grown from 15
-to (currently) 1560 software packages for omics and life science
+to (currently) 1741 software packages for omics and life science
 analyses.  \url{http://www.bioconductor.org/}
 
-\includegraphics[width=4.3in]{companies.png}\\
-Used internally by lots of big, profitable companies. \url{https://www.datasciencecentral.com/profiles/blogs/list-of-companies-using-r}
+\includegraphics[width=4.3in]{companies.png}\\ Used internally by lots
+of big, profitable companies. 
+\url{https://www.datasciencecentral.com/profiles/blogs/list-of-companies-using-r} and 
+\url{https://www.listendata.com/2016/12/companies-using-r.html}
 
 \includegraphics[width=4.3in]{NYTimes.png}\\
 Has gained the popular media's attention. \url{http://www.nytimes.com/2009/01/07/technology/business-computing/07program.html?_r=0}
 
 \includegraphics[width=4.3in]{forbes.png}\\
-\href{http://www.forbes.com/sites/smcnally/2010/11/10/names-you-need-to-know-in-2011-r-data-analysis-software/}{Link to reference}
+\href{http://www.forbes.com/sites/smcnally/2010/11/10/names-you-need-to-know-in-2011-r-data-analysis-software/}{http://www.forbes.com/sites/smcnally/2010/11/10/names-you-need-to-know-in-2011-r-data-analysis-software/}
 
 Many other statistical and analytical programs have implemented
 connectors to enable running {\tt R} code within them, including
@@ -223,7 +229,7 @@ connectors to enable running {\tt R} code within them, including
 popularity continues to grow. In contrast to the `workhorse' languages
 like {\tt C} and Python which are used to build many programs, {\tt R}
 is first and foremost a statistics focussed language. Despite this,
-it's close to being in the top 10 of the most popular computing
+it's close to being in the top 20 of the most popular computing
 languages.
 
 \includegraphics[width=5.5in]{TIOBE_popularity_index.png}\\
@@ -236,11 +242,11 @@ languages.
 
 \begin{itemize}
   
-\item \textbf{Wikipedia}: `R is a programming language and free
-  software environment for statistical computing and graphics that is
-  supported by the R Foundation for Statistical Computing.  The R
+\item \textbf{Wikipedia:} `R is a programming language and free
+  software environment for statistical computing and graphics
+  supported by the R Foundation for Statistical Computing. The R
   language is widely used among statisticians and data miners for
-  developing statistical software and data analysis.'
+  developing statistical software[7] and data analysis.'
   \url{http://en.wikipedia.org/wiki/R_(programming_language)}
 
 \item \textbf{Comprehensive {\tt R} Archive Network (CRAN):} `R is
@@ -249,6 +255,18 @@ languages.
   statistical and graphical techniques: linear and nonlinear
   modelling, statistical tests, time series analysis, classification,
   clustering, etc.' \url{https://cloud.r-project.org/}.
+
+\item \textbf{The R Journal - Facets of R:} `This paper considers six
+  characteristics, which we will call facets. They characterize R as:
+\begin{enumerate}
+\item an interface to computational procedures of many kinds;
+\item interactive, hands-on in real time;
+\item functional in its model of programming;
+\item object-oriented, “everything is an object”;
+\item modular, built from standardized pieces; and,
+\item collaborative, a world-wide, open-source effort.'
+\end{enumerate}
+By \href{https://journal.r-project.org/archive/2009-1/RJournal_2009-1_Chambers.pdf}{John M. Chambers}
 
 \item  \textbf{My definition:} A command based, object oriented and functional
   language; in contrast to excel which is a cell centric, spreadsheet
@@ -332,7 +350,10 @@ There are four panes.
   using the keyboard short-cut {\tt Ctrl + Enter}.} This will send the
 line of code your cursor is on to {\tt R} if no code is selected; or if
 there is code selected, then only the selected code is sent. Open
-RStudio on your PC and try it now.
+RStudio on your PC and try it now. Since programming is all about typing
+commands using a keyboard, not pointing and clicking, you might
+appreciate lots of keyboard shortcuts. Here's an awesome cheatsheet of
+\href{https://www.rstudio.com/resources/cheatsheets/}{RStudio keyboard shortcuts}.
 
 A few other things about RStudio:
   \begin{itemize}
@@ -470,6 +491,9 @@ R --vanilla
 
 \item {\it The} list of reference texts: \url{http://www.r-project.org/doc/bib/R-publications.html}
 
+\item This course not enough? There's a excellent free online introduction
+  to R here: \url{https://www.computerworld.com/article/2497143/business-intelligence-beginner-s-guide-to-r-introduction.html}
+  
 \item And more..\\
   \url{http://www.ats.ucla.edu/stat/r/}\\
   \url{http://zoonek2.free.fr/UNIX/48_R/02.html}\\
