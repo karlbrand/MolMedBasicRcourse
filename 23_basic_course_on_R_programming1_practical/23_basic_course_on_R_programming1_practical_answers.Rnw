@@ -1,3 +1,13 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Program: 23_basic_course_on_R_programming1_answers.Rnw                  %
+% Purpose: Provide an introduction to R for the MGC R Basic R course      %
+% Prerequisite(s): none                                                   %
+% Author: Elizazbeth Ribble                                               %
+% Created: c. april 2013                                                  %
+% Last update: 2019-05-05                                                 %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% begin preamble %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \documentclass[12pt]{article}
 
 \usepackage{amsmath}
@@ -240,7 +250,7 @@ Which is which?
 (4 < 3 && 5 < 6) || 8 < 9
 @
 \color{red}
-The first one {\tt FALSE} because the first statment before {\tt &&} is {\tt FALSE}. The second one is {\tt TRUE} because one of the two statements to the left and right of {\tt ||} is {\tt TRUE}. 
+The first one {\tt FALSE} because the first statement before \texttt{\&\&} is {\tt FALSE}. The second one is {\tt TRUE} because one of the two statements to the left and right of {\tt ||} is {\tt TRUE}. 
 \color{black}
 
 %The data set came from one of the SAS help files:

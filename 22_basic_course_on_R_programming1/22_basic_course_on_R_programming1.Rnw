@@ -1,10 +1,10 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Program: 22_basic_course_on_R_programming.rnw                           %
+% Program: 22_basic_course_on_R_programming.Rnw                           %
 % Purpose: Provide an introduction to R for the MGC R Basic R course      %
 % Prerequisite(s): none                                                   %
 % Author: Elizazbeth Ribble / Karl Brand                                  %
 % Created: c. april 2013                                                  %
-% Last update: 2018-09-21                                                 %
+% Last update: 2019-05-05                                                 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% begin preamble %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
