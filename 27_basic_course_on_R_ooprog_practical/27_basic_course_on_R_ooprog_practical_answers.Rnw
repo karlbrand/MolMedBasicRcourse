@@ -1,3 +1,13 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Program: 27_basic_course_on_R_ooprog_practical_answers.Rnw              %
+% Purpose: Provide an introduction to R for the MGC R Basic R course      %
+% Prerequisite(s): none                                                   %
+% Author: Elizazbeth Ribble                                               %
+% Created: c. april 2013                                                  %
+% Last update: 2019-05-05                                                 %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% begin preamble %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \documentclass [12pt]{article}
 
 \usepackage{graphics,latexsym,geometry,amsmath,bibunits,makeidx,fancyhdr,graphicx}
@@ -92,14 +102,10 @@ gm <- function(x) {
 }
 
 \item Determine the class of your output by running the following:
-\begin{Sinput}
-> class(gm(1:4))
-\end{Sinput}
-{\color{red}
 <<>>=
 class(gm(1:4))
 @
-}
+
 
 \item Modify your geometric mean function, using \texttt{class()}, so that the return value has the 
 class \texttt{"geometric"}.  
@@ -118,10 +124,7 @@ gm <- function(x){
 @
 }
 
-\item  Verify the new class of your output is correct by running the following
-\begin{Sinput}
-> class(gm(1:4))
-\end{Sinput}
+\item  Verify the new class of your output is correct by running the following:
 {\color{red}
 <<>>=
 class(gm(1:4))
@@ -182,7 +185,7 @@ t6 <- time(10^7)
 timeV <- c(t1, t2, t3, t4, t5, t6)
 @
 
-<<fig=TRUE>>=
+<<>>=
 plot(x = inputs, y = timeV, main = "Number of Inputs vs System Time",
      xlab = "Number of inputs", ylab = "System Time Elapsed", 
      type = "b")
@@ -190,8 +193,6 @@ plot(x = inputs, y = timeV, main = "Number of Inputs vs System Time",
 
 The scatterplot of computation time versus size of inputs is somewhat linear. 
 }
-\end{enumerate}
-
 \end{enumerate}
 
 \end{document}
