@@ -1,3 +1,13 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Program: 25_basic_course_on_R_programming2_practical.Rnw                %
+% Purpose: Provide an introduction to R for the MGC R Basic R course      %
+% Prerequisite(s): none                                                   %
+% Author: Elizazbeth Ribble                                               %
+% Created: c. april 2013                                                  %
+% Last update: 2019-05-05                                                 %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% begin preamble %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \documentclass [12pt]{article}
 
 \usepackage{graphics,latexsym,geometry,amsmath,bibunits,makeidx,fancyhdr,graphicx}
@@ -184,7 +194,7 @@ w
 \end{enumerate}
 
 \section{Part B: \texttt{if()} Statements, \texttt{warning()}, and \texttt{stop()}}
-}
+
 The functions \texttt{warning()} and \texttt{stop()} are used to print a warning
 message and to stop the execution of the function call and print an error message.  For example:
   
