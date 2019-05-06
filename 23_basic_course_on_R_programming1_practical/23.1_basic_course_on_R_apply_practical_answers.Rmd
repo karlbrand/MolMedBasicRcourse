@@ -1,0 +1,116 @@
+---
+title: 'Basic Course on **R**: The apply family of functions - Practical'
+author: "David Nieuwenhuijse"
+date: "May 18^th^ - 24^th^, 2017"
+output:
+  pdf_document:
+    number_sections: no
+    toc: no
+    toc_depth: 3
+    fig_height: 4
+  html_document:
+    toc: yes
+    toc_depth: '3'
+---
+
+## Part D: Using the apply family of functions
+
+1. Use apply() to turn the following code into something shorter:
+
+```{r}
+
+#This function determines if a number is a prime number
+isPrime <- function(num){
+  if (num == 2) {
+    return(TRUE)
+  }
+  if(num > 1) {
+    for(i in 2:(num-1)) {
+      if ((num %% i) == 0) {
+        return(FALSE)
+      }
+    }
+  } else {
+    return(FALSE)
+  }
+  
+  return(TRUE)
+}
+
+#The matrix with numbers to be checked:
+mat <- matrix(1:100, nrow=10)
+#The matrix with answers (TRUE/FALSE)
+answer <- matrix(rep(x = TRUE,100), nrow=10)
+
+for (x in 1:10) {
+  for (y in 1:10) {
+    answer[x,y] <- isPrime(mat[x,y])
+  }
+}
+
+#The resulting prime numbers:
+mat[answer]
+
+```
+
+Answer:
+
+```{r}
+
+#This function determines if a number is a prime number
+isPrime <- function(num){
+  if (num == 2) {
+    return(TRUE)
+  }
+  if(num > 1) {
+    for(i in 2:(num-1)) {
+      if ((num %% i) == 0) {
+        return(FALSE)
+      }
+    }
+  } else {
+    return(FALSE)
+  }
+  
+  return(TRUE)
+}
+
+#The matrix with numbers to be checked:
+mat <- matrix(1:100, nrow=10)
+
+#With apply we do not need to create an answer matrix anymore
+answer <- apply(mat, c(1,2), isPrime)
+
+#The resulting prime numbers:
+mat[answer]
+
+```
+
+2. Answer question 2.3 again using the lapply() function.
+
+```{r}
+source("kennedys.txt")
+
+lapply(Kennedys, length)
+
+```
+
+3. Answer question 2.3 again using the sapply() function. What is the class of the output?
+
+```{r}
+sapply(Kennedys, length)
+class(sapply(Kennedys, length))
+```
+
+4. Read in the diamonds.txt dataset using read.table, make sure the headers are correctly loaded. Calculate the average price of diamonds by color and clarity using the tapply function.
+
+```{r}
+
+diamonds <- read.table("diamonds.txt", header = TRUE)
+
+average_price <- tapply(diamonds$Price, list(diamonds$Color, diamonds$Clarity), mean)
+
+print(average_price)
+
+```
+
