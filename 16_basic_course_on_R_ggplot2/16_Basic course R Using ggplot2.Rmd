@@ -1,7 +1,7 @@
 ---
 title: 'Basic Course on **R**: Using ggplot2'
 author: "David Nieuwenhuijse"
-date: "May 18^th^ - 24^th^, 2017"
+date: "Oct 28^th^ - Nov 1^st^, 2019"
 output:
   pdf_document:
     number_sections: yes
