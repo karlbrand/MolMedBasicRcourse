@@ -9,6 +9,7 @@
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% begin preamble %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \documentclass[12pt]{article}
+% \documentclass[a4paper,12pt]{article}
 
 \usepackage{amsmath}
 \usepackage{hyperref}
