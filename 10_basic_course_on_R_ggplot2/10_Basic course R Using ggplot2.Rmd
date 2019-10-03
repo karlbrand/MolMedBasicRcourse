@@ -8,7 +8,9 @@ output:
     toc: yes
     toc_depth: 3
     fig_height: 4
-  html_document:
+<!-- documentclass: article -->
+<!-- classoption: a4paper -->
+html_document:
     toc: yes
     toc_depth: '3'
 ---
