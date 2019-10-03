@@ -9,7 +9,6 @@
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% begin preamble %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \documentclass[12pt]{article}
-% \documentclass[a4paper,12pt]{article}
 
 \usepackage{amsmath}
 \usepackage{hyperref}
@@ -32,7 +31,7 @@
 \newcommand{\scst}{\scriptstyle}
 
 \author{Karl Brand\footnote{brandk@gmail.com}\hspace{1mm} and Elizabeth Ribble\footnote{emcclel3@msudenver.edu}}
-\date{28 Oct - 1 Nov 2019}
+\date{20-24 May 2019}
 
 \begin{document}
 
@@ -123,32 +122,32 @@ v2 and v3 in 2000. The name, {\tt R}, probably derives from the first
 letter of the creator's
 names. \url{http://cran.r-project.org/doc/FAQ/R-FAQ.html#Why-is-R-named-R_003f}
 
-I installed {\tt R} in 2006 to analyse Affymetrix microarray data with
-various BioConductor packages: customised normalisation methods I
-wanted to try were best performed with BioConductor. Complex
-statistical methods were \emph{only} practically possible using {\tt
-  R}. I also learned to use a plethora of other programs and apps
-including TM4, BRB-Arraytools, EASE/DAVID, Ingenuity Pathway Analysis,
-Partek, Spotfire, etc. But it quickly became obvious that
-bioinformaticians developed and published their work most often as an
-{\tt R} package or script. Since 2010 most of my work was
-bioinformatics. I eschewed Excel and other programs on Windows in
-favour of {\tt R} on Linux and have steadily increased my productivity
-since. Although many books and online resources exist to learn {\tt
-  R}/BioConductor, there remains a lack of educational support in The
-Netherlands and in many parts of the world.
+%% I installed {\tt R} in 2006 to analyse Affymetrix microarray data with
+%% various BioConductor packages: customised normalisation methods I
+%% wanted to try were best performed with BioConductor. Complex
+%% statistical methods were \emph{only} practically possible using {\tt
+%%   R}. I also learned to use a plethora of other programs and apps
+%% including TM4, BRB-Arraytools, EASE/DAVID, Ingenuity Pathway Analysis,
+%% Partek, Spotfire, etc. But it quickly became obvious that
+%% bioinformaticians developed and published their work most often as an
+%% {\tt R} package or script. Since 2010 most of my work was
+%% bioinformatics. I eschewed Excel and other programs on Windows in
+%% favour of {\tt R} on Linux and have steadily increased my productivity
+%% since. Although many books and online resources exist to learn {\tt
+%%   R}/BioConductor, there remains a lack of educational support in The
+%% Netherlands and in many parts of the world.
 
-\subsection{Strengths and weaknesses}
+%% \subsection{Strengths and weaknesses}
 
-I attribute much of {\tt R}'s success to its open source, GNU GPL v2
-license: created \underline{by users for users} to run well on Linux,
-Apple and Windows. These licenses give everyone the freedom to use,
-the freedom to distribute and the freedom to contribute their own
-intellectual input to the project. The result is that performance and
-fitness of purpose is and always will be the primary focus. I
-attribute {\tt R}'s limited general use to its steep learning curve
-for non-programmers. Base {\tt R} is also yet to take advantage of the
-multi-threaded architecture of current computing technology.
+%% I attribute much of {\tt R}'s success to its open source, GNU GPL v2
+%% license: created \underline{by users for users} to run well on Linux,
+%% Apple and Windows. These licenses give everyone the freedom to use,
+%% the freedom to distribute and the freedom to contribute their own
+%% intellectual input to the project. The result is that performance and
+%% fitness of purpose is and always will be the primary focus. I
+%% attribute {\tt R}'s limited general use to its steep learning curve
+%% for non-programmers. Base {\tt R} is also yet to take advantage of the
+%% multi-threaded architecture of current computing technology.
 
 \subsection{Get it}
  \subsubsection{Install it}
@@ -181,63 +180,63 @@ Emacs/ESS: \url{http://ess.r-project.org/index.php?Section=download}
 Here's a full list available editors:
 \url{https://en.wikipedia.org/wiki/R_(programming_language)#Interfaces}
 
-\subsection{Not convinced?}
-r4stats.com has a nice evaluation of {\tt R}'s value `in the
-field'. \url{http://r4stats.com/articles/popularity/}
+%% \subsection{Not convinced?}
+%% r4stats.com has a nice evaluation of {\tt R}'s value `in the
+%% field'. \url{http://r4stats.com/articles/popularity/}
 
-%% More and more people are discussing R:\\
-\includegraphics[width=5.5in]{Fig-1a-IndeedJobs-2017.png}\\
-\url{https://i0.wp.com/r4stats.com/wp-content/uploads/2017/02/Fig-1a-IndeedJobs-2017.png}\\
+%% %% More and more people are discussing R:\\
+%% \includegraphics[width=5.5in]{Fig-1a-IndeedJobs-2017.png}\\
+%% \url{https://i0.wp.com/r4stats.com/wp-content/uploads/2017/02/Fig-1a-IndeedJobs-2017.png}\\
 
-%\includegraphics[width=4in]{fig_3_rexersurvey.png}\\
-%\url{http://r4stats.files.wordpress.com/2012/04/fig_3_rexersurvey.png}\\
+%% %\includegraphics[width=4in]{fig_3_rexersurvey.png}\\
+%% %\url{http://r4stats.files.wordpress.com/2012/04/fig_3_rexersurvey.png}\\
 
-\includegraphics[width=4in]{fig_6a_rexersurveyprimarytool20151.png}\\
-{\tt R} is the most used software for getting data mining and big data ``done''.
-\url{https://i1.wp.com/datasciencepopularity.com/wp-content/uploads/2015/10/fig_6a_rexersurveyprimarytool20151.png}\\
+%% \includegraphics[width=4in]{fig_6a_rexersurveyprimarytool20151.png}\\
+%% {\tt R} is the most used software for getting data mining and big data ``done''.
+%% \url{https://i1.wp.com/datasciencepopularity.com/wp-content/uploads/2015/10/fig_6a_rexersurveyprimarytool20151.png}\\
 
-%% This is a compelling reason to learn any language: the more people
-%% speaking a language, the easier it is to get help, the longer it will
-%% stay around, and more people you can \emph{talk} with. Isn't this the
-%% purpose of any language?
+%% %% This is a compelling reason to learn any language: the more people
+%% %% speaking a language, the easier it is to get help, the longer it will
+%% %% stay around, and more people you can \emph{talk} with. Isn't this the
+%% %% purpose of any language?
 
-\includegraphics[width=5in]{revAnalyticsCranPkgsVSTime.png}\\
-There's an enormous number of packages offering custom functionality.
-\url{https://revolution-computing.typepad.com/.a/6a010534b1db25970b01b8d2594d25970c-pi}
+%% \includegraphics[width=5in]{revAnalyticsCranPkgsVSTime.png}\\
+%% There's an enormous number of packages offering custom functionality.
+%% \url{https://revolution-computing.typepad.com/.a/6a010534b1db25970b01b8d2594d25970c-pi}
 
-\includegraphics[width=5in]{shiny_cran_downloads.png}\\
-Which people are downloading rabidly! \url{https://gallery.shinyapps.io/087-crandash/}
+%% \includegraphics[width=5in]{shiny_cran_downloads.png}\\
+%% Which people are downloading rabidly! \url{https://gallery.shinyapps.io/087-crandash/}
 
-\includegraphics[width=5in]{bioconductor.png}\\ Bioconductor,
-initiated in 2001 for the analysis of genomics data, has grown from 15
-to (currently) 1741 software packages for omics and life science
-analyses.  \url{http://www.bioconductor.org/}
+%% \includegraphics[width=5in]{bioconductor.png}\\ Bioconductor,
+%% initiated in 2001 for the analysis of genomics data, has grown from 15
+%% to (currently) 1741 software packages for omics and life science
+%% analyses.  \url{http://www.bioconductor.org/}
 
-\includegraphics[width=4.3in]{companies.png}\\ Used internally by lots
-of big, profitable companies. 
-\url{https://www.datasciencecentral.com/profiles/blogs/list-of-companies-using-r} and 
-\url{https://www.listendata.com/2016/12/companies-using-r.html}
+%% \includegraphics[width=4.3in]{companies.png}\\ Used internally by lots
+%% of big, profitable companies. 
+%% \url{https://www.datasciencecentral.com/profiles/blogs/list-of-companies-using-r} and 
+%% \url{https://www.listendata.com/2016/12/companies-using-r.html}
 
-\includegraphics[width=4.3in]{NYTimes.png}\\
-Has gained the popular media's attention. \url{http://www.nytimes.com/2009/01/07/technology/business-computing/07program.html?_r=0}
+%% \includegraphics[width=4.3in]{NYTimes.png}\\
+%% Has gained the popular media's attention. \url{http://www.nytimes.com/2009/01/07/technology/business-computing/07program.html?_r=0}
 
-\includegraphics[width=4.3in]{forbes.png}\\
-\href{http://www.forbes.com/sites/smcnally/2010/11/10/names-you-need-to-know-in-2011-r-data-analysis-software/}{http://www.forbes.com/sites/smcnally/2010/11/10/names-you-need-to-know-in-2011-r-data-analysis-software/}
+%% \includegraphics[width=4.3in]{forbes.png}\\
+%% \href{http://www.forbes.com/sites/smcnally/2010/11/10/names-you-need-to-know-in-2011-r-data-analysis-software/}{http://www.forbes.com/sites/smcnally/2010/11/10/names-you-need-to-know-in-2011-r-data-analysis-software/}
 
-Many other statistical and analytical programs have implemented
-connectors to enable running {\tt R} code within them, including
-`competitors' like SPSS, MatLab and SAS. Despite this {\tt R}'s
-popularity continues to grow. In contrast to the `workhorse' languages
-like {\tt C} and Python which are used to build many programs, {\tt R}
-is first and foremost a statistics focussed language. Despite this,
-it's close to being in the top 20 of the most popular computing
-languages.
+%% Many other statistical and analytical programs have implemented
+%% connectors to enable running {\tt R} code within them, including
+%% `competitors' like SPSS, MatLab and SAS. Despite this {\tt R}'s
+%% popularity continues to grow. In contrast to the `workhorse' languages
+%% like {\tt C} and Python which are used to build many programs, {\tt R}
+%% is first and foremost a statistics focussed language. Despite this,
+%% it's close to being in the top 20 of the most popular computing
+%% languages.
 
-\includegraphics[width=5.5in]{TIOBE_popularity_index.png}\\
-\href{http://www.tiobe.com/index.php/content/paperinfo/tpci/index.html}{Link to current Tiobe index}
+%% \includegraphics[width=5.5in]{TIOBE_popularity_index.png}\\
+%% \href{http://www.tiobe.com/index.php/content/paperinfo/tpci/index.html}{Link to current Tiobe index}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
-\newpage\section{What \emph{is} {\tt R} and how do we use it}
+\section{What \emph{is} {\tt R} and how do we use it}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Definition(s)}
 
