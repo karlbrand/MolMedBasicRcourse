@@ -303,6 +303,17 @@ $17 ^4$, \,\,\,\,\, $45 - 2 \cdot 3$, \,\,\,\,\, $(45 - 2) \cdot 3$
 %> 45-2 * 3
 %> (45-2) * 3
 %\end{Sinput}
+\subsection{Do the calculation from the previous question in another way, like this:}
+
+<<eval=FALSE>>=
+a <- 45
+b <- 2
+c <- 3
+d <- (a - b) * c 
+@
+
+Now check what \texttt{a}, \texttt{b}, \texttt{c}, and \texttt{d} are. You can just type the variable name (e.g.\ \texttt{a}) and hit {\tt Ctrl + Enter} or use the command \texttt{print(a)}.
+\vspace{5mm}
 
 \subsection{Use the operators \texttt{\%\%} and \texttt{\%/\%} to do the following:}
 
@@ -312,19 +323,6 @@ $17 ^4$, \,\,\,\,\, $45 - 2 \cdot 3$, \,\,\,\,\, $(45 - 2) \cdot 3$
   
   \item How many times does 29,079 go into 184,277,809 (i.e.\ what's the ``integer divide'' value)?
 \end{enumerate}
-\vspace{5mm}
-
-\newpage
-\subsection{Do the last calculation from Q1.4 in another way, like this:}
-
-<<eval=FALSE>>=
-a <- 45
-b <- 2
-c <- 3
-d <- (a - b) * c 
-@
-
-Now check what \texttt{a}, \texttt{b}, \texttt{c}, and \texttt{d} are. You can just type the variable name (e.g.\ \texttt{a}) and hit `Control' then `Return' or use the command \texttt{print(a)}.
 \vspace{5mm}
 
 \subsection{Do the following to practice saving and opening files in R.}
