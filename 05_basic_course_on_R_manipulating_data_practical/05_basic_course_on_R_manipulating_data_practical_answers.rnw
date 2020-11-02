@@ -109,7 +109,7 @@ x[x[, 3] > 10, ]
   \item 4 added to each value of {\tt x}
   \item 2 multiplied by each value of {\tt x}
   \item 2 multiplied by each value of {\tt x}
-  \item columns of x are divided by the vector c(2, 3, 4, 5); the vector is recycled so that the first and third columns are still the same and the second and fourth columns are still the same
+  \item columns of x are divided by the vector c(2, 3, 4, 5); so the first 4 rows will be divided by 2, 3, 4 and 5 respectively. Then the vector is recycled so that the fith and sixth rows are divided by 2 and 3. R then proceeds tp the second column, dividing the first and second row by 4 and 5, and so on.
   \item a single vector with values from the third column of x added to two times the second column of x
   \item 6
   \item the 4th row of x, since it's the only row where the third column is greater than 10
